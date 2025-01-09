@@ -6,3 +6,4 @@ class Collection(BaseModel):
 
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(255))
+    fields = db.relationship("Field", backref="collection", cascade="all, delete-orphan")
