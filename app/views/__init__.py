@@ -1,0 +1,1 @@
+from .collection import view as collection
