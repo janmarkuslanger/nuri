@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}Update Field{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Update a new Field</h1>
+<form method="POST" class="space-y-4">
+    <div>
+        <label for="name" class="block text-sm font-medium">Name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            value="{{ field.name }}"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+        />
+    </div>
+    <div>
+        <label for="name" class="block text-sm font-medium">Alias</label>
+        <input
+            type="text"
+            id="alias"
+            name="alias"
+            value="{{ field.alias }}"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+        />
+    </div>
+    <div>
+        <label for="field_type" class="block text-sm font-medium">Field type</label>
+        <select
+            id="field_type"
+            name="field_type"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+        >
+            <option value="" disabled>Select a Field Type</option>
+            
+            {% for field_type in FieldType %}
+                <option value="{{ field_type.name }}" {% if field_type.name == field.field_type %}selected{% endif %}>{{ field_type.value }}</option>
+            {% endfor %}
+            
+        </select>
+    </div>
+    <div>
+        <label for="collection_id" class="block text-sm font-medium">Collection</label>
+        <select
+            id="collection_id"
+            name="collection_id"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+        >
+            <option value="" disabled>Select a category</option>
+            {% for collection in collections %}
+                <option value="{{ collection.id }}"  {% if collection.id == field.collection_id %}selected{% endif %}>{{ collection.name }}</option>
+            {% endfor %}
+            
+        </select>
+    </div>
+    <button
+        type="submit"
+        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+    >
+        Create
+    </button>
+</form>
+{% endblock %}

@@ -17,6 +17,9 @@ def create_app():
     from app.views import collection
     app.register_blueprint(collection, url_prefix='/admin/collections')
 
+    from app.views import field
+    app.register_blueprint(field, url_prefix='/admin/fields')
+
     from app.views import home
     app.register_blueprint(home, url_prefix='/')
     
