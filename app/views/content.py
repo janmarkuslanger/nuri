@@ -1,7 +1,16 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, request, url_for, flash
 from app.models import Collection, Content
 
 view = Blueprint("content", __name__)
+
+@view.route("/", methods=["GET"])
+def index():
+    collections = Collection.query.all()
+
+    return render_template(
+        "content/list.html",
+        collections=collections,
+    )
 
 @view.route("/<int:collection_id>", methods=["GET"])
 def index(collection_id):
@@ -20,19 +29,29 @@ def create_content(collection_id):
     fields = collection.fields
 
     if request.method == "POST":
-    
         data = {}
         errors = []
 
         for field in fields:
-            value = request.form.get(field.alias)
+            if field.is_list:
+                value = request.form.getlist(field.alias)
+            else:
+                value = request.form.get(field.alias) 
+
+
             if field.field_type == "INTEGER":
-                try:
-                    value = int(value)
-                except ValueError:
-                    errors.append(f"{field.name} muss eine Zahl sein.")
+                if field.is_list:
+                    try:
+                        value = [int(v) for v in value] 
+                    except ValueError:
+                        errors.append(f"{field.name} muss eine Liste von Zahlen sein.")
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        errors.append(f"{field.name} muss eine Zahl sein.")
             elif field.field_type == "BOOLEAN":
-                value = request.form.get(field.alias) == "on"
+                value = [v == "on" for v in value] if field.is_list else (value == "on")
 
             data[field.alias] = value
 
