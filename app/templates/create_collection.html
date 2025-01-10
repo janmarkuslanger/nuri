@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}Create Collection{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Create a New Collection</h1>
+<form method="POST" class="space-y-4">
+    <div>
+        <label for="name" class="block text-sm font-medium">Name</label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+            required
+        />
+    </div>
+    <div>
+        <label for="description" class="block text-sm font-medium">Description</label>
+        <textarea
+            id="description"
+            name="description"
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
+        ></textarea>
+    </div>
+    <button
+        type="submit"
+        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+    >
+        Create
+    </button>
+</form>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}Collections List{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-bold mb-6">Collections</h1>
+    
+    {% if collections %}
+        <table class="table-auto w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">#</th>
+                    <th class="border border-gray-300 px-4 py-2">Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for collection in collections %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="border border-gray-300 px-4 py-2">{{ loop.index }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ collection.name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ collection.description or "No description" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="text-gray-500">No collections available.</p>
+    {% endif %}
+
+    <div class="mt-6">
+        <a 
+            href="{{ url_for('collection.create_collection') }}" 
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+            Create New Collection
+        </a>
+    </div>
+</div>
+{% endblock %}
