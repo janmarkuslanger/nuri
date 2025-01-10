@@ -20,6 +20,9 @@ def create_app():
     from app.views import field
     app.register_blueprint(field, url_prefix='/admin/fields')
 
+    from app.views import content
+    app.register_blueprint(content, url_prefix='/admin/content')
+
     from app.views import home
     app.register_blueprint(home, url_prefix='/')
     

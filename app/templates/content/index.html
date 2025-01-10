@@ -1,0 +1,28 @@
+<h1>Content für {{ collection.name }}</h1>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      {% for field in collection.fields %}
+      <th>{{ field.name }}</th>
+      {% endfor %}
+      <th>Aktionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for content in contents %}
+    <tr>
+      <td>{{ content.id }}</td>
+      {% for field in collection.fields %}
+      <td>{{ content.data.get(field.alias) }}</td>
+      {% endfor %}
+      <td>
+        <form method="POST" action="{{ url_for('content.delete_content', id=content.id) }}">
+          <button type="submit">Löschen</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ url_for('content.create_content', collection_id=collection.id) }}">Neuen Content erstellen</a>
