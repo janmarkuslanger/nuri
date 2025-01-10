@@ -5,3 +5,4 @@ class FieldType(enum.Enum):
     INTEGER = "Integer"
     BOOLEAN = "Boolean"
     DATE = "Date"
+    ASSET = "Asset"
