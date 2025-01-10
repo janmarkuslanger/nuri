@@ -17,6 +17,7 @@ def create():
         alias = request.form.get("alias")
         field_type = request.form.get("field_type")
         collection_id = request.form.get("collection_id")
+        is_list = request.form.get("is_list") == "on"
 
         excistingAlias = Field.query.filter_by(alias=alias).first()
 
@@ -25,7 +26,7 @@ def create():
             return redirect(url_for("field.index"))
 
         if name and alias:
-            new_collection = Field(name=name, alias=alias, collection_id=collection_id, field_type=field_type)
+            new_collection = Field(name=name, alias=alias, collection_id=collection_id, field_type=field_type, is_list=is_list)
             new_collection.save()
             return redirect(url_for("field.index"))
 
@@ -41,6 +42,7 @@ def edit(id):
         alias = request.form.get("alias")
         field_type = request.form.get("field_type")
         collection_id = request.form.get("collection_id")
+        is_list = request.form.get("is_list") == 'on'
 
         existing_alias = Field.query.filter(Field.alias == alias, Field.id != id).first()
         if existing_alias:
@@ -51,6 +53,7 @@ def edit(id):
             field.name = name
             field.alias = alias
             field.field_type = field_type
+            field.is_list = is_list
             field.collection_id = collection_id
             db.session.commit()
             flash("Field updated successfully!", "success")

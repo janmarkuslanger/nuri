@@ -55,6 +55,18 @@
             
         </select>
     </div>
+    <div class="flex items-center">
+        <input 
+          type="checkbox" 
+          id="is_list" 
+          name="is_list" 
+          class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
+          {% if content and content.data.get(field.alias) %} checked {% endif %} 
+        >
+        <label for="is_list" class="ml-2 block text-sm font-medium text-gray-700">
+          List
+        </label>
+      </div>
     <button
         type="submit"
         class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
