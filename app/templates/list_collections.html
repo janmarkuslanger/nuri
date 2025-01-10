@@ -12,7 +12,9 @@
                 <tr class="bg-gray-100">
                     <th class="border border-gray-300 px-4 py-2">#</th>
                     <th class="border border-gray-300 px-4 py-2">Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Alias</th>
                     <th class="border border-gray-300 px-4 py-2">Description</th>
+                    <th class="border border-gray-300 px-4 py-2">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,7 +22,13 @@
                     <tr class="hover:bg-gray-50">
                         <td class="border border-gray-300 px-4 py-2">{{ loop.index }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ collection.name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ collection.alias }}</td>
                         <td class="border border-gray-300 px-4 py-2">{{ collection.description or "No description" }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-center">
+                            <a href="{{ url_for('collection.edit', id=collection.id) }}" class="text-blue-500 hover:text-blue-700">
+                                <span class="material-icons">edit</span>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -31,7 +39,7 @@
 
     <div class="mt-6">
         <a 
-            href="{{ url_for('collection.create_collection') }}" 
+            href="{{ url_for('collection.create') }}" 
             class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
         >
             Create New Collection
