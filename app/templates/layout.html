@@ -3,49 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}nuri - CMS{% endblock %}</title>
+    <title>{% block title %}Flask App{% endblock %}</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/main.css') }}">
     <script type="module" src="{{ url_for('static', filename='dist/main.js') }}"></script>
 </head>
-<body class="flex h-screen bg-gray-100">
-    <div class="relative group">
+<body class="h-screen bg-gray-100">
+    <div class="flex h-full transition-all duration-300">
         <div 
-            class="fixed inset-y-0 left-0 w-16 bg-green-600 group-hover:w-64 transition-all duration-300 ease-in-out overflow-hidden"
+            class="group relative flex-shrink-0 transition-all duration-300 ease-in-out"
+            style="width: 64px;"
+            onmouseover="this.style.width = '256px';"
+            onmouseout="this.style.width = '64px';"
         >
-            <div class="flex flex-col h-full justify-between">
-                <nav class="mt-4 space-y-2">
-                    <a href="/" class="flex items-center px-4 py-2 text-white hover:bg-green-700">
-                        <span class="material-icons">home</span>
-                        <span class="ml-4 hidden group-hover:block">Home</span>
-                    </a>
-                    <a href="/collections" class="flex items-center px-4 py-2 text-white hover:bg-green-700">
-                        <span class="material-icons">folder</span>
-                        <span class="ml-4 hidden group-hover:block">Collections</span>
-                    </a>
-                    <a href="/settings" class="flex items-center px-4 py-2 text-white hover:bg-green-700">
-                        <span class="material-icons">settings</span>
-                        <span class="ml-4 hidden group-hover:block">Settings</span>
-                    </a>
-                </nav>
-
-                <nav class="mb-4 space-y-2">
-                    <a href="/help" class="flex items-center px-4 py-2 text-white hover:bg-green-700">
-                        <span class="material-icons">help</span>
-                        <span class="ml-4 hidden group-hover:block">Help</span>
-                    </a>
-                    <a href="/logout" class="flex items-center px-4 py-2 text-white hover:bg-green-700">
-                        <span class="material-icons">logout</span>
-                        <span class="ml-4 hidden group-hover:block">Logout</span>
-                    </a>
-                </nav>
+            <div class="absolute inset-0 bg-[#25a14c] overflow-hidden">
+                <div class="flex flex-col h-full justify-between">
+                    <nav class="mt-4 space-y-2">
+                        <a href="/" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                            <span class="material-icons">home</span>
+                            <span class="ml-4 hidden group-hover:block">Home</span>
+                        </a>
+                        <a href="/collections" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                            <span class="material-icons">folder</span>
+                            <span class="ml-4 hidden group-hover:block">Collections</span>
+                        </a>
+                        <a href="/settings" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                            <span class="material-icons">settings</span>
+                            <span class="ml-4 hidden group-hover:block">Settings</span>
+                        </a>
+                    </nav>
+                    <nav class="mb-4 space-y-2">
+                        <a href="/help" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                            <span class="material-icons">help</span>
+                            <span class="ml-4 hidden group-hover:block">Help</span>
+                        </a>
+                        <a href="/logout" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                            <span class="material-icons">logout</span>
+                            <span class="ml-4 hidden group-hover:block">Logout</span>
+                        </a>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex-1 p-4">
-        {% block content %}{% endblock %}
+        <div class="flex-1 p-4">
+            {% block content %}{% endblock %}
+        </div>
     </div>
 </body>
 </html>
