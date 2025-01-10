@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ "Bearbeiten" if content else "Erstellen" }} von Content für {{ collection.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded shadow">
+  <h1 class="text-2xl font-bold mb-4">{{ "Bearbeiten" if content else "Erstellen" }} von Content für {{ collection.name }}</h1>
+  <form method="POST" class="space-y-6">
+    {% for field in collection.fields %}
+    <div>
+      <label for="{{ field.alias }}" class="block text-sm font-medium text-gray-700">{{ field.name }}</label>
+      {% if field.is_list %}
+      <div id="{{ field.alias }}_inputs" class="space-y-2">
+        {% for item in (content.data.get(field.alias) if content and field.is_list else [None]) %}
+        <input type="text" name="{{ field.alias }}" value="{{ item or '' }}" class="w-full border border-gray-300 rounded px-4 py-2">
+        {% endfor %}
+      </div>
+      <button type="button" onclick="addInput('{{ field.alias }}_inputs')" class="mt-2 text-blue-500 hover:underline">Weiteres Feld hinzufügen</button>
+      {% else %}
+      <input type="text" id="{{ field.alias }}" name="{{ field.alias }}" value="{{ content.data.get(field.alias) if content else '' }}" class="w-full border border-gray-300 rounded px-4 py-2">
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Speichern</button>
+  </form>
+  <a href="{{ url_for('content.index', collection_id=collection.id) }}" class="inline-block mt-4 text-blue-500 hover:underline">Zurück</a>
+</div>
+
+<script>
+function addInput(containerId) {
+  const container = document.getElementById(containerId);
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.name = containerId.split('_inputs')[0];
+  input.placeholder = 'Wert hinzufügen';
+  input.className = 'w-full border border-gray-300 rounded px-4 py-2';
+  container.appendChild(input);
+}
+</script>
+{% endblock %}
