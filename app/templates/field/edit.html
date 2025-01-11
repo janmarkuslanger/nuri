@@ -3,7 +3,7 @@
 {% block title %}Update Field{% endblock %}
 
 {% block content %}
-<h1 class="text-xl font-bold mb-4">Update a new Field</h1>
+<h1 class="text-xl font-bold mb-4">Update Field</h1>
 <form method="POST" class="space-y-4">
     <div>
         <label for="name" class="block text-sm font-medium">Name</label>
@@ -59,22 +59,34 @@
         </select>
     </div>
     <div class="flex items-center">
+    <input 
+        type="checkbox" 
+        id="is_list" 
+        name="is_list" 
+        class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
+        {% if field.is_list %} checked {% endif %} 
+    >
+    <label for="is_list" class="ml-2 block text-sm font-medium text-gray-700">
+        List
+    </label>
+    </div>
+    <div class="flex items-center">
         <input 
-          type="checkbox" 
-          id="is_list" 
-          name="is_list" 
-          class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
-          {% if field.is_list %} checked {% endif %} 
+            type="checkbox" 
+            id="display_field" 
+            name="display_field" 
+            class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
+            {% if field.display_field %} checked {% endif %} 
         >
-        <label for="is_list" class="ml-2 block text-sm font-medium text-gray-700">
-          List
+        <label for="display_field" class="ml-2 block text-sm font-medium text-gray-700">
+        Display field for content 
         </label>
-      </div>
+    </div>
     <button
         type="submit"
         class="btn"
     >
-        Create
+        Save
     </button>
 </form>
 {% endblock %}

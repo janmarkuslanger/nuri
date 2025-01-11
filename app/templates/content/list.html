@@ -3,27 +3,26 @@
 {% block title %}Collections{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-8">
-  <h1 class="text-2xl font-bold mb-4">Collections</h1>
-  <table class="table">
-    <thead>
+<h1 class="text-2xl font-bold mb-4">Collections</h1>
+<div class="divider"></div>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for collection in collections %}
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Aktionen</th>
+        <td>{{ collection.id }}</td>
+        <td>{{ collection.name }}</td>
+        <td>
+          <a href="{{ url_for('content.index', collection_id=collection.id) }}">Content</a>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      {% for collection in collections %}
-        <tr>
-          <td>{{ collection.id }}</td>
-          <td>{{ collection.name }}</td>
-          <td>
-            <a href="{{ url_for('content.index', collection_id=collection.id) }}">Content</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

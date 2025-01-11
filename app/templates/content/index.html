@@ -3,46 +3,49 @@
 {% block title %}Content für {{ collection.name }}{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-8">
-  <h1 class="text-2xl font-bold mb-4">Content für {{ collection.name }}</h1>
-  <table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            {% for field in collection.fields %}
+<h1 class="text-2xl font-bold mb-4">Content für {{ collection.name }}</h1>
+<div class="divider"></div>
+<table class="table">
+<thead>
+    <tr>
+        <th>ID</th>
+        {% for field in collection.fields %}
+            {% if field.display_field %}
                 <th>{{ field.name }}</th>
-            {% endfor %}
-            <th>Aktionen</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for content in contents %}
-        <tr>
-            <td>{{ content.id }}</td>
-            {% for field in collection.fields %}
-            <td>
-                {% if field.is_list and content.data.get(field.alias) %}
-                    {{ content.data.get(field.alias) | join(", ") }}
-                {% else %}
-                    {{ content.data.get(field.alias) }}
-                {% endif %}
-            </td>
-            {% endfor %}
-            <td>
-                <a href="{{ url_for('content.edit', content_id=content.id) }}">
-                    <span class="material-icons">edit</span>
-                </a>
-                <a href="{{ url_for('content.delete', content_id=content.id) }}">
-                    <span class="material-icons">delete</span>
-                </a>
-            </td>
-        </tr>
+            {% endif %}
         {% endfor %}
-    </tbody>
-  </table>
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+    {% for content in contents %}
+    <tr>
+        <td>{{ content.id }}</td>
+        {% for field in collection.fields %}
+            {% if field.display_field %}
+                <td>
+                    {% if field.is_list and content.data.get(field.alias) %}
+                        {{ content.data.get(field.alias) | join(", ") }}
+                    {% else %}
+                        {{ content.data.get(field.alias) }}
+                    {% endif %}
+                </td>
+            {% endif %}
+        {% endfor %}
+        <td>
+            <a href="{{ url_for('content.edit', content_id=content.id) }}">
+                <span class="material-icons">edit</span>
+            </a>
+            <a href="{{ url_for('content.delete', content_id=content.id) }}">
+                <span class="material-icons">delete</span>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
 
-  <div class="mt-6">
-    <a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new content</a>
-  </div>
+<div class="mt-6">
+<a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new content</a>
 </div>
 {% endblock %}
