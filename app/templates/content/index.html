@@ -31,7 +31,7 @@
         <td class="border border-gray-300 px-4 py-2">
           <a href="{{ url_for('content.edit', content_id=content.id) }}" class="text-blue-500 hover:underline mr-2">Bearbeiten</a>
           <form method="POST" action="{{ url_for('content.delete', content_id=content.id) }}" class="inline">
-            <button type="submit" class="text-red-500 hover:underline">Löschen</button>
+            <button type="submit" class="btn">Löschen</button>
           </form>
         </td>
       </tr>

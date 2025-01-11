@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/main.css') }}">
     <script type="module" src="{{ url_for('static', filename='dist/main.js') }}"></script>
 </head>
-<body class="h-screen bg-gray-100">
+<body class="h-screen">
     <div class="flex h-full transition-all duration-300">
         <div 
             class="group relative flex-shrink-0 transition-all duration-300 ease-in-out"
@@ -16,29 +16,29 @@
             onmouseover="this.style.width = '256px';"
             onmouseout="this.style.width = '64px';"
         >
-            <div class="absolute inset-0 bg-[#25a14c] overflow-hidden">
+            <div class="absolute inset-0 overflow-hidden">
                 <div class="flex flex-col h-full justify-between">
                     <nav class="mt-4 space-y-2">
-                        <a href="{{ url_for('home.index') }}" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                        <a href="{{ url_for('home.index') }}" class="flex items-center px-4 py-2">
                             <span class="material-icons">home</span>
                             <span class="ml-4 hidden group-hover:block">Home</span>
                         </a>
-                        <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                        <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2">
                             <span class="material-icons">folder</span>
                             <span class="ml-4 hidden group-hover:block">Collections</span>
                         </a>
-                        <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                        <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2">
                             <span class="material-icons">category</span>
                             <span class="ml-4 hidden group-hover:block">Fields</span>
                         </a>
-                        <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                        <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2">
                             <span class="material-icons">article</span>
                             <span class="ml-4 hidden group-hover:block">Content</span>
                         </a>
                         
                     </nav>
                     <nav class="mb-4 space-y-2">
-                        <a href="/logout" class="flex items-center px-4 py-2 text-white hover:bg-[#1f8a41]">
+                        <a href="/logout" class="flex items-center px-4 py-2 text-white">
                             <span class="material-icons">logout</span>
                             <span class="ml-4 hidden group-hover:block">Logout</span>
                         </a>
@@ -51,7 +51,7 @@
                 {% if messages %}
                     <div class="mb-4">
                         {% for category, message in messages %}
-                            <div class="p-4 mb-2 text-white rounded {{ 'bg-red-500' if category == 'error' else 'bg-green-500' }}">
+                            <div class="p-4 mb-2">
                                 {{ message }}
                             </div>
                         {% endfor %}
