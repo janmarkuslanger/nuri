@@ -3,25 +3,25 @@
 {% block title %}Collections{% endblock %}
 
 {% block content %}
-<div class="overflow-x-auto bg-white p-4 rounded shadow">
+<div class="container mx-auto py-8">
   <h1 class="text-2xl font-bold mb-4">Collections</h1>
-  <table class="table-auto w-full border-collapse border border-gray-300">
+  <table class="table">
     <thead>
       <tr>
-        <th class="border border-gray-300 px-4 py-2">ID</th>
-        <th class="border border-gray-300 px-4 py-2">Name</th>
-        <th class="border border-gray-300 px-4 py-2">Aktionen</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Aktionen</th>
       </tr>
     </thead>
     <tbody>
       {% for collection in collections %}
-      <tr class="hover:bg-gray-50">
-        <td class="border border-gray-300 px-4 py-2">{{ collection.id }}</td>
-        <td class="border border-gray-300 px-4 py-2">{{ collection.name }}</td>
-        <td class="border border-gray-300 px-4 py-2">
-          <a href="{{ url_for('content.index', collection_id=collection.id) }}" class="text-blue-500 hover:underline">Inhalte anzeigen</a>
-        </td>
-      </tr>
+        <tr>
+          <td>{{ collection.id }}</td>
+          <td>{{ collection.name }}</td>
+          <td>
+            <a href="{{ url_for('content.index', collection_id=collection.id) }}">Content</a>
+          </td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
