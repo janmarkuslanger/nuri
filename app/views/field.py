@@ -19,9 +19,9 @@ def create():
         collection_id = request.form.get("collection_id")
         is_list = request.form.get("is_list") == "on"
 
-        excistingAlias = Field.query.filter_by(alias=alias).first()
+        excisting_alias = Field.query.filter_by(alias=alias, collection_id=collection_id).first()
 
-        if excistingAlias:
+        if excisting_alias:
             flash("Alias already exists", "error")
             return redirect(url_for("field.index"))
 
@@ -31,7 +31,7 @@ def create():
             return redirect(url_for("field.index"))
 
     collections = Collection.query.all()
-    return render_template("create_field.html", collections=collections, FieldType=FieldType)
+    return render_template("field/create.html", collections=collections, FieldType=FieldType)
 
 @view.route("/edit/<int:id>", methods=["GET", "POST"])
 def edit(id):
@@ -60,7 +60,7 @@ def edit(id):
             return redirect(url_for("field.index"))
         
     collections = Collection.query.all()
-    return render_template("edit_field.html", field=field, collections=collections, FieldType=FieldType)
+    return render_template("field/edit.html", field=field, collections=collections, FieldType=FieldType)
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
 def delete(id):
@@ -70,4 +70,4 @@ def delete(id):
         field.delete()
         return redirect(url_for("field.index"))
 
-    return render_template("delete_field.html", field=field)
+    return render_template("field/delete.html", field=field)

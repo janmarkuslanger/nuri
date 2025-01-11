@@ -48,7 +48,7 @@
             class="block w-full px-3 py-2 border border-gray-300 rounded-md"
             required
         >
-            <option value="" disabled selected>Select a category</option>
+            <option value="" disabled selected>Select a collection</option>
             {% for collection in collections %}
                 <option value="{{ collection.id }}">{{ collection.name }}</option>
             {% endfor %}

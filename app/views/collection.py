@@ -8,7 +8,7 @@ view = Blueprint("collection", __name__)
 @view.route("/", methods=["GET"])
 def index():
     collections = Collection.query.all()
-    return render_template("list_collections.html", collections=collections)
+    return render_template("collection/index.html", collections=collections)
 
 
 @view.route("/create", methods=["GET", "POST"])
@@ -28,7 +28,7 @@ def create():
             new_collection.save()
             return redirect(url_for("collection.index"))
         
-    return render_template("create_collection.html")
+    return render_template("collection/create.html")
 
 
 @view.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -53,7 +53,7 @@ def edit(id):
             flash("Collection updated successfully!", "success")
             return redirect(url_for("collection.index"))
 
-    return render_template("edit_collection.html", collection=collection)
+    return render_template("collection/edit.html", collection=collection)
 
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
@@ -64,4 +64,4 @@ def delete(id):
         collection.delete()
         return redirect(url_for("collection.index"))
 
-    return render_template("delete_collection.html", collection=collection)
+    return render_template("collection/delete.html", collection=collection)
