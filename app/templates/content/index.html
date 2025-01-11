@@ -41,6 +41,8 @@
     </tbody>
   </table>
 
-  <a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Neuen Content erstellen</a>
+  <div class="mt-6">
+    <a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new content</a>
+  </div>
 </div>
 {% endblock %}
