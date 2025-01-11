@@ -8,7 +8,7 @@ view = Blueprint("field", __name__)
 @view.route("/", methods=["GET"])
 def index():
     fields = Field.query.all()
-    return render_template("list_fields.html", fields=fields)
+    return render_template("field/index.html", fields=fields)
 
 @view.route('/create', methods=["GET", "POST"])
 def create():

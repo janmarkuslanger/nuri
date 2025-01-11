@@ -11,8 +11,8 @@
       <label for="{{ field.alias }}" class="block text-sm font-medium text-gray-700">{{ field.name }}</label>
       {% if field.is_list %}
       <div id="{{ field.alias }}_inputs" class="space-y-2">
-        {% for item in (content.data.get(field.alias) if content and field.is_list else [None]) %}
-        <input type="text" name="{{ field.alias }}" value="{{ item or '' }}" class="w-full border border-gray-300 rounded px-4 py-2">
+        {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
+          <input type="text" name="{{ field.alias }}" value="{{ item or '' }}" class="w-full border border-gray-300 rounded px-4 py-2">
         {% endfor %}
       </div>
       <button type="button" onclick="addInput('{{ field.alias }}_inputs')" class="mt-2 text-blue-500 hover:underline">Weiteres Feld hinzufügen</button>

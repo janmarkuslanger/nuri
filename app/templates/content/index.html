@@ -10,7 +10,7 @@
       <tr>
         <th class="border border-gray-300 px-4 py-2">ID</th>
         {% for field in collection.fields %}
-        <th class="border border-gray-300 px-4 py-2">{{ field.name }}</th>
+          <th class="border border-gray-300 px-4 py-2">{{ field.name }}</th>
         {% endfor %}
         <th class="border border-gray-300 px-4 py-2">Aktionen</th>
       </tr>
@@ -21,10 +21,10 @@
         <td class="border border-gray-300 px-4 py-2">{{ content.id }}</td>
         {% for field in collection.fields %}
         <td class="border border-gray-300 px-4 py-2">
-          {% if field.is_list %}
-          {{ content.data.get(field.alias) | join(", ") }}
+          {% if field.is_list and content.data.get(field.alias) %}
+            {{ content.data.get(field.alias) | join(", ") }}
           {% else %}
-          {{ content.data.get(field.alias) }}
+            {{ content.data.get(field.alias) }}
           {% endif %}
         </td>
         {% endfor %}
