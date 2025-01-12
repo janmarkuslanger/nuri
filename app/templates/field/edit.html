@@ -1,87 +1,38 @@
 {% extends "layout.html" %}
+{% import "macros.html" as macros %}
 
 {% block title %}Update Field{% endblock %}
 
 {% block content %}
 <h1 class="text-xl font-bold mb-4">Update Field</h1>
+<div class="divider"></div>
 <form method="POST" class="space-y-4">
-    <div>
-        <label for="name" class="block text-sm font-medium">Name</label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            value="{{ field.name }}"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        />
-    </div>
-    <div>
-        <label for="name" class="block text-sm font-medium">Alias</label>
-        <input
-            type="text"
-            id="alias"
-            name="alias"
-            value="{{ field.alias }}"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        />
-    </div>
-    <div>
-        <label for="field_type" class="block text-sm font-medium">Field type</label>
-        <select
-            id="field_type"
-            name="field_type"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        >
-            <option value="" disabled>Select a Field Type</option>
-            
-            {% for field_type in FieldType %}
-                <option value="{{ field_type.name }}" {% if field_type.name == field.field_type %}selected{% endif %}>{{ field_type.value }}</option>
-            {% endfor %}
-            
-        </select>
-    </div>
-    <div>
-        <label for="collection_id" class="block text-sm font-medium">Collection</label>
-        <select
-            id="collection_id"
-            name="collection_id"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        >
-            <option value="" disabled>Select a category</option>
-            {% for collection in collections %}
-                <option value="{{ collection.id }}"  {% if collection.id == field.collection_id %}selected{% endif %}>{{ collection.name }}</option>
-            {% endfor %}
-            
-        </select>
-    </div>
-    <div class="flex items-center">
-    <input 
-        type="checkbox" 
-        id="is_list" 
-        name="is_list" 
-        class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
-        {% if field.is_list %} checked {% endif %} 
-    >
-    <label for="is_list" class="ml-2 block text-sm font-medium text-gray-700">
-        List
-    </label>
-    </div>
-    <div class="flex items-center">
-        <input 
-            type="checkbox" 
-            id="display_field" 
-            name="display_field" 
-            class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
-            {% if field.display_field %} checked {% endif %} 
-        >
-        <label for="display_field" class="ml-2 block text-sm font-medium text-gray-700">
-        Display field for content 
-        </label>
-    </div>
+    {{ macros.render_text_input('name', 'Name', field.name) }}
+    {{ macros.render_text_input( 'alias', 'Alias', field.alias) }}
+    {{ macros.render_select(
+        'field_type',
+        'Field type',
+        FieldType,
+        'value',
+        field.field_type,
+        'name',
+    ) }}
+    {{ macros.render_select(
+        'collection_id',
+        'Collection',
+        collections,
+        'name',
+        field.collection_id,
+        'id'
+    ) }}
+    {{
+        macros.render_checkbox("is_list", "Is list", field.is_list)
+    }}
+
+    {{
+        macros.render_checkbox("display_field", "Display field for content", field.display_field)
+    }}
+    
     <button
         type="submit"
         class="btn"

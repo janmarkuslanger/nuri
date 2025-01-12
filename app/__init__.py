@@ -25,5 +25,11 @@ def create_app():
 
     from app.views import home
     app.register_blueprint(home, url_prefix='/')
+
+    def getattr_filter(obj, attr_name):
+        return getattr(obj, attr_name, None)
+
+    app.jinja_env.filters['getattr'] = getattr_filter
+
     
     return app

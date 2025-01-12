@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% import "macros.html" as macros %}
 
 {% block title %}Update Collection{% endblock %}
 
@@ -6,40 +7,19 @@
 <h1 class="text-xl font-bold mb-4">Update collection: {{ collection.name }} ({{ collection.id }})</h1>
 <div class="divider"></div>
 <form method="POST" class="space-y-4">
+    {{ macros.render_text_input('Name', 'name', collection.name) }}
+    {{ macros.render_text_input('Alias', 'alias', collection.alias) }}
     <div>
-        <label for="name" class="block text-sm font-medium">Name</label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            value="{{ collection.name }}"
-            required
-        />
-    </div>
-    <div>
-        <label for="name" class="block text-sm font-medium">Alias</label>
-        <input
-            type="text"
-            id="alias"
-            name="alias"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            value="{{ collection.alias }}"
-            required
-        />
-    </div>
-    <div>
-        <label for="description" class="block text-sm font-medium">Description</label>
+        <label for="description" class="block text-sm font-medium mb-1">Description</label>
         <textarea
             id="description"
             name="description"
-            value="{{ collection.description }}"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-        ></textarea>
+            class="textarea textarea-bordered w-full max-w-xs"
+        >{{ collection.description }}</textarea>
     </div>
     <button
         type="submit"
-        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+        class="btn"
     >
         Update
     </button>
