@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% import "form_macros.html" as macros %}
 
 {% block title %}Create Field{% endblock %}
 
@@ -6,78 +7,34 @@
 <h1 class="text-xl font-bold mb-4">Create a new Field</h1>
 <div class="divider"></div>
 <form method="POST" class="space-y-4">
-    <div>
-        <label for="name" class="block text-sm font-medium">Name</label>
-        <input
-            type="text"
-            id="name"
-            name="name"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        />
-    </div>
-    <div>
-        <label for="name" class="block text-sm font-medium">Alias</label>
-        <input
-            type="text"
-            id="alias"
-            name="alias"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        />
-    </div>
-    <div>
-        <label for="field_type" class="block text-sm font-medium">Field type</label>
-        <select
-            id="field_type"
-            name="field_type"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        >
-            <option value="" disabled selected>Select a Field Type</option>
-            {% for field_type in FieldType %}
-                <option value="{{ field_type.name }}">{{ field_type.value }}</option>
-            {% endfor %}
-            
-        </select>
-    </div>
-    <div>
-        <label for="collection_id" class="block text-sm font-medium">Collection</label>
-        <select
-            id="collection_id"
-            name="collection_id"
-            class="block w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-        >
-            <option value="" disabled selected>Select a collection</option>
-            {% for collection in collections %}
-                <option value="{{ collection.id }}">{{ collection.name }}</option>
-            {% endfor %}
-            
-        </select>
-    </div>
-    <div class="flex items-center">
-        <input 
-        type="checkbox" 
-        id="is_list" 
-        name="is_list" 
-        class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
-        >
-        <label for="is_list" class="ml-2 block text-sm font-medium text-gray-700">
-        List
-        </label>
-    </div>
-    <div class="flex items-center">
-        <input 
-        type="checkbox" 
-        id="display_field" 
-        name="display_field" 
-        class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-500"
-        >
-        <label for="display_field" class="ml-2 block text-sm font-medium text-gray-700">
-        Display field for content 
-        </label>
-    </div>
+    {{ macros.render_text_input('name', 'Name', '', True) }}
+    {{ macros.render_text_input('alias', 'Alias', '', True) }}
+    {{ macros.render_select(
+        'field_type',
+        'Field Type',
+        FieldType,
+        'name',
+        'value',
+    ) }}
+    {{ macros.render_select(
+        'collection_id',
+        'Collection',
+        collections,
+        'id',
+        'name',
+    ) }}
+    {{
+        macros.render_checkbox(
+            'is_list',
+            'Is list'
+        )
+    }}
+    {{
+        macros.render_checkbox(
+            'display_field',
+            'Display field for content'
+        )
+    }}
     <button
         type="submit"
         class="btn"

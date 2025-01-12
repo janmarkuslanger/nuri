@@ -14,7 +14,7 @@
 
 {% macro render_textarea(name, label, value='', required=False) %}
 <div>
-    <label for="{{ name }}" class="block text-sm font-medium">{{ label }}</label>
+    <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
     <textarea
         id="{{ name }}"
         name="{{ name }}"
@@ -24,7 +24,7 @@
 </div>
 {% endmacro %}
 
-{% macro render_select(name, label, options, display_attribute, value=None, comperator_attribute = None, required=False) %}
+{% macro render_select(name, label, options, value_attribute, display_attribute, value=None, comperator_attribute = None, required=False) %}
 <div>
     <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
     <select
@@ -35,7 +35,7 @@
     >
         <option value="" disabled>Select {{label}}</option>
         {% for option in options %}
-            <option value="{{ option.id }}" {% if selected_value == option|getattr(comperator_attribute) %}selected{% endif %}>{{  option|getattr(display_attribute) }}</option>
+            <option value="{{ option|getattr(value_attribute) }}" {% if selected_value == option|getattr(comperator_attribute) %}selected{% endif %}>{{  option|getattr(display_attribute) }}</option>
         {% endfor %}
     </select>
 </div>
