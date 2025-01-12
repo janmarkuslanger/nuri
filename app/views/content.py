@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.models import Collection, Content, FieldType
+from app.models import Collection, Content, FieldType, Field
 from app import db
 
 view = Blueprint("content", __name__, url_prefix="/content")
@@ -49,7 +49,20 @@ def create(collection_id):
             return redirect(url_for("content.index", collection_id=collection_id))
         
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
-    all_content = Content.query.all()
+    
+    all_content = (
+        db.session.query(
+            Content,
+            Collection.name.label("collection_name"),
+            Field.alias.label("display_field_alias")
+        )
+        .join(Collection, Content.collection_id == Collection.id) 
+        .outerjoin(
+            Field, 
+            (Field.collection_id == Collection.id) & (Field.display_field == True) 
+        )
+        .all() if has_collection else None
+    )
 
     return render_template("content/create_or_edit.html", collection=collection, all_content=all_content, FieldType=FieldType)
 
@@ -79,8 +92,11 @@ def edit(content_id):
         db.session.commit()
         flash("Content erfolgreich bearbeitet!", "success")
         return redirect(url_for("content.index", collection_id=collection.id))
+    
+    has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
+    all_content = Content.query.all() if has_collection else None
 
-    return render_template("content/edit.html", content=content, collection=collection)
+    return render_template("content/create_or_edit.html", content=content, collection=collection, all_content=all_content, FieldType=FieldType)
 
 @view.route("/delete/<int:content_id>", methods=["POST"])
 def delete(content_id):

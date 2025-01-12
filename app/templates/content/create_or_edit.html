@@ -13,8 +13,18 @@
 
     {% if field.field_type == FieldType.COLLECTION %}
       <div>
+        <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
 
-        
+        {% if field.is_list %}
+        <div id="{{ field.alias }}_inputs" class="sortable-list">
+          <select class="select select-bordered w-full max-w-xs" name="{{ field.name }}">
+            <option value="" disabled>Select {{field.name}}</option>
+            {% for content, collection_name, display_field_alias in all_content %}
+              <option value="{{ content.id }}">{{ collection_name }}: {{ content.data.get(display_field_alias) }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
 
       </div>
     {% else %}
