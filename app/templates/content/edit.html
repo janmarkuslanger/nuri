@@ -24,8 +24,9 @@
   {% endfor %}
   
   <div class="flex gap-4">
-    <button type="submit" class="btn">Save</button>
     <a href="{{ url_for('content.index', collection_id=collection.id) }}" class="btn btn-neutral">Back</a>
+    <button type="submit" class="btn">Save</button>
+  
   </div>
 </form>
 

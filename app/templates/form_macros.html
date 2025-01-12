@@ -35,7 +35,7 @@
     >
         <option value="" disabled>Select {{label}}</option>
         {% for option in options %}
-            <option value="{{ option|getattr(value_attribute) }}" {% if selected_value == option|getattr(comperator_attribute) %}selected{% endif %}>{{  option|getattr(display_attribute) }}</option>
+            <option value="{{ option|getattr(value_attribute) }}" {% if value == option|getattr(comperator_attribute) %}selected{% endif %}>{{  option|getattr(display_attribute) }}</option>
         {% endfor %}
     </select>
 </div>
