@@ -6,3 +6,4 @@ class FieldType(enum.Enum):
     BOOLEAN = "Boolean"
     DATE = "Date"
     ASSET = "Asset"
+    COLLECTION = "Collection"

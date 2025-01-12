@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.models import Collection, Content, Field
+from app.models import Collection, Content, FieldType
 from app import db
 
 view = Blueprint("content", __name__, url_prefix="/content")
@@ -30,12 +30,12 @@ def create(collection_id):
             else:
                 value = request.form.get(field.alias)
 
-            if field.field_type == "INTEGER":
+            if field.field_type == FieldType.INTEGER:
                 try:
                     value = [int(v) for v in value] if field.is_list else int(value)
                 except ValueError:
                     errors.append(f"{field.name} muss eine Zahl sein.")
-            elif field.field_type == "BOOLEAN":
+            elif field.field_type == FieldType.BOOLEAN:
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
 
             data[field.alias] = value
@@ -47,8 +47,11 @@ def create(collection_id):
             new_content.save()
             flash("Content erfolgreich erstellt!", "success")
             return redirect(url_for("content.index", collection_id=collection_id))
+        
+    has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
+    all_content = Content.query.all()
 
-    return render_template("content/edit.html", collection=collection)
+    return render_template("content/create_or_edit.html", collection=collection, all_content=all_content, FieldType=FieldType)
 
 @view.route("/edit/<int:content_id>", methods=["GET", "POST"])
 def edit(content_id):

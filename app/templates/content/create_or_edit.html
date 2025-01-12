@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ "Update" if content else "Create" }} Content: {{ collection.name }}{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<h1 class="text-2xl font-bold mb-4">{{ "Update" if content else "Create" }} Content: {{ collection.name }}</h1>
+<div class="divider"></div>
+
+<form method="POST" class="space-y-6">
+  {% for field in collection.fields %}
+
+    {% if field.field_type == FieldType.COLLECTION %}
+      <div>
+
+        
+
+      </div>
+    {% else %}
+    <div>
+      <label for="{{ field.alias }}" class="block text-sm font-medium text-gray-700 mb-2">{{ field.name }}</label>
+      {% if field.is_list %}
+        <div id="{{ field.alias }}_inputs" class="sortable-list">
+          {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
+            <div class="sortable-item mb-2 flex items-center gap-2">
+              <span class="cursor-grab material-icons">drag_handle</span>
+              <input
+                type="text"
+                name="{{ field.alias }}"
+                value="{{ item or '' }}"
+                class="input input-bordered w-full max-w-xs"
+              >
+              <button type="button" class="btn btn-error btn-xs" onclick="removeInput(this)">Remove</button>
+            </div>
+          {% endfor %}
+        </div>
+        <button type="button" onclick="addInput('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
+      {% else %}
+        <input
+          type="text"
+          id="{{ field.alias }}"
+          name="{{ field.alias }}"
+          value="{{ content.data.get(field.alias) if content else '' }}"
+          class="input input-bordered w-full max-w-xs"
+        >
+      {% endif %}
+    </div>    
+    {% endif %}
+  {% endfor %}
+  
+  <div class="flex gap-4">
+    <a href="{{ url_for('content.index', collection_id=collection.id) }}" class="btn btn-neutral">Back</a>
+    <button type="submit" class="btn">Save</button>
+  
+  </div>
+</form>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sortableLists = document.querySelectorAll(".sortable-list");
+  sortableLists.forEach(list => {
+    new Sortable(list, {
+      animation: 150,
+      handle: ".sortable-item",
+    });
+  });
+});
+
+function createSortElement() {
+  const sortIcon = document.createElement('span');
+  sortIcon.appendChild(document.createTextNode('drag_handle'))
+  sortIcon.className = 'cursor-grab material-icons';
+  return sortIcon;
+}
+
+function addInput(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.name = containerId.split("_inputs")[0];
+  input.className = "input input-bordered w-full max-w-xs";
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn btn-error btn-xs";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeInput(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(input);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+
+function removeInput(button) {
+  const parent = button.parentElement;
+  parent.remove();
+}
+
+</script>
+{% endblock %}
