@@ -12,6 +12,18 @@
 </div>
 {% endmacro %}
 
+{% macro render_textarea(name, label, value='', required=False) %}
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium">{{ label }}</label>
+    <textarea
+        id="{{ name }}"
+        name="{{ name }}"
+        class="textarea textarea-bordered textarea-xs w-full max-w-xs"
+        {% if required %}required{% endif %}
+    ></textarea>
+</div>
+{% endmacro %}
+
 {% macro render_select(name, label, options, display_attribute, value=None, comperator_attribute = None, required=False) %}
 <div>
     <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
