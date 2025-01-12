@@ -13,19 +13,23 @@
       {% if field.is_list %}
         <div id="{{ field.alias }}_inputs" class="space-y-2">
           {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
-            <input type="text" name="{{ field.alias }}" value="{{ item or '' }}" class="w-full border border-gray-300 rounded px-4 py-2">
+            <input type="text" name="{{ field.alias }}" value="{{ item or '' }}" class="input input-bordered w-full max-w-xs">
           {% endfor %}
         </div>
-        <button type="button" onclick="addInput('{{ field.alias }}_inputs')" class="mt-2 text-blue-500 hover:underline">Add more</button>
+        <button type="button" onclick="addInput('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
       {% else %}
-        <input type="text" id="{{ field.alias }}" name="{{ field.alias }}" value="{{ content.data.get(field.alias) if content else '' }}" class="w-full border border-gray-300 rounded px-4 py-2">
+        <input type="text" id="{{ field.alias }}" name="{{ field.alias }}" value="{{ content.data.get(field.alias) if content else '' }}" class="input input-bordered w-full max-w-xs">
       {% endif %}
     </div>
   {% endfor %}
   
-  <button type="submit" class="btn">Save</button>
+  <div class="flex gap-4">
+    <button type="submit" class="btn">Save</button>
+    <a href="{{ url_for('content.index', collection_id=collection.id) }}" class="btn btn-neutral">Back</a>
+  </div>
 </form>
-<a href="{{ url_for('content.index', collection_id=collection.id) }}" class="inline-block mt-4 text-blue-500 hover:underline">Back</a>
+
+
 
 <script>
 function addInput(containerId) {
@@ -33,8 +37,7 @@ function addInput(containerId) {
   const input = document.createElement('input');
   input.type = 'text';
   input.name = containerId.split('_inputs')[0];
-  input.placeholder = 'Wert hinzufügen';
-  input.className = 'w-full border border-gray-300 rounded px-4 py-2';
+  input.className = 'input input-bordered w-full max-w-xs';
   container.appendChild(input);
 }
 </script>
