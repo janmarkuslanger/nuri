@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% import "macros.html" as macros %}
+{% import "form_macros.html" as macros %}
 
 {% block title %}Update Field{% endblock %}
 
@@ -32,7 +32,7 @@
     {{
         macros.render_checkbox("display_field", "Display field for content", field.display_field)
     }}
-    
+
     <button
         type="submit"
         class="btn"

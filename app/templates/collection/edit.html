@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% import "macros.html" as macros %}
+{% import "form_macros.html" as macros %}
 
 {% block title %}Update Collection{% endblock %}
 
@@ -7,16 +7,9 @@
 <h1 class="text-xl font-bold mb-4">Update collection: {{ collection.name }} ({{ collection.id }})</h1>
 <div class="divider"></div>
 <form method="POST" class="space-y-4">
-    {{ macros.render_text_input('Name', 'name', collection.name) }}
-    {{ macros.render_text_input('Alias', 'alias', collection.alias) }}
-    <div>
-        <label for="description" class="block text-sm font-medium mb-1">Description</label>
-        <textarea
-            id="description"
-            name="description"
-            class="textarea textarea-bordered w-full max-w-xs"
-        >{{ collection.description }}</textarea>
-    </div>
+    {{ macros.render_text_input('name', 'Name', collection.name) }}
+    {{ macros.render_text_input('alias', 'Alias', collection.alias) }}
+    {{ macros.render_textarea('description', 'Description', collection.description) }}
     <button
         type="submit"
         class="btn"
