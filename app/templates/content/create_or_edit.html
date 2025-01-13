@@ -8,7 +8,7 @@
 <h1 class="text-2xl font-bold mb-4">{{ "Update" if content else "Create" }} Content: {{ collection.name }}</h1>
 <div class="divider"></div>
 
-<form method="POST" class="space-y-6">
+<form method="POST" class="space-y-24">
   {% for field in collection.fields %}
 
     {% if field.field_type == FieldType.COLLECTION %}
@@ -17,13 +17,17 @@
 
         {% if field.is_list %}
         <div id="{{ field.alias }}_inputs" class="sortable-list">
-          <select class="select select-bordered w-full max-w-xs" name="{{ field.name }}">
-            <option value="" disabled>Select {{field.name}}</option>
-            {% for content, collection_name, display_field_alias in all_content %}
-              <option value="{{ content.id }}">{{ collection_name }}: {{ content.data.get(display_field_alias) }}</option>
-            {% endfor %}
-          </select>
+          <div class="sortable-item mb-2 flex items-center gap-2" >
+            <span class="cursor-grab material-icons">drag_handle</span>
+            <select class="select select-bordered w-full max-w-xs" name="{{ field.name }}">
+              <option value="" disabled>Select {{field.name}}</option>
+              {% for content, collection_name, display_field_alias in all_content %}
+                <option value="{{ content.id }}">{{ collection_name }}: {{ content.data.get(display_field_alias) }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
+        <button type="button" onclick="addSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
         {% endif %}
 
       </div>
@@ -41,7 +45,6 @@
                 value="{{ item or '' }}"
                 class="input input-bordered w-full max-w-xs"
               >
-              <button type="button" class="btn btn-error btn-xs" onclick="removeInput(this)">Remove</button>
             </div>
           {% endfor %}
         </div>
@@ -65,8 +68,6 @@
   
   </div>
 </form>
-
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -101,7 +102,7 @@ function addInput(containerId) {
 
   const removeButton = document.createElement("button");
   removeButton.type = "button";
-  removeButton.className = "btn btn-error btn-xs";
+  removeButton.className = "btn";
   removeButton.textContent = "Remove";
   removeButton.onclick = function () {
     removeInput(removeButton);
@@ -109,6 +110,47 @@ function addInput(containerId) {
 
   div.appendChild(sortIcon);
   div.appendChild(input);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+
+function addSelect(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const select = document.createElement("select");
+  select.name = containerId.split("_inputs")[0];
+  select.className = "select select-bordered w-full max-w-xs";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.disabled = true;
+  defaultOption.textContent = "Select an option";
+  select.appendChild(defaultOption);
+
+  let option;
+
+  {% for content, collection_name, display_field_alias in all_content %}
+    option = document.createElement("option");
+    option.value = "{{ content.id }}";
+    option.textContent = "{{ collection_name }}: {{ content.data.get(display_field_alias) }}";
+    select.appendChild(option);
+  {% endfor %}
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeInput(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(select);
   div.appendChild(removeButton);
   container.appendChild(div);
 }
