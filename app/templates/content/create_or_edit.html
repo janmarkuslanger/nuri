@@ -8,7 +8,7 @@
 <h1 class="text-2xl font-bold mb-4">{{ "Update" if content else "Create" }} Content: {{ collection.name }}</h1>
 <div class="divider"></div>
 
-<form method="POST" class="space-y-24">
+<form method="POST" class="space-y-8">
   {% for field in collection.fields %}
 
     {% if field.field_type == FieldType.COLLECTION %}

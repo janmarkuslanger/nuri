@@ -11,39 +11,37 @@
 <body class="h-screen">
     <div class="flex h-full transition-all duration-300">
         <div 
-            class="group relative flex-shrink-0 transition-all duration-300 ease-in-out bg-primary"
+            class="group h-full fixed flex-shrink-0 transition-all duration-300 ease-in-out bg-primary"
             style="width: 64px;"
             onmouseover="this.style.width = '256px';"
             onmouseout="this.style.width = '64px';"
         >
-            <div class="absolute inset-0 overflow-hidden">
-                <div class="flex flex-col h-full justify-between">
-                    <nav class="mt-4 space-y-2">
-                        <a href="{{ url_for('home.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">home</span>
-                            <span class="ml-4 hidden group-hover:block">Home</span>
-                        </a>
-                        <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">folder</span>
-                            <span class="ml-4 hidden group-hover:block">Collections</span>
-                        </a>
-                        <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">category</span>
-                            <span class="ml-4 hidden group-hover:block">Fields</span>
-                        </a>
-                        <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">article</span>
-                            <span class="ml-4 hidden group-hover:block">Content</span>
-                        </a>
-                        
-                    </nav>
-                    <nav class="mb-4 space-y-2">
-                        <a href="/logout" class="flex items-center px-4 py-2">
-                            <span class="material-icons">logout</span>
-                            <span class="ml-4 hidden group-hover:block">Logout</span>
-                        </a>
-                    </nav>
-                </div>
+            <div class="flex flex-col h-full justify-between">
+                <nav class="mt-4 space-y-2">
+                    <a href="{{ url_for('home.index') }}" class="flex items-center px-4 py-2">
+                        <span class="material-icons">home</span>
+                        <span class="ml-4 hidden group-hover:block">Home</span>
+                    </a>
+                    <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2">
+                        <span class="material-icons">folder</span>
+                        <span class="ml-4 hidden group-hover:block">Collections</span>
+                    </a>
+                    <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2">
+                        <span class="material-icons">category</span>
+                        <span class="ml-4 hidden group-hover:block">Fields</span>
+                    </a>
+                    <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2">
+                        <span class="material-icons">article</span>
+                        <span class="ml-4 hidden group-hover:block">Content</span>
+                    </a>
+                    
+                </nav>
+                <nav class="mb-4 space-y-2">
+                    <a href="/logout" class="flex items-center px-4 py-2">
+                        <span class="material-icons">logout</span>
+                        <span class="ml-4 hidden group-hover:block">Logout</span>
+                    </a>
+                </nav>
             </div>
         </div>
         <div class="flex-1 p-4">
