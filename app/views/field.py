@@ -18,6 +18,7 @@ def create():
         field_type = request.form.get("field_type")
         collection_id = request.form.get("collection_id")
         is_list = request.form.get("is_list") == "on"
+        is_required = request.form.get("is_required") == "on"
         display_field = request.form.get("display_field") == "on"
 
         excisting_alias = Field.query.filter_by(alias=alias, collection_id=collection_id).first()
@@ -27,7 +28,7 @@ def create():
             return redirect(url_for("field.index"))
 
         if name and alias:
-            new_collection = Field(name=name, alias=alias, collection_id=collection_id, field_type=field_type, is_list=is_list, display_field=display_field)
+            new_collection = Field(name=name, alias=alias, collection_id=collection_id, field_type=field_type, is_list=is_list, display_field=display_field, is_required=is_required)
             new_collection.save()
             return redirect(url_for("field.index"))
 
@@ -44,6 +45,7 @@ def edit(id):
         field_type = request.form.get("field_type")
         collection_id = request.form.get("collection_id")
         is_list = request.form.get("is_list") == 'on'
+        is_required = request.form.get("is_required") == "on"
         display_field = request.form.get("display_field") == "on"
 
         existing_alias = Field.query.filter(Field.alias == alias, Field.id != id).first()
@@ -57,6 +59,7 @@ def edit(id):
             field.field_type = field_type
             field.is_list = is_list
             field.collection_id = collection_id
+            field.is_required = is_required
             field.display_field = display_field
             db.session.commit()
             flash("Field updated successfully!", "success")

@@ -28,9 +28,11 @@
         'id'
     ) }}
     {{
-        macros.render_checkbox("is_list", "Is list", field.is_list)
+        macros.render_checkbox("is_list", "Is list?", field.is_list)
     }}
-
+    {{
+        macros.render_checkbox("is_required", "Is required?", field.is_required)
+    }}
     {{
         macros.render_checkbox("display_field", "Display field for content", field.display_field)
     }}
