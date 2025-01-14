@@ -1,5 +1,6 @@
 import enum
 
+
 class FieldType(enum.Enum):
     TEXT = "Text"
     INTEGER = "Integer"

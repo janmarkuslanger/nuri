@@ -13,7 +13,7 @@
 
     {% if field.field_type == FieldType.COLLECTION %}
       <div>
-        <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
+        <label for="{{ field.alias }}" class="block font-medium mb-2">{{ field.name }}</label>
 
         {% if field.is_list %}
           <div id="{{ field.alias }}_inputs" class="sortable-list">
@@ -30,12 +30,23 @@
             {% endfor %}
           </div>
           <button type="button" onclick="addSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
+        {% else %}
+          {% set field_value = content.data.get(field.alias) %}
+          <div id="{{ field.alias }}" class="mb-2 flex items-center gap-2">
+            <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}">
+              <option value="" disabled {% if not field_value %}selected{% endif %}>Select {{field.name}}</option>
+              {% for content_item, collection_name, display_field_alias in all_content %}
+                <option {% if field_value|string == content_item.id|string %}selected{% endif %} value="{{ content_item.id }}">{{ collection_name }}: {{ content_item.data.get(display_field_alias) }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
         {% endif %}
 
       </div>
     {% else %}
     <div>
-      <label for="{{ field.alias }}" class="block text-sm font-medium text-gray-700 mb-2">{{ field.name }}</label>
+      <label for="{{ field.alias }}" class="block font-medium mb-2">{{ field.name }}</label>
       {% if field.is_list %}
         <div id="{{ field.alias }}_inputs" class="sortable-list">
 

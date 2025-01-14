@@ -4,16 +4,21 @@ from app import db
 
 view = Blueprint("content", __name__, url_prefix="/content")
 
+
 @view.route("/collections", methods=["GET"])
 def list_collections():
     collections = Collection.query.all()
     return render_template("content/list.html", collections=collections)
 
+
 @view.route("/<int:collection_id>", methods=["GET"])
 def index(collection_id):
     collection = Collection.query.get_or_404(collection_id)
     contents = Content.query.filter_by(collection_id=collection_id).all()
-    return render_template("content/index.html", collection=collection, contents=contents)
+    return render_template(
+        "content/index.html", collection=collection, contents=contents
+    )
+
 
 @view.route("/create/<int:collection_id>", methods=["GET", "POST"])
 def create(collection_id):
@@ -47,43 +52,51 @@ def create(collection_id):
             new_content.save()
             flash("Content erfolgreich erstellt!", "success")
             return redirect(url_for("content.index", collection_id=collection_id))
-        
+
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
-    
+
     all_content = (
         db.session.query(
             Content,
             Collection.name.label("collection_name"),
-            Field.alias.label("display_field_alias")
+            Field.alias.label("display_field_alias"),
         )
-        .join(Collection, Content.collection_id == Collection.id) 
+        .join(Collection, Content.collection_id == Collection.id)
         .outerjoin(
-            Field, 
-            (Field.collection_id == Collection.id) & (Field.display_field == True) 
+            Field,
+            (Field.collection_id == Collection.id) & (Field.display_field == True),
         )
-        .all() if has_collection else None
+        .all()
+        if has_collection
+        else None
     )
 
-    return render_template("content/create_or_edit.html", collection=collection, all_content=all_content, FieldType=FieldType)
+    return render_template(
+        "content/create_or_edit.html",
+        collection=collection,
+        all_content=all_content,
+        FieldType=FieldType,
+    )
+
 
 @view.route("/edit/<int:content_id>", methods=["GET", "POST"])
 def edit(content_id):
     content = Content.query.get_or_404(content_id)
     collection = content.collection
     fields = collection.fields
-    
+
     if request.method == "POST":
         data = {}
 
         for field in fields:
-            
+
             print(field.name)
-            
+
             if field.is_list:
                 value = request.form.getlist(field.alias)
             else:
                 value = request.form.get(field.alias)
-                
+
             print(value)
 
             if field.field_type == "INTEGER":
@@ -97,24 +110,33 @@ def edit(content_id):
         db.session.commit()
         flash("Content erfolgreich bearbeitet!", "success")
         return redirect(url_for("content.index", collection_id=collection.id))
-    
+
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
-    
+
     all_content = (
         db.session.query(
             Content,
             Collection.name.label("collection_name"),
-            Field.alias.label("display_field_alias")
+            Field.alias.label("display_field_alias"),
         )
-        .join(Collection, Content.collection_id == Collection.id) 
+        .join(Collection, Content.collection_id == Collection.id)
         .outerjoin(
-            Field, 
-            (Field.collection_id == Collection.id) & (Field.display_field == True) 
+            Field,
+            (Field.collection_id == Collection.id) & (Field.display_field == True),
         )
-        .all() if has_collection else None
+        .all()
+        if has_collection
+        else None
     )
 
-    return render_template("content/create_or_edit.html", content=content, collection=collection, all_content=all_content, FieldType=FieldType)
+    return render_template(
+        "content/create_or_edit.html",
+        content=content,
+        collection=collection,
+        all_content=all_content,
+        FieldType=FieldType,
+    )
+
 
 @view.route("/delete/<int:content_id>", methods=["POST"])
 def delete(content_id):

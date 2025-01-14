@@ -27,7 +27,7 @@ def create():
             new_collection = Collection(name=name, alias=alias, description=description)
             new_collection.save()
             return redirect(url_for("collection.index"))
-        
+
     return render_template("collection/create.html")
 
 
@@ -40,7 +40,9 @@ def edit(id):
         alias = request.form.get("alias")
         description = request.form.get("description")
 
-        existing_alias = Collection.query.filter(Collection.alias == alias, Collection.id != id).first()
+        existing_alias = Collection.query.filter(
+            Collection.alias == alias, Collection.id != id
+        ).first()
         if existing_alias:
             flash("Alias already exists", "error")
             return redirect(url_for("collection.edit", id=id))
