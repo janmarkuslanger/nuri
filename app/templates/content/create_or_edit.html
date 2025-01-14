@@ -16,18 +16,20 @@
         <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
 
         {% if field.is_list %}
-        <div id="{{ field.alias }}_inputs" class="sortable-list">
-          <div class="sortable-item mb-2 flex items-center gap-2" >
-            <span class="cursor-grab material-icons">drag_handle</span>
-            <select class="select select-bordered w-full max-w-xs" name="{{ field.name }}">
-              <option value="" disabled>Select {{field.name}}</option>
-              {% for content, collection_name, display_field_alias in all_content %}
-                <option value="{{ content.id }}">{{ collection_name }}: {{ content.data.get(display_field_alias) }}</option>
-              {% endfor %}
-            </select>
+          <div id="{{ field.alias }}_inputs" class="sortable-list">
+            {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
+              <div class="sortable-item mb-2 flex items-center gap-2" >
+                <span class="cursor-grab material-icons">drag_handle</span>
+                <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}">
+                  <option value="" {% if not item %}selected{% endif %} disabled>Select {{field.name}}</option>
+                  {% for content_item, collection_name, display_field_alias in all_content %}
+                    <option {% if item|string == content_item.id|string %}selected{% endif %} value="{{ content_item.id }}">{{ collection_name }}: {{ content_item.data.get(display_field_alias) }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
           </div>
-        </div>
-        <button type="button" onclick="addSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
+          <button type="button" onclick="addSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
         {% endif %}
 
       </div>
@@ -36,6 +38,7 @@
       <label for="{{ field.alias }}" class="block text-sm font-medium text-gray-700 mb-2">{{ field.name }}</label>
       {% if field.is_list %}
         <div id="{{ field.alias }}_inputs" class="sortable-list">
+
           {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
             <div class="sortable-item mb-2 flex items-center gap-2">
               <span class="cursor-grab material-icons">drag_handle</span>
@@ -130,6 +133,7 @@ function addSelect(containerId) {
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
   defaultOption.disabled = true;
+  defaultOption.selected = true;
   defaultOption.textContent = "Select an option";
   select.appendChild(defaultOption);
 

@@ -71,15 +71,20 @@ def edit(content_id):
     content = Content.query.get_or_404(content_id)
     collection = content.collection
     fields = collection.fields
-
+    
     if request.method == "POST":
         data = {}
 
         for field in fields:
+            
+            print(field.name)
+            
             if field.is_list:
                 value = request.form.getlist(field.alias)
             else:
                 value = request.form.get(field.alias)
+                
+            print(value)
 
             if field.field_type == "INTEGER":
                 value = [int(v) for v in value] if field.is_list else int(value)
@@ -94,7 +99,20 @@ def edit(content_id):
         return redirect(url_for("content.index", collection_id=collection.id))
     
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
-    all_content = Content.query.all() if has_collection else None
+    
+    all_content = (
+        db.session.query(
+            Content,
+            Collection.name.label("collection_name"),
+            Field.alias.label("display_field_alias")
+        )
+        .join(Collection, Content.collection_id == Collection.id) 
+        .outerjoin(
+            Field, 
+            (Field.collection_id == Collection.id) & (Field.display_field == True) 
+        )
+        .all() if has_collection else None
+    )
 
     return render_template("content/create_or_edit.html", content=content, collection=collection, all_content=all_content, FieldType=FieldType)
 

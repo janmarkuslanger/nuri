@@ -47,13 +47,16 @@
         <div class="flex-1 p-4">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
-                    <div class="mb-4">
+
+                    <div class="absolute right-[20px] top-[20px]">
                         {% for category, message in messages %}
-                            <div class="p-4 mb-2">
+                        <div role="alert" class="alert">
                                 {{ message }}
                             </div>
                         {% endfor %}
                     </div>
+
+
                 {% endif %}
             {% endwith %}
             <div class="container mx-auto py-8">
