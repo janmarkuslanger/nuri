@@ -69,6 +69,7 @@
   </div>
 </form>
 
+{% if all_content %}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const sortableLists = document.querySelectorAll(".sortable-list");
@@ -161,4 +162,6 @@ function removeInput(button) {
 }
 
 </script>
+{% endif %}
+
 {% endblock %}
