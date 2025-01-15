@@ -7,7 +7,7 @@ view = Blueprint("field", __name__)
 
 @view.route("/", methods=["GET"])
 def index():
-    fields = Field.query.all()
+    fields = Field.query.order_by(Field.collection_id).all()
     return render_template("field/index.html", fields=fields)
 
 
