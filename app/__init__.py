@@ -12,6 +12,9 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///nuri.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.urandom(24)
+    app.config['UPLOAD_FOLDER'] = 'uploads'
+    
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
     db.init_app(app)
 
@@ -26,10 +29,14 @@ def create_app():
     from app.views import content
 
     app.register_blueprint(content, url_prefix="/admin/content")
+    
+    from app.views import asset
+    
+    app.register_blueprint(asset, url_prefix="/admin/assets")
 
     from app.views import home
-
     app.register_blueprint(home, url_prefix="/")
+
 
     def getattr_filter(obj, attr_name):
         if attr_name == None:

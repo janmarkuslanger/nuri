@@ -55,3 +55,19 @@
     </label>
 </div>
 {% endmacro %}
+
+{% macro render_fileupload(name, label, required=False) %}
+<div>
+    <label for="{{ name }}" class="ml-2 block text-sm font-medium text-gray-700 mb-1">
+        {{ label }}
+    </label>
+    <input 
+        type="file" 
+        id="{{ name }}" 
+        name="{{ name }}" 
+        class="input input-bordered w-full max-w-xs"
+        {% if required %}required{% endif %}
+    >
+    
+</div>
+{% endmacro %}

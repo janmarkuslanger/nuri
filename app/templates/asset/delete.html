@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}Delete asset{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Delete asset: {{ asset.name }} ({{asset.id }})</h1>
+<div class="divider"></div>
+
+<form method="POST" class="space-y-4">
+    <div>
+        <label for="name" class="block text-sm font-medium">Do you really want to delete asset: {{ asset.name }} (ID: {{asset.name }})?</label>
+        <input
+            type="hidden"
+            id="id"
+            name="id"
+            class="hidden"
+            required
+        />
+    </div>
+    <button
+        type="submit"
+        class="btn btn-primary"
+    >
+        Delete
+    </button>
+</form>
+{% endblock %}

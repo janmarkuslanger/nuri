@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}Assets{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold">Assets</h1>
+<div class="divider"></div>
+{% if assets %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Path</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in assets %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.path }}</td>
+                    <td>
+                        <a href="{{ url_for('asset.edit', id=item.id)}}">
+                            <span class="material-icons">edit</span>
+                        </a>
+                        <a href="{{ url_for('asset.delete', id=item.id)}}">
+                            <span class="material-icons">delete</span>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>    
+{% else %}
+    <p class="text-gray-500">No assets available.</p>
+{% endif %}
+
+<div class="mt-6">
+    <a 
+        href="{{ url_for('asset.create') }}" 
+        class="btn"
+    >
+        Create new asset
+    </a>
+</div>
+{% endblock %}
