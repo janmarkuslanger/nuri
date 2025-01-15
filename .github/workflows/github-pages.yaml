@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main 
-      - landingpage
 
 jobs:
   build-and-deploy:
