@@ -44,6 +44,38 @@
         {% endif %}
 
       </div>
+    {% elif field.field_type == FieldType.ASSET %}
+      <div>
+        <label for="{{ field.alias }}" class="block font-medium mb-2">{{ field.name }}</label>
+
+        {% if field.is_list %}
+          <div id="{{ field.alias }}_inputs" class="sortable-list">
+            {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
+              <div class="sortable-item mb-2 flex items-center gap-2" >
+                <span class="cursor-grab material-icons">drag_handle</span>
+                <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}">
+                  <option value="" {% if not item %}selected{% endif %} disabled>Select {{field.name}}</option>
+                  {% for asset in all_assets %}
+                    <option {% if item|string == asset.id|string %}selected{% endif %} value="{{ asset.id }}">{{ asset.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          </div>
+          <button type="button" onclick="addAssetSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
+        {% else %}
+        {% set field_value = content.data.get(field.alias) if content else None %}
+          <div class="mb-2 flex items-center gap-2" >
+            <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}">
+              <option value="" {% if not field_value %}selected{% endif %} disabled>Select {{field.name}}</option>
+              {% for asset in all_assets %}
+                <option {% if field_value|string == asset.id|string %}selected{% endif %} value="{{ asset.id }}">{{ asset.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+
+      </div>
     {% elif field.field_type == FieldType.BOOLEAN %}
       <div class="flex items-center">
         {% set value = content.data.get(field.alias) if content else None %}
@@ -170,6 +202,48 @@ function addSelect(containerId) {
     option = document.createElement("option");
     option.value = "{{ content.id }}";
     option.textContent = "{{ collection_name }}: {{ content.data.get(display_field_alias) }}";
+    select.appendChild(option);
+  {% endfor %}
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeInput(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(select);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+
+function addAssetSelect(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const select = document.createElement("select");
+  select.name = containerId.split("_inputs")[0];
+  select.className = "select select-bordered w-full max-w-xs";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  defaultOption.textContent = "Select an asset";
+  select.appendChild(defaultOption);
+
+  let option;
+
+  {% for asset in all_assets %}
+    option = document.createElement("option");
+    option.value = "{{ asset.id }}";
+    option.textContent = "{{ asset.name }}";
     select.appendChild(option);
   {% endfor %}
 

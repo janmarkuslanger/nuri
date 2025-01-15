@@ -30,15 +30,14 @@
                         <span class="material-icons">category</span>
                         <span class="ml-4 hidden group-hover:block">Fields</span>
                     </a>
-                    <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">article</span>
-                        <span class="ml-4 hidden group-hover:block">Content</span>
-                    </a>
                     <a href="{{ url_for('asset.index') }}" class="flex items-center px-4 py-2">
                         <span class="material-icons">publish</span>
                         <span class="ml-4 hidden group-hover:block">Assets</span>
                     </a>
-                    
+                    <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2">
+                        <span class="material-icons">article</span>
+                        <span class="ml-4 hidden group-hover:block">Content</span>
+                    </a>
                 </nav>
                 <nav class="mb-4 space-y-2">
                     <a href="/logout" class="flex items-center px-4 py-2">

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.models import Collection, Content, FieldType, Field
+from app.models import Collection, Content, FieldType, Field, Asset
 from app import db
 
 view = Blueprint("content", __name__, url_prefix="/content")
@@ -35,7 +35,7 @@ def create(collection_id):
             else:
                 value = request.form.get(field.alias)
 
-            if field.field_type == FieldType.INTEGER:
+            if field.field_type == FieldType.NUMBER:
                 try:
                     value = [int(v) for v in value] if field.is_list else int(value)
                 except ValueError:
@@ -70,11 +70,20 @@ def create(collection_id):
         if has_collection
         else None
     )
+    
+    has_assets = any(field.field_type == FieldType.ASSET for field in fields)
+
+    all_assets = (
+        Asset.query.all()
+        if has_assets
+        else None
+    )
 
     return render_template(
         "content/create_or_edit.html",
         collection=collection,
         all_content=all_content,
+        all_assets=all_assets,
         FieldType=FieldType,
     )
 
@@ -126,12 +135,21 @@ def edit(content_id):
         if has_collection
         else None
     )
+    
+    has_assets = any(field.field_type == FieldType.ASSET for field in fields)
+
+    all_assets = (
+        Asset.query.all()
+        if has_assets
+        else None
+    )
 
     return render_template(
         "content/create_or_edit.html",
         content=content,
         collection=collection,
         all_content=all_content,
+        all_assets=all_assets,
         FieldType=FieldType,
     )
 
