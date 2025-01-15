@@ -12,11 +12,19 @@
     <header class="bg-base-200 shadow-md">
         <div class="container mx-auto flex justify-between items-center p-6">
             <h1 class="text-3xl font-bold">Nuri</h1>
-            <nav class="flex space-x-6">
+            <nav class="hidden md:flex space-x-6">
                 <a href="#features" class="hover:underline text-lg">Features</a>
                 <a href="#get-started" class="hover:underline text-lg">Get Started</a>
                 <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-primary">GitHub</a>
             </nav>
+            <button class="btn btn-square btn-ghost md:hidden" onclick="toggleMenu()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden flex flex-col md:hidden px-6 pb-4">
+            <a href="#features" class="hover:underline py-2">Features</a>
+            <a href="#get-started" class="hover:underline py-2">Get Started</a>
+            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-primary w-full">GitHub</a>
         </div>
     </header>
 
@@ -29,7 +37,7 @@
 
         <section id="features" class="py-16">
             <h3 class="text-4xl font-bold text-center mb-8">Features</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
                 <div class="text-center p-6 bg-base-100 shadow-lg rounded-lg">
                     <h4 class="text-2xl font-semibold mb-4">Lightweight & No Database</h4>
                     <p>Nuri uses SQLite to store data in files, removing the complexity of database management.</p>
@@ -68,5 +76,12 @@
             <p>&copy; 2025 Nuri. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
 </body>
 </html>
