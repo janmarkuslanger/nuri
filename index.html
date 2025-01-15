@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="retro">
+<html lang="en" data-theme="business">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="/nuri/main.css">
     <script type="module" src="/nuri/main.js"></script>
 </head>
-<body class="bg-gray-900 text-white">
-    <header class="bg-gray-800 text-white py-6">
-        <div class="container mx-auto flex justify-between items-center px-6">
+<body>
+    <header class="bg-base-200 shadow-md">
+        <div class="container mx-auto flex justify-between items-center p-6">
             <h1 class="text-3xl font-bold">Nuri</h1>
             <nav class="flex space-x-6">
                 <a href="#features" class="hover:underline text-lg">Features</a>
                 <a href="#get-started" class="hover:underline text-lg">Get Started</a>
-                <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg">GitHub</a>
+                <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-primary">GitHub</a>
             </nav>
         </div>
     </header>
@@ -23,32 +23,32 @@
     <main class="container mx-auto my-12 px-6">
         <section class="text-center py-16">
             <h2 class="text-5xl font-bold mb-6">Your Minimalist API CMS</h2>
-            <p class="text-xl text-gray-300 mb-8">Nuri is a lightweight, file-based API CMS, perfect for modern web and mobile applications.</p>
-            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-lg">Explore on GitHub</a>
+            <p class="text-xl text-gray-600 mb-8">Nuri is a lightweight, file-based API CMS, perfect for modern web and mobile applications.</p>
+            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-secondary btn-lg">Explore on GitHub</a>
         </section>
 
         <section id="features" class="py-16">
             <h3 class="text-4xl font-bold text-center mb-8">Features</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
+                <div class="text-center p-6 bg-base-100 shadow-lg rounded-lg">
                     <h4 class="text-2xl font-semibold mb-4">Lightweight & No Database</h4>
-                    <p class="text-gray-400">Nuri uses SQLite to store data in files, removing the complexity of database management.</p>
+                    <p>Nuri uses SQLite to store data in files, removing the complexity of database management.</p>
                 </div>
-                <div class="text-center">
+                <div class="text-center p-6 bg-base-100 shadow-lg rounded-lg">
                     <h4 class="text-2xl font-semibold mb-4">API for Content Delivery</h4>
-                    <p class="text-gray-400">Effortlessly deliver content through an API tailored for applications, websites, and blogs.</p>
+                    <p>Effortlessly deliver content through an API tailored for applications, websites, and blogs.</p>
                 </div>
-                <div class="text-center">
+                <div class="text-center p-6 bg-base-100 shadow-lg rounded-lg">
                     <h4 class="text-2xl font-semibold mb-4">Flexible Content Modeling</h4>
-                    <p class="text-gray-400">Easily define and adapt your content structure to fit any use case.</p>
+                    <p>Easily define and adapt your content structure to fit any use case.</p>
                 </div>
             </div>
         </section>
 
         <section id="get-started" class="py-16">
             <h3 class="text-4xl font-bold text-center mb-8">Get Started</h3>
-            <div class="bg-gray-800 p-8 rounded-lg">
-                <ol class="list-decimal pl-8 space-y-4 text-lg text-gray-300">
+            <div class="bg-base-100 p-8 rounded-lg shadow-lg">
+                <ol class="list-decimal pl-8 space-y-4 text-lg">
                     <li>Clone the repository: <code>git clone https://github.com/janmarkuslanger/nuri</code></li>
                     <li>Install dependencies: <code>pip install -r requirements.txt</code></li>
                     <li>Run the application: <code>python run.py</code></li>
@@ -58,12 +58,12 @@
 
         <section class="text-center py-16">
             <h3 class="text-4xl font-bold mb-6">Contribute</h3>
-            <p class="text-lg text-gray-300 mb-8">We welcome contributions! Open issues or submit pull requests on our GitHub repository.</p>
-            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-lg">Contribute on GitHub</a>
+            <p class="text-lg text-gray-600 mb-8">We welcome contributions! Open issues or submit pull requests on our GitHub repository.</p>
+            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-primary btn-lg">Contribute on GitHub</a>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 py-6">
+    <footer class="bg-base-200 py-6">
         <div class="container mx-auto text-center">
             <p>&copy; 2025 Nuri. All rights reserved.</p>
         </div>
