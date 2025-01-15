@@ -3,7 +3,7 @@
 {% block title %}Content from collection: {{ collection.name }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Content from collection: {{ collection.name }}</h1>
+<h1 class="text-2xl font-bold mb-4">Content from collection: <span class="text-primary">{{ collection.name }}<span></h1>
 <div class="divider"></div>
 <table class="table">
 <thead>
@@ -46,6 +46,6 @@
 </table>
 
 <div class="mt-6">
-<a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new content</a>
+<a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new {{ collection.name }} content</a>
 </div>
 {% endblock %}
