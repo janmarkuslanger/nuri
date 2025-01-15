@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
+    base: "/nuri/",
     outDir: "./dist",
     emptyOutDir: true,
     rollupOptions: {
