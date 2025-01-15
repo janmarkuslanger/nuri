@@ -18,14 +18,11 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Move to dir
-      run: cd docs
-
     - name: Install dependencies
-      run: npm install
+      run: cd docs && npm install
 
     - name: Build project
-      run: npm run build
+      run: cd docs && npm run build
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
