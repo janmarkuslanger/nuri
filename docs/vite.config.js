@@ -1,10 +1,9 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  base: "/nuri/",
   build: {
-    base: "/nuri/",
     outDir: "./dist",
-    emptyOutDir: true,
     rollupOptions: {
       input: "./src/main.ts",
       output: {
