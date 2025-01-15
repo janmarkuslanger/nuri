@@ -4,70 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Nuri - A lightweight API Content Management System">
+    <title>Nuri - Lightweight API CMS</title>
     <link rel="stylesheet" href="/nuri/main.css">
     <script type="module" src="/nuri/main.js"></script>
-    <title>Nuri - Lightweight API CMS</title>
 </head>
 <body class="bg-gray-100">
-    <header class="bg-primary text-primary-content p-4">
+    <header class="bg-primary text-primary-content p-6">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold">Nuri</h1>
+            <h1 class="text-4xl font-bold">Nuri</h1>
             <nav>
-                <a href="#features" class="mx-2 hover:underline">Features</a>
-                <a href="#get-started" class="mx-2 hover:underline">Get Started</a>
+                <a href="#features" class="mx-4 hover:underline">Features</a>
+                <a href="#get-started" class="mx-4 hover:underline">Get Started</a>
                 <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-accent">GitHub</a>
             </nav>
         </div>
     </header>
 
-    <main class="container mx-auto my-10">
-        <section class="text-center">
-            <h2 class="text-4xl font-bold mb-4">A Minimalist API CMS</h2>
-            <p class="text-lg text-gray-700 mb-6">Nuri is a lightweight API Content Management System that stores data in files instead of databases, making it easy to set up and maintain.</p>
-            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-primary">View on GitHub</a>
+    <main class="container mx-auto my-20 px-4">
+        <section class="text-center mb-16">
+            <h2 class="text-5xl font-bold mb-6">A Minimalist API CMS</h2>
+            <p class="text-xl text-gray-700 mb-8">Nuri is a lightweight API Content Management System that stores data in files, eliminating the need for a database. It's simple, flexible, and perfect for modern web applications.</p>
+            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-primary btn-lg">View on GitHub</a>
         </section>
 
-        <section id="features" class="my-16">
-            <h3 class="text-3xl font-bold text-center mb-6">Features</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h4 class="card-title">File-Based Storage</h4>
-                        <p>All content is stored in JSON files, eliminating the need for a database.</p>
-                    </div>
-                </div>
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h4 class="card-title">RESTful API</h4>
-                        <p>Access and manage content through a simple and flexible API.</p>
-                    </div>
-                </div>
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h4 class="card-title">Lightweight Design</h4>
-                        <p>Minimal dependencies and straightforward configuration.</p>
-                    </div>
-                </div>
-            </div>
+        <section id="features" class="my-20">
+            <h3 class="text-4xl font-bold text-center mb-10">Features</h3>
+            <ul class="list-disc text-lg text-gray-800 pl-10 space-y-6">
+                <li><strong>Lightweight & No Database:</strong> Nuri uses SQLite to store data in files, removing the complexity of managing a database.</li>
+                <li><strong>API for Content Delivery:</strong> Nuri provides an API to deliver content efficiently to applications, websites, and blogs.</li>
+                <li><strong>Flexible Content Modeling:</strong> Define your own content structure and adapt it to any use case.</li>
+            </ul>
         </section>
 
-        <section id="get-started" class="my-16">
-            <h3 class="text-3xl font-bold text-center mb-6">Get Started</h3>
-            <ol class="list-decimal list-inside bg-base-100 p-6 rounded-lg shadow-lg">
+        <section id="get-started" class="my-20">
+            <h3 class="text-4xl font-bold text-center mb-10">Get Started</h3>
+            <ol class="list-decimal text-lg bg-base-100 p-10 rounded-lg shadow-lg space-y-4">
                 <li>Clone the repository: <code>git clone https://github.com/janmarkuslanger/nuri</code></li>
                 <li>Install dependencies: <code>pip install -r requirements.txt</code></li>
                 <li>Run the application: <code>python run.py</code></li>
             </ol>
         </section>
 
-        <section class="text-center mt-16">
-            <h3 class="text-3xl font-bold mb-4">Contribute</h3>
-            <p class="text-gray-700 mb-6">We welcome contributions! Feel free to open issues or pull requests on our GitHub repository.</p>
-            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-secondary">Contribute on GitHub</a>
+        <section class="text-center mt-20">
+            <h3 class="text-4xl font-bold mb-6">Contribute</h3>
+            <p class="text-lg text-gray-700 mb-8">We welcome contributions! Feel free to open issues or pull requests on our GitHub repository.</p>
+            <a href="https://github.com/janmarkuslanger/nuri" target="_blank" class="btn btn-secondary btn-lg">Contribute on GitHub</a>
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-gray-100 py-6">
+    <footer class="bg-gray-800 text-gray-100 py-10">
         <div class="container mx-auto text-center">
             <p>&copy; 2025 Nuri. All rights reserved.</p>
         </div>
