@@ -3,7 +3,7 @@ import enum
 
 class FieldType(enum.Enum):
     TEXT = "Text"
-    INTEGER = "Integer"
+    NUMBER = "Number"
     BOOLEAN = "Boolean"
     DATE = "Date"
     ASSET = "Asset"

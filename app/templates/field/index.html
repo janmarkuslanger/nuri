@@ -13,6 +13,7 @@
                 <th>Name</th>
                 <th>Alias</th>
                 <th>Collection</th>
+                <th>Type</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,6 +24,7 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.alias }}</td>
                     <td>{{ item.collection.name }}</td>
+                    <td>{{ item.field_type.value }}{% if item.is_list %} (Multiple){% endif %}</td>
                     <td>
                         <a href="{{ url_for('field.edit', id=item.id)}}">
                             <span class="material-icons">edit</span>

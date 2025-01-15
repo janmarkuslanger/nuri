@@ -90,19 +90,17 @@ def edit(content_id):
 
         for field in fields:
 
-            print(field.name)
-
             if field.is_list:
                 value = request.form.getlist(field.alias)
             else:
                 value = request.form.get(field.alias)
 
-            print(value)
-
-            if field.field_type == "INTEGER":
+            if field.field_type == FieldType.NUMBER:
                 value = [int(v) for v in value] if field.is_list else int(value)
-            elif field.field_type == "BOOLEAN":
+            elif field.field_type == FieldType.BOOLEAN:
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
+                
+            print(field.alias, value)
 
             data[field.alias] = value
 
