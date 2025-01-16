@@ -21,8 +21,6 @@ def create():
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         role = request.form.get('role')
-        
-        print(role)
 
         if User.query.filter_by(email=email).first():
             flash('A user with this email already exists.', 'danger')
