@@ -1,17 +1,20 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.models.collection import Collection
-from app import db
+from app.models import Collection, Role
+from app.extensions import db
+from app.views.auth import roles_required
 
 view = Blueprint("collection", __name__)
 
 
 @view.route("/", methods=["GET"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def index():
     collections = Collection.query.all()
     return render_template("collection/index.html", collections=collections)
 
 
 @view.route("/create", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def create():
     if request.method == "POST":
         name = request.form.get("name")
@@ -32,6 +35,7 @@ def create():
 
 
 @view.route("/edit/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def edit(id):
     collection = Collection.query.get_or_404(id)
 
@@ -59,6 +63,7 @@ def edit(id):
 
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def delete(id):
     collection = Collection.query.get_or_404(id)
 

@@ -1,17 +1,21 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from app.models import Field, Collection, FieldType
-from app import db
+from app.models import Field, Collection, FieldType, Role
+from app.extensions import db
+from app.views.auth import roles_required
+
 
 view = Blueprint("field", __name__)
 
 
 @view.route("/", methods=["GET"])
+@roles_required(Role.ADMIN)
 def index():
     fields = Field.query.order_by(Field.collection_id).all()
     return render_template("field/index.html", fields=fields, FieldType=FieldType)
 
 
 @view.route("/create", methods=["GET", "POST"])
+@roles_required(Role.ADMIN)
 def create():
     if request.method == "POST":
         name = request.form.get("name")
@@ -50,6 +54,7 @@ def create():
 
 
 @view.route("/edit/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.ADMIN)
 def edit(id):
     field = Field.query.get_or_404(id)
 
@@ -88,6 +93,7 @@ def edit(id):
 
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.ADMIN)
 def delete(id):
     field = Field.query.get_or_404(id)
 

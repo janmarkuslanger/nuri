@@ -12,6 +12,20 @@
 </div>
 {% endmacro %}
 
+{% macro render_password_input(name, label, value='', required=False) %}
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
+    <input
+        type="password"
+        id="{{ name }}"
+        name="{{ name }}"
+        class="input input-bordered w-full max-w-xs"
+        value="{{ value }}"
+        {% if required %}required{% endif %}
+    />
+</div>
+{% endmacro %}
+
 {% macro render_textarea(name, label, value='', required=False) %}
 <div>
     <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
@@ -33,7 +47,7 @@
         class="select select-bordered w-full max-w-xs"
         {% if required %}required{% endif %}
     >
-        <option value="" disabled>Select {{label}}</option>
+        <option value="" disabled {% if not value %}selected{% endif %}>Select {{label}}</option>
         {% for option in options %}
             <option value="{{ option|getattr(value_attribute) }}" {% if value == option|getattr(comperator_attribute) %}selected{% endif %}>{{  option|getattr(display_attribute) }}</option>
         {% endfor %}

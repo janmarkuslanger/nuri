@@ -1,18 +1,21 @@
 import os
 from werkzeug.utils import secure_filename
 from flask import Blueprint, render_template, request, redirect, current_app, url_for
-from app.models import Asset
+from app.models import Asset, Role
+from app.views.auth import roles_required
 
 view = Blueprint("asset", __name__)
 
 
 @view.route("/", methods=["GET"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def index():
     assets = Asset.query.all()
     return render_template("/asset/index.html", assets=assets)
 
 
 @view.route("/create", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def create():
     if request.method == 'POST':
         file = request.files.get('file')
@@ -35,6 +38,7 @@ def create():
 
 
 @view.route("/edit/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def edit(id):
     asset = Asset.query.get(id)
     if not asset:
@@ -64,6 +68,7 @@ def edit(id):
 
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def delete(id):
     asset = Asset.query.get(id)
     

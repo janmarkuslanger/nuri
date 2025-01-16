@@ -1,17 +1,21 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.models import Collection, Content, FieldType, Field, Asset
-from app import db
+from app.extensions import db
+from app.views.auth import roles_required
+from app.models.role import Role
 
 view = Blueprint("content", __name__, url_prefix="/content")
 
 
 @view.route("/collections", methods=["GET"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def list_collections():
     collections = Collection.query.all()
     return render_template("content/list.html", collections=collections)
 
 
 @view.route("/<int:collection_id>", methods=["GET"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def index(collection_id):
     collection = Collection.query.get_or_404(collection_id)
     contents = Content.query.filter_by(collection_id=collection_id).all()
@@ -21,6 +25,7 @@ def index(collection_id):
 
 
 @view.route("/create/<int:collection_id>", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def create(collection_id):
     collection = Collection.query.get_or_404(collection_id)
     fields = collection.fields
@@ -89,6 +94,7 @@ def create(collection_id):
 
 
 @view.route("/edit/<int:content_id>", methods=["GET", "POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def edit(content_id):
     content = Content.query.get_or_404(content_id)
     collection = content.collection
@@ -155,6 +161,7 @@ def edit(content_id):
 
 
 @view.route("/delete/<int:content_id>", methods=["POST"])
+@roles_required(Role.EDITOR, Role.ADMIN)
 def delete(content_id):
     content = Content.query.get_or_404(content_id)
     db.session.delete(content)

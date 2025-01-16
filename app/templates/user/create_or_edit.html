@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% import "form_macros.html" as macros %}
+
+{% set title = "Create new user" if not user else "Update user " + user.email %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">{{ title }}</h1>
+<div class="divider"></div>
+<form method="POST" class="space-y-4">
+    {{ macros.render_text_input('email', 'E-Mail', user.email if user else '', True) }}
+    {{ macros.render_text_input('first_name', 'Firstname', user.first_name if user else '', True) }}
+    {{ macros.render_text_input('last_name', 'Firstname', user.first_name if user else '', True) }}
+    {{ macros.render_select(
+        'role',
+        'Role',
+        Role,
+        'name',
+        'value',
+        user.role if user else None,
+        'name',
+    ) }}
+
+    {{ macros.render_password_input('password', 'Password', '', False) }}
+
+    <button
+        type="submit"
+        class="btn"
+    >
+        {{ title }}
+    </button>
+</form>
+{% endblock %}

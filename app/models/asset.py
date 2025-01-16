@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from app import db
+from app.extensions import db
 from .base import BaseModel
 
 class Asset(BaseModel):
