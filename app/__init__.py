@@ -1,10 +1,6 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-
-db = SQLAlchemy()
-
+from app.extensions import init_app
 
 def create_app():
     app = Flask(__name__)
@@ -13,35 +9,23 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["SECRET_KEY"] = os.urandom(24)
     app.config['UPLOAD_FOLDER'] = 'uploads'
-    
+
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-    db.init_app(app)
+    init_app(app)
 
-    from app.views import collection
-
+    from app.views import collection, field, content, asset, home, auth, user
     app.register_blueprint(collection, url_prefix="/admin/collections")
-
-    from app.views import field
-
     app.register_blueprint(field, url_prefix="/admin/fields")
-
-    from app.views import content
-
     app.register_blueprint(content, url_prefix="/admin/content")
-    
-    from app.views import asset
-    
     app.register_blueprint(asset, url_prefix="/admin/assets")
-
-    from app.views import home
+    app.register_blueprint(user, url_prefix="/admin/user")
+    app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(home, url_prefix="/")
 
-
     def getattr_filter(obj, attr_name):
-        if attr_name == None:
+        if attr_name is None:
             return False
-
         return getattr(obj, attr_name, None)
 
     app.jinja_env.filters["getattr"] = getattr_filter

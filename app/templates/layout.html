@@ -10,6 +10,8 @@
 </head>
 <body class="h-screen">
     <div class="flex h-full transition-all duration-300">
+        {% if current_user.is_authenticated %}
+        
         <div 
             class="group h-full fixed flex-shrink-0 transition-all duration-300 ease-in-out bg-primary z-50"
             style="width: 64px;"
@@ -22,14 +24,20 @@
                         <span class="material-icons">home</span>
                         <span class="ml-4 hidden group-hover:block">Home</span>
                     </a>
-                    <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">folder</span>
-                        <span class="ml-4 hidden group-hover:block">Collections</span>
-                    </a>
-                    <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">category</span>
-                        <span class="ml-4 hidden group-hover:block">Fields</span>
-                    </a>
+                    {% if current_user.has_role("Admin") %}
+                        <a href="{{ url_for('user.index') }}" class="flex items-center px-4 py-2">
+                            <span class="material-icons">person</span>
+                            <span class="ml-4 hidden group-hover:block">User</span>
+                        </a>
+                        <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2">
+                            <span class="material-icons">folder</span>
+                            <span class="ml-4 hidden group-hover:block">Collections</span>
+                        </a>
+                        <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2">
+                            <span class="material-icons">category</span>
+                            <span class="ml-4 hidden group-hover:block">Fields</span>
+                        </a>
+                    {% endif %}
                     <a href="{{ url_for('asset.index') }}" class="flex items-center px-4 py-2">
                         <span class="material-icons">publish</span>
                         <span class="ml-4 hidden group-hover:block">Assets</span>
@@ -40,13 +48,18 @@
                     </a>
                 </nav>
                 <nav class="mb-4 space-y-2">
-                    <a href="/logout" class="flex items-center px-4 py-2">
+                    <a href="{{ url_for('user.settings') }}" class="flex items-center px-4 py-2">
+                        <span class="material-icons">settings</span>
+                        <span class="ml-4 hidden group-hover:block">Settings</span>
+                    </a>
+                    <a href="{{ url_for('auth.logout') }}" class="flex items-center px-4 py-2">
                         <span class="material-icons">logout</span>
                         <span class="ml-4 hidden group-hover:block">Logout</span>
                     </a>
                 </nav>
             </div>
         </div>
+        {% endif %}
         <div class="flex-1 p-4">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
