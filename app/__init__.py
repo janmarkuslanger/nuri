@@ -15,13 +15,14 @@ def create_app():
 
     init_app(app)
 
-    from app.views import collection, field, content, asset, home, auth, user, api
+    from app.views import collection, field, content, asset, home, auth, user, api, access
 
     app.register_blueprint(collection, url_prefix="/admin/collections")
     app.register_blueprint(field, url_prefix="/admin/fields")
     app.register_blueprint(content, url_prefix="/admin/content")
     app.register_blueprint(asset, url_prefix="/admin/assets")
     app.register_blueprint(user, url_prefix="/admin/user")
+    app.register_blueprint(access, url_prefix="/admin/access")
     app.register_blueprint(api, url_prefix="/api")
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(home, url_prefix="/")

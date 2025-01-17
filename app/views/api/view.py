@@ -1,11 +1,14 @@
 from flask import Blueprint, jsonify, request
 from app.models import Content, Collection, Field, Asset
+from app.views.auth.utils import api_key_required
 from .utils import paginate, resolve_content
+
 
 view = Blueprint("api", __name__)
 
 
 @view.route("/content")
+@api_key_required
 def content():
     collection_alias = request.args.get("collection.alias")
     id = request.args.get("id")
@@ -26,6 +29,7 @@ def content():
 
 
 @view.route("/collection")
+@api_key_required
 def collection():
     alias = request.args.get("alias")
     id = request.args.get("id")
@@ -43,6 +47,7 @@ def collection():
 
 
 @view.route("/field")
+@api_key_required
 def field():
     alias = request.args.get("alias")
     id = request.args.get("id")
@@ -60,6 +65,7 @@ def field():
 
 
 @view.route("/asset")
+@api_key_required
 def asset():
     name = request.args.get("name")
     id = request.args.get("id")
