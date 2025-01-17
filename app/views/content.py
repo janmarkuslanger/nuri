@@ -114,8 +114,6 @@ def edit(content_id):
                 value = [int(v) for v in value] if field.is_list else int(value)
             elif field.field_type == FieldType.BOOLEAN:
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
-                
-            print(field.alias, value)
 
             data[field.alias] = value
 

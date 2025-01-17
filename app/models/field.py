@@ -15,3 +15,11 @@ class Field(BaseModel):
     is_list = db.Column(db.Boolean, default=False, nullable=False)
     is_required = db.Column(db.Boolean, default=False, nullable=False)
     display_field = db.Column(db.Boolean, default=False, nullable=False)
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "alias": self.alias,
+            "field_type": self.field_type.value
+        }

@@ -23,6 +23,5 @@ def login():
 @view.route('/logout')
 @login_required
 def logout():
-    print("ydcsdsdfsdf")
     logout_user()
     return redirect(url_for('auth.login'))

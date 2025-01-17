@@ -11,3 +11,10 @@ class Asset(BaseModel):
 
     def __repr__(self):
         return f"<Asset {self.id}: {self.name}, Public: {self.is_public}>"
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "path": self.path
+        }

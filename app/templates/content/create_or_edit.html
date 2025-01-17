@@ -131,8 +131,9 @@
   </div>
 </form>
 
-{% if all_content %}
+
 <script>
+{% if all_content or all_assets %}
 document.addEventListener("DOMContentLoaded", function () {
   const sortableLists = document.querySelectorAll(".sortable-list");
   sortableLists.forEach(list => {
@@ -143,13 +144,16 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+
 function createSortElement() {
   const sortIcon = document.createElement('span');
   sortIcon.appendChild(document.createTextNode('drag_handle'))
   sortIcon.className = 'cursor-grab material-icons';
   return sortIcon;
 }
+{% endif %}
 
+{% if all_content %}
 function addInput(containerId) {
   const container = document.getElementById(containerId);
 
@@ -218,7 +222,9 @@ function addSelect(containerId) {
   div.appendChild(removeButton);
   container.appendChild(div);
 }
+{% endif %}
 
+{% if all_assets %}
 function addAssetSelect(containerId) {
   const container = document.getElementById(containerId);
 
@@ -260,13 +266,16 @@ function addAssetSelect(containerId) {
   div.appendChild(removeButton);
   container.appendChild(div);
 }
+{% endif %}
 
+{% if all_content or all_assets %}
 function removeInput(button) {
   const parent = button.parentElement;
   parent.remove();
 }
+{% endif %}
 
 </script>
-{% endif %}
+
 
 {% endblock %}
