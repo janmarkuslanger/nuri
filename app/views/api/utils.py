@@ -1,26 +1,5 @@
-from flask import request
 from sqlalchemy import or_
 from app.models import Field, FieldType, Content, Asset
-
-
-def paginate(query, page=None, per_page=66):
-    if page is None:
-        page = int(request.args.get("page", 1))
-
-    offset = (page - 1) * per_page
-    total_items = query.count()
-    paginated_data = query.offset(offset).limit(per_page).all()
-
-    serialized_data = [item.to_dict() for item in paginated_data]
-
-    return {
-        "data": serialized_data,
-        "pagination": {
-            "current_page": page,
-            "per_page": per_page,
-            "total_items": total_items,
-        },
-    }
 
 
 def resolve_collection(item):
