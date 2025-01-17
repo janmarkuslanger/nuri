@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
 from app.models import Content, Collection, Field, Asset
 from app.views.auth.utils import api_key_required
-from .utils import paginate, resolve_content
+from app.services.paginate import generate_paginate
+from .utils import resolve_content
 
 
 view = Blueprint("api", __name__)
@@ -21,7 +22,7 @@ def content():
     if collection_alias:
         query = query.filter(Content.collection.has(alias=collection_alias))
 
-    result = paginate(query)
+    result = generate_paginate(query)
 
     result["data"] = resolve_content(result["data"])
 
@@ -42,7 +43,7 @@ def collection():
     if alias:
         query = query.filter(Collection.alias == alias)
 
-    result = paginate(query)
+    result = generate_paginate(query)
     return jsonify(result)
 
 
@@ -60,7 +61,7 @@ def field():
     if alias:
         query = query.filter(Field.alias == alias)
 
-    result = paginate(query)
+    result = generate_paginate(query)
     return jsonify(result)
 
 
@@ -78,5 +79,5 @@ def asset():
     if name:
         query = query.filter(Asset.name == name)
 
-    result = paginate(query)
+    result = generate_paginate(query)
     return jsonify(result)
