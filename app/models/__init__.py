@@ -8,6 +8,7 @@ from .asset import Asset
 from .user import User
 from .role import Role
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

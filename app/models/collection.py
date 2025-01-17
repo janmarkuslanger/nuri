@@ -11,11 +11,11 @@ class Collection(BaseModel):
     fields = db.relationship(
         "Field", backref="collection", cascade="all, delete-orphan"
     )
-    
+
     def to_dict(self):
         return {
             "id": self.id,
             "alias": self.alias,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
         }

@@ -75,14 +75,10 @@ def create(collection_id):
         if has_collection
         else None
     )
-    
+
     has_assets = any(field.field_type == FieldType.ASSET for field in fields)
 
-    all_assets = (
-        Asset.query.all()
-        if has_assets
-        else None
-    )
+    all_assets = Asset.query.all() if has_assets else None
 
     return render_template(
         "content/create_or_edit.html",
@@ -139,14 +135,10 @@ def edit(content_id):
         if has_collection
         else None
     )
-    
+
     has_assets = any(field.field_type == FieldType.ASSET for field in fields)
 
-    all_assets = (
-        Asset.query.all()
-        if has_assets
-        else None
-    )
+    all_assets = Asset.query.all() if has_assets else None
 
     return render_template(
         "content/create_or_edit.html",

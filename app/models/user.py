@@ -5,8 +5,9 @@ from .base import BaseModel
 from .role import Role
 from app.extensions import db
 
+
 class User(BaseModel, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -20,14 +21,13 @@ class User(BaseModel, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
     def has_role(self, role):
         if isinstance(role, Role):
             return self.role == role
         if isinstance(role, str):
             return self.role.value == role
         return False
-
 
     def __repr__(self):
         return f"<User {self.email} - {self.role}>"
