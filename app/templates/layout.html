@@ -48,6 +48,12 @@
                     </a>
                 </nav>
                 <nav class="mb-4 space-y-2">
+                    {% if current_user.has_role("Admin") %}
+                        <a href="{{ url_for('access.index') }}" class="flex items-center px-4 py-2">
+                            <span class="material-icons">code</span>
+                            <span class="ml-4 hidden group-hover:block">Access</span>
+                        </a>
+                    {% endif %}
                     <a href="{{ url_for('user.settings') }}" class="flex items-center px-4 py-2">
                         <span class="material-icons">settings</span>
                         <span class="ml-4 hidden group-hover:block">Settings</span>

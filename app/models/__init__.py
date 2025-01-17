@@ -7,6 +7,8 @@ from .content import Content
 from .asset import Asset
 from .user import User
 from .role import Role
+from .access import Access
+
 
 @login_manager.user_loader
 def load_user(user_id):

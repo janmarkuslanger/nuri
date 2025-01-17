@@ -11,3 +11,11 @@ class Content(BaseModel):
     data = db.Column(db.JSON, nullable=False)
 
     collection = db.relationship("Collection", backref="contents")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "collection_id": self.collection_id,
+            "data": self.data,
+            "collection": self.collection.to_dict(),
+        }

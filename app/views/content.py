@@ -75,14 +75,10 @@ def create(collection_id):
         if has_collection
         else None
     )
-    
+
     has_assets = any(field.field_type == FieldType.ASSET for field in fields)
 
-    all_assets = (
-        Asset.query.all()
-        if has_assets
-        else None
-    )
+    all_assets = Asset.query.all() if has_assets else None
 
     return render_template(
         "content/create_or_edit.html",
@@ -114,8 +110,6 @@ def edit(content_id):
                 value = [int(v) for v in value] if field.is_list else int(value)
             elif field.field_type == FieldType.BOOLEAN:
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
-                
-            print(field.alias, value)
 
             data[field.alias] = value
 
@@ -141,14 +135,10 @@ def edit(content_id):
         if has_collection
         else None
     )
-    
+
     has_assets = any(field.field_type == FieldType.ASSET for field in fields)
 
-    all_assets = (
-        Asset.query.all()
-        if has_assets
-        else None
-    )
+    all_assets = Asset.query.all() if has_assets else None
 
     return render_template(
         "content/create_or_edit.html",
