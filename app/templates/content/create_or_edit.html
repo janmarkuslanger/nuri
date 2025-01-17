@@ -26,6 +26,9 @@
                     <option {% if item|string == content_item.id|string %}selected{% endif %} value="{{ content_item.id }}">{{ collection_name }}: {{ content_item.data.get(display_field_alias) }}</option>
                   {% endfor %}
                 </select>
+                {% if loop.index > 1 %}
+                  <button class="btn" onclick=removeInput(this)>Remove</button>
+                {% endif %}
               </div>
             {% endfor %}
           </div>
@@ -59,6 +62,9 @@
                     <option {% if item|string == asset.id|string %}selected{% endif %} value="{{ asset.id }}">{{ asset.name }}</option>
                   {% endfor %}
                 </select>
+                {% if loop.index > 1 %}
+                  <button class="btn" onclick=removeInput(this)>Remove</button>
+                {% endif %}
               </div>
             {% endfor %}
           </div>
@@ -107,6 +113,9 @@
                   value="{{ item or '' }}"
                   class="input input-bordered w-full max-w-xs"
                 >
+                {% if loop.index > 1 %}
+                  <button class="btn" onclick=removeInput(this)>Remove</button>
+                {% endif %}
               </div>
             {% endfor %}
           </div>
