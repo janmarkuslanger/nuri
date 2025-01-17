@@ -1,6 +1,6 @@
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, render_template, request, redirect, current_app, url_for
+from flask import Blueprint, render_template, request, redirect, current_app, url_for, send_from_directory
 from app.models import Asset, Role
 from app.views.auth import roles_required
 

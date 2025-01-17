@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, send_from_directory
 from app.extensions import init_app
 
 
@@ -25,6 +25,14 @@ def create_app():
     app.register_blueprint(api, url_prefix="/api")
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(home, url_prefix="/")
+    
+    
+    @app.route("/uploads/<path:filename>")
+    def file(filename):
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+        return send_from_directory(UPLOAD_FOLDER, filename)
+
 
     def getattr_filter(obj, attr_name):
         if attr_name is None:
