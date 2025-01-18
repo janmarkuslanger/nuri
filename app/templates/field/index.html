@@ -9,7 +9,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Name</th>
                 <th>Alias</th>
                 <th>Collection</th>
@@ -20,7 +19,6 @@
         <tbody>
             {% for item in fields %}
                 <tr>
-                    <td>{{ loop.index }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.alias }}</td>
                     <td>{{ item.collection.name }}</td>

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Collections List{% endblock %}
+{% block title %}Collections list{% endblock %}
 
 {% block content %}
 <h1 class="text-2xl font-bold mb-6">Collections</h1>
@@ -9,7 +9,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Name</th>
                 <th>Alias</th>
                 <th>Description</th>
@@ -19,7 +18,6 @@
         <tbody>
             {% for collection in collections %}
                 <tr>
-                    <td>{{ loop.index }}</td>
                     <td>{{ collection.name }}</td>
                     <td>{{ collection.alias }}</td>
                     <td>{{ collection.description or "No description" }}</td>
