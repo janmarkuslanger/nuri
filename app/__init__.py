@@ -1,6 +1,7 @@
 import os
 from flask import Flask, send_from_directory
 from app.extensions import init_app
+from app.jinja_utils import getattr_filter
 
 
 def create_app():
@@ -33,12 +34,6 @@ def create_app():
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
         return send_from_directory(UPLOAD_FOLDER, filename)
-
-
-    def getattr_filter(obj, attr_name):
-        if attr_name is None:
-            return False
-        return getattr(obj, attr_name, None)
 
     app.jinja_env.filters["getattr"] = getattr_filter
 

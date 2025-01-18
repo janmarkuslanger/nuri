@@ -8,5 +8,4 @@ def test_paginate_with_default_page(mock_query):
     assert result["pagination"]["per_page"] == 50
     assert result["pagination"]["total_items"] == 100
     assert len(result["data"]) == 50
-    print(result["data"])
-    assert result["data"][1] == {"id": 1}
+    assert result["data"][0] == {"id": 1}

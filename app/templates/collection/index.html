@@ -1,50 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}Collections List{% endblock %}
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Collections" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-6">Collections</h1>
-<div class="divider"></div>
-{% if collections %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Alias</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for collection in collections %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ collection.name }}</td>
-                    <td>{{ collection.alias }}</td>
-                    <td>{{ collection.description or "No description" }}</td>
-                    <td>
-                        <a href="{{ url_for('collection.edit', id=collection.id) }}" class="">
-                            <span class="material-icons">edit</span>
-                        </a>
-                        <a href="{{ url_for('collection.delete', id=collection.id) }}" class="">
-                            <span class="material-icons">delete</span>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p class="text-gray-500">No collections available.</p>
-{% endif %}
 
-<div class="mt-6">
-    <a 
-        href="{{ url_for('collection.create') }}" 
-        class="btn"
-    >
-        Create New Collection
-    </a>
-</div>
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        collections,
+        ["Name", "Alias", "Description"],
+        ["name", "alias", "description"],
+        [
+            { "label": "edit", "url": "collection.edit", "value": "id" },
+            { "label": "delete", "url": "collection.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('collection.create', 'collection') }}
 {% endblock %}

@@ -1,52 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}Fields List{% endblock %}
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Fields" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold">Fields</h1>
-<div class="divider"></div>
-{% if fields %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Alias</th>
-                <th>Collection</th>
-                <th>Type</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in fields %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.alias }}</td>
-                    <td>{{ item.collection.name }}</td>
-                    <td>{{ item.field_type.value }}{% if item.is_list %} (Multiple){% endif %}</td>
-                    <td>
-                        <a href="{{ url_for('field.edit', id=item.id)}}">
-                            <span class="material-icons">edit</span>
-                        </a>
-                        <a href="{{ url_for('field.delete', id=item.id)}}">
-                            <span class="material-icons">delete</span>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>    
-{% else %}
-    <p class="text-gray-500">No fields available.</p>
-{% endif %}
 
-<div class="mt-6">
-    <a 
-        href="{{ url_for('field.create') }}" 
-        class="btn"
-    >
-        Create New Field
-    </a>
-</div>
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        fields,
+        ["Name", "Alias", "Collection","Type", "Multiple"],
+        ["name", "alias", "collection.name", "field_type.value", "is_list"],
+        [
+            { "label": "edit", "url": "field.edit", "value": "id" },
+            { "label": "delete", "url": "field.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('field.create', 'field') }}
 {% endblock %}

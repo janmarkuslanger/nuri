@@ -1,0 +1,52 @@
+{% macro render_table(items, labels, display, actions) %}
+{% if items %}
+<table class="table">
+    <thead>
+        <tr>
+            {% for label in labels %}
+                <th>{{ label }}</th>
+            {% endfor %}
+
+            {% if actions %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+
+
+    <tbody>
+        {% for item in items %}
+            <tr>
+                {% for display_item in display %}
+                    <td>{{ item|getattr(display_item) }}
+                {% endfor %}
+
+
+                {% if actions %}
+                    <td>
+                        {% for action in actions %}
+                            <a href="{{ url_for(action.url, id=item.id)}}">{{ action.label }}</a>
+                        {% endfor %}
+                    </td>
+                {% endif %}
+
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% else %}
+    <p>There are no items available.</p>
+{% endif %}
+{% endmacro %}
+
+{% macro render_create_button(url, label) %}
+<div class="mt-6">
+    <a 
+        href="{{ url_for(url) }}" 
+        class="btn"
+    >
+        Create new {{ label }}
+    </a>
+</div>
+{% endmacro %}

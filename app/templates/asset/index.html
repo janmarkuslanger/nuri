@@ -1,48 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}Assets{% endblock %}
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Assets" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold">Assets</h1>
-<div class="divider"></div>
-{% if assets %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Path</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in assets %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.path }}</td>
-                    <td>
-                        <a href="{{ url_for('asset.edit', id=item.id)}}">
-                            <span class="material-icons">edit</span>
-                        </a>
-                        <a href="{{ url_for('asset.delete', id=item.id)}}">
-                            <span class="material-icons">delete</span>
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>    
-{% else %}
-    <p class="text-gray-500">No assets available.</p>
-{% endif %}
 
-<div class="mt-6">
-    <a 
-        href="{{ url_for('asset.create') }}" 
-        class="btn"
-    >
-        Create new asset
-    </a>
-</div>
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        assets,
+        ["Name", "Path"],
+        ["name", "path"],
+        [
+            { "label": "edit", "url": "asset.edit", "value": "id" },
+            { "label": "delete", "url": "asset.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('asset.create', 'asset') }}
 {% endblock %}
