@@ -1,3 +1,5 @@
+{% import "macros/navigation.html" as navigation %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,48 +22,21 @@
         >
             <div class="flex flex-col h-full justify-between">
                 <nav class="mt-4 space-y-2">
-                    <a href="{{ url_for('home.index') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">home</span>
-                        <span class="ml-4 hidden group-hover:block">Home</span>
-                    </a>
+                    {{ navigation.render_nav_item("home.index", "home", "Home") }}
                     {% if current_user.has_role("Admin") %}
-                        <a href="{{ url_for('user.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">person</span>
-                            <span class="ml-4 hidden group-hover:block">User</span>
-                        </a>
-                        <a href="{{ url_for('collection.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">folder</span>
-                            <span class="ml-4 hidden group-hover:block">Collections</span>
-                        </a>
-                        <a href="{{ url_for('field.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">category</span>
-                            <span class="ml-4 hidden group-hover:block">Fields</span>
-                        </a>
+                        {{ navigation.render_nav_item("user.index", "person", "User") }}
+                        {{ navigation.render_nav_item("collection.index", "folder", "Collections") }}
+                        {{ navigation.render_nav_item("field.index", "category", "Fields") }}
                     {% endif %}
-                    <a href="{{ url_for('asset.index') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">publish</span>
-                        <span class="ml-4 hidden group-hover:block">Assets</span>
-                    </a>
-                    <a href="{{ url_for('content.list_collections') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">article</span>
-                        <span class="ml-4 hidden group-hover:block">Content</span>
-                    </a>
+                    {{ navigation.render_nav_item("asset.index", "publish", "Assets") }}
+                    {{ navigation.render_nav_item("content.list_collections", "article", "Content") }}
                 </nav>
                 <nav class="mb-4 space-y-2">
                     {% if current_user.has_role("Admin") %}
-                        <a href="{{ url_for('access.index') }}" class="flex items-center px-4 py-2">
-                            <span class="material-icons">code</span>
-                            <span class="ml-4 hidden group-hover:block">Access</span>
-                        </a>
+                        {{ navigation.render_nav_item("access.index", "code", "Access") }}
                     {% endif %}
-                    <a href="{{ url_for('user.settings') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">settings</span>
-                        <span class="ml-4 hidden group-hover:block">Settings</span>
-                    </a>
-                    <a href="{{ url_for('auth.logout') }}" class="flex items-center px-4 py-2">
-                        <span class="material-icons">logout</span>
-                        <span class="ml-4 hidden group-hover:block">Logout</span>
-                    </a>
+                    {{ navigation.render_nav_item("user.settings", "settings", "Settings") }}
+                    {{ navigation.render_nav_item("auth.logout", "logout", "Logout") }}
                 </nav>
             </div>
         </div>
