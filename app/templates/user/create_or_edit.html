@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
+
 {% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
 
 {% set title = "Create new user" if not user else "Update user " + user.email %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-xl font-bold mb-4">{{ title }}</h1>
-<div class="divider"></div>
+
+{{ common.render_head(title) }}
+
 <form method="POST" class="space-y-4">
     {{ macros.render_text_input('email', 'E-Mail', user.email if user else '', True) }}
     {{ macros.render_text_input('first_name', 'Firstname', user.first_name if user else '', True) }}

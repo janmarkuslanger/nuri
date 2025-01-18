@@ -1,10 +1,14 @@
 {% extends "layout.html" %}
 
-{% block title %}Delete user: {{ user.email }}{% endblock %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Delete user: " + user.email %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-xl font-bold mb-4">Delete user: {{user.email }}</h1>
-<div class="divider"></div>
+
+{{ common.render_head(title) }}
 
 <form method="POST" class="space-y-4">
     <div>

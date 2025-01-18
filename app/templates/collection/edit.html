@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
-{% import "form_macros.html" as macros %}
 
-{% block title %}Update Collection{% endblock %}
+{% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Update collection" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-xl font-bold mb-4">Update collection: {{ collection.name }} ({{ collection.id }})</h1>
-<div class="divider"></div>
+{{ common.render_head(title) }}
 <form method="POST" class="space-y-4">
     {{ macros.render_text_input('name', 'Name', collection.name) }}
     {{ macros.render_text_input('alias', 'Alias', collection.alias) }}

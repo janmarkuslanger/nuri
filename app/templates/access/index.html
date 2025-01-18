@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 
-{% block title %}Access{% endblock %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Access" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold">Access</h1>
-<div class="divider"></div>
+{{ common.render_head(title) }}
 <table class="table">
     <thead>
         <tr>

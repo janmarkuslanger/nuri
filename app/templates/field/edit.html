@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
-{% import "form_macros.html" as macros %}
 
-{% block title %}Update Field{% endblock %}
+{% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Update field" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-xl font-bold mb-4">Update Field</h1>
-<div class="divider"></div>
+{{ common.render_head(title) }}
+
 <form method="POST" class="space-y-4">
     {{ macros.render_text_input('name', 'Name', field.name) }}
     {{ macros.render_text_input( 'alias', 'Alias', field.alias) }}
