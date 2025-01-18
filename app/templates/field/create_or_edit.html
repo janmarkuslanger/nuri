@@ -45,7 +45,7 @@
         type="submit"
         class="btn"
     >
-        Save
+        {{ "Update" if item else "Create" }}
     </button>
 </form>
 {% endblock %}

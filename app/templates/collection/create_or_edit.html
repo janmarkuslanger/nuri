@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Update collection" if item else "Create collection" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{{ common.render_head(title) }}
+<form method="POST" class="space-y-4">
+    {{ macros.render_text_input('name', 'Name', item.name if item else '') }}
+    {{ macros.render_text_input('alias', 'Alias', item.alias if item else '') }}
+    {{ macros.render_textarea('description', 'Description', item.description if item else '') }}
+    <button
+        type="submit"
+        class="btn"
+    >
+        {{ "Update" if item else "Create" }}
+    </button>
+</form>
+{% endblock %}

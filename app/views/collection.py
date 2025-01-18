@@ -31,7 +31,7 @@ def create():
             new_collection.save()
             return redirect(url_for("collection.index"))
 
-    return render_template("collection/create.html")
+    return render_template("collection/create_or_edit.html")
 
 
 @view.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -59,7 +59,7 @@ def edit(id):
             flash("Collection updated successfully!", "success")
             return redirect(url_for("collection.index"))
 
-    return render_template("collection/edit.html", collection=collection)
+    return render_template("collection/create_or_edit.html", item=collection)
 
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
