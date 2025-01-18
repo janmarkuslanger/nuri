@@ -31,5 +31,5 @@ def api_key_required(f):
             abort(403, description="Invalid or unauthorized API key")
 
         return f(*args, **kwargs)
-    return decorated_function
 
+    return decorated_function

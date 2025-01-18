@@ -1,6 +1,7 @@
 from app.services.paginate import generate_paginate, paginate
 from flask import request
 
+
 def test_paginate_with_default_page(mock_query):
     result = paginate(mock_query)
 

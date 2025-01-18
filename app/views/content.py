@@ -18,13 +18,12 @@ def list_collections():
 @roles_required(Role.EDITOR, Role.ADMIN)
 def index(id):
     # must name it id atm because of the table macro url_for must be customized
-    collection_id = id 
+    collection_id = id
     collection = Collection.query.get_or_404(collection_id)
     contents = Content.query.filter_by(collection_id=collection_id).all()
     return render_template(
         "content/index.html", collection=collection, contents=contents
     )
-    
 
 
 @view.route("/create/<int:collection_id>", methods=["GET", "POST"])

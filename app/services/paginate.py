@@ -5,6 +5,7 @@ def generate_paginate(query):
     page = int(request.args.get("page", 1))
     return paginate(query, page)
 
+
 def paginate(query, page=None, per_page=50):
     if page is None:
         page = 1

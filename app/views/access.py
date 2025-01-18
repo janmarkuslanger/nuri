@@ -21,12 +21,11 @@ def create():
         new_item = Access(name=name)
         new_item.generate_api_key()
         new_item.save()
-        
+
         return redirect(url_for("access.index"))
-        
-    return render_template(
-        "access/create.html"
-    )
+
+    return render_template("access/create.html")
+
 
 @view.route("/delete/<int:id>", methods=["GET", "POST"])
 @roles_required(Role.ADMIN)
