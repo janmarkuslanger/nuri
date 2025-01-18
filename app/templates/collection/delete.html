@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% import "macros/common.html" as common %}
+{% import "macros/delete.html" as delete %}
 
 {% set title = "Delete collection" %}
 
@@ -8,22 +9,5 @@
 
 {% block content %}
 {{ common.render_head(title) }}
-<form method="POST" class="space-y-4">
-    <div>
-        <label for="name" class="block text-sm font-medium">Do you really want to delete collection: {{collection.name }} ({{collection.id }})?</label>
-        <input
-            type="hidden"
-            id="id"
-            name="id"
-            class="hidden"
-            required
-        />
-    </div>
-    <button
-        type="submit"
-        class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-    >
-        Delete
-    </button>
-</form>
+{{ delete.render_view('collection', collection.name) }}
 {% endblock %}
