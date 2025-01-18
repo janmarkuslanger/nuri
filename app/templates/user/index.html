@@ -1,42 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}User{% endblock %}
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "User" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold">User</h1>
-<div class="divider"></div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Email</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Role</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for user in users %}
-        <tr>
-            <td>{{ user.email }}</td>
-            <td>{{ user.first_name }}</td>
-            <td>{{ user.last_name }}</td>
-            <td>{{ user.role.value }}</td>
-            <td>
-                <a href="{{ url_for('user.edit', id=user.id) }}">Edit</a>
-                <a href="{{ url_for('user.delete', id=user.id) }}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 
-<div class="mt-6">
-    <a 
-        href="{{ url_for('user.create') }}" 
-        class="btn"
-    >
-        Create new user
-    </a>
-</div>
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        users,
+        ["E-Mail", "Firstname", "Lastname","Role"],
+        ["email", "first_name", "last_name", "role.value"],
+        [
+            { "label": "edit", "url": "user.edit", "value": "id" },
+            { "label": "delete", "url": "user.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('user.create', 'user') }}
 {% endblock %}
