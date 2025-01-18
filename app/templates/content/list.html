@@ -1,28 +1,27 @@
 {% extends "layout.html" %}
 
-{% block title %}Collections{% endblock %}
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Content collections" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Collections</h1>
-<div class="divider"></div>
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for collection in collections %}
-      <tr>
-        <td>{{ collection.id }}</td>
-        <td>{{ collection.name }}</td>
-        <td>
-          <a class="link-primary" href="{{ url_for('content.index', collection_id=collection.id) }}">Show Content</a>
-        </td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        collections,
+        ["ID", "Name"],
+        ["id", "name"],
+        [
+            { "label": "show", "url": "content.index", "value": "collection.id"}
+        ]
+    )
+}}
 {% endblock %}
+
+
+

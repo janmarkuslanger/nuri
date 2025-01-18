@@ -1,10 +1,15 @@
 {% extends "layout.html" %}
 
-{% block title %}Content from collection: {{ collection.name }}{% endblock %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Content from collection: " + collection.name %}
+
+{% block title %}{{ title }} {% endblock %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Content from collection: <span class="text-primary">{{ collection.name }}<span></h1>
-<div class="divider"></div>
+
+{{ common.render_head(title) }}
+
 <table class="table">
 <thead>
     <tr>
@@ -33,12 +38,8 @@
             {% endif %}
         {% endfor %}
         <td>
-            <a href="{{ url_for('content.edit', content_id=content.id) }}">
-                <span class="material-icons">edit</span>
-            </a>
-            <a href="{{ url_for('content.delete', content_id=content.id) }}">
-                <span class="material-icons">delete</span>
-            </a>
+            <a href="{{ url_for('content.edit', content_id=content.id) }}">edit</a>
+            <a href="{{ url_for('content.delete', content_id=content.id) }}">delete</a>
         </td>
     </tr>
     {% endfor %}
@@ -46,6 +47,6 @@
 </table>
 
 <div class="mt-6">
-<a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new {{ collection.name }} content</a>
+    <a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new {{ collection.name.lower() }} content</a>
 </div>
 {% endblock %}
