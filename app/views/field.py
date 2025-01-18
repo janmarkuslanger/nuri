@@ -49,7 +49,7 @@ def create():
 
     collections = Collection.query.all()
     return render_template(
-        "field/create.html", collections=collections, FieldType=FieldType
+        "field/create_or_edit.html", collections=collections, FieldType=FieldType
     )
 
 
@@ -88,7 +88,7 @@ def edit(id):
 
     collections = Collection.query.all()
     return render_template(
-        "field/edit.html", field=field, collections=collections, FieldType=FieldType
+        "field/create_or_edit.html", item=field, collections=collections, FieldType=FieldType
     )
 
 

@@ -39,6 +39,7 @@
 {% endmacro %}
 
 {% macro render_select(name, label, options, value_attribute, display_attribute, value=None, comperator_attribute = None, required=False) %}
+
 <div>
     <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
     <select
