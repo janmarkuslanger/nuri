@@ -3,7 +3,7 @@
 {% import "form_macros.html" as macros %}
 {% import "macros/common.html" as common %}
 
-{% set title = "Update field" %}
+{% set title = "Update field" if item else "Create field" %}
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -11,15 +11,15 @@
 {{ common.render_head(title) }}
 
 <form method="POST" class="space-y-4">
-    {{ macros.render_text_input('name', 'Name', field.name) }}
-    {{ macros.render_text_input( 'alias', 'Alias', field.alias) }}
+    {{ macros.render_text_input('name', 'Name', item.name if item else '' ) }}
+    {{ macros.render_text_input( 'alias', 'Alias', item.alias if item else '') }}
     {{ macros.render_select(
         'field_type',
         'Field type',
         FieldType,
         'name',
         'value',
-        field.field_type,
+        item.field_type.name if item else None,
         'name',
     ) }}
     {{ macros.render_select(
@@ -28,17 +28,17 @@
         collections,
         'id',
         'name',
-        field.collection_id,
+        item.collection_id if item else None,
         'id'
     ) }}
     {{
-        macros.render_checkbox("is_list", "Is list?", field.is_list)
+        macros.render_checkbox("is_list", "Is list?", item.is_list if item else None)
     }}
     {{
-        macros.render_checkbox("is_required", "Is required?", field.is_required)
+        macros.render_checkbox("is_required", "Is required?", item.is_required if item else None)
     }}
     {{
-        macros.render_checkbox("display_field", "Display field for content", field.display_field)
+        macros.render_checkbox("display_field", "Display field for content", item.display_field if item else None)
     }}
 
     <button
