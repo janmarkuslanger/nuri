@@ -21,6 +21,7 @@ def index(id):
     collection_id = id
     collection = Collection.query.get_or_404(collection_id)
     contents = Content.query.filter_by(collection_id=collection_id).all()
+    
     return render_template(
         "content/index.html", collection=collection, contents=contents
     )
@@ -46,7 +47,7 @@ def create(collection_id):
                 try:
                     value = [int(v) for v in value] if field.is_list else int(value)
                 except ValueError:
-                    errors.append(f"{field.name} muss eine Zahl sein.")
+                    errors.append(f"{field.name} must be a number.")
             elif field.field_type == FieldType.BOOLEAN:
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
 
@@ -57,8 +58,8 @@ def create(collection_id):
         else:
             new_content = Content(collection_id=collection_id, data=data)
             new_content.save()
-            flash("Content erfolgreich erstellt!", "success")
-            return redirect(url_for("content.index", collection_id=collection_id))
+            flash("Content created!", "success")
+            return redirect(url_for("content.index", id=collection_id))
 
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
 
@@ -81,6 +82,13 @@ def create(collection_id):
     has_assets = any(field.field_type == FieldType.ASSET for field in fields)
 
     all_assets = Asset.query.all() if has_assets else None
+    
+    content_fields = []
+    for field in collection.fields:
+        template_name = field.field_type.value.lower() if field.field_type.value.lower() in ["asset", "boolean", "collection"] else "*"
+        template_path = "template_fields/" + template_name + ".html"
+        rendered = render_template(template_path, field=field, all_content=all_content, all_assets=all_assets, FieldType=FieldType)
+        content_fields.append(rendered)
 
     return render_template(
         "content/create_or_edit.html",
@@ -88,11 +96,12 @@ def create(collection_id):
         all_content=all_content,
         all_assets=all_assets,
         FieldType=FieldType,
+        content_fields=content_fields
     )
 
 
 @view.route("/edit/<int:content_id>", methods=["GET", "POST"])
-@roles_required(Role.EDITOR, Role.ADMIN)
+#@roles_required(Role.EDITOR, Role.ADMIN)
 def edit(content_id):
     content = Content.query.get_or_404(content_id)
     collection = content.collection
@@ -117,8 +126,8 @@ def edit(content_id):
 
         content.data = data
         db.session.commit()
-        flash("Content erfolgreich bearbeitet!", "success")
-        return redirect(url_for("content.index", collection_id=collection.id))
+        flash("Content updated!", "success")
+        return redirect(url_for("content.index", id=collection.id))
 
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
 
@@ -142,6 +151,13 @@ def edit(content_id):
 
     all_assets = Asset.query.all() if has_assets else None
 
+    content_fields = []
+    for field in collection.fields:
+        template_name = field.field_type.value.lower() if field.field_type.value.lower() in ["asset", "boolean", "collection"] else "*"
+        template_path = "template_fields/" + template_name + ".html"
+        rendered = render_template(template_path, field=field, content=content, all_content=all_content, all_assets=all_assets, FieldType=FieldType)
+        content_fields.append(rendered)
+
     return render_template(
         "content/create_or_edit.html",
         content=content,
@@ -149,6 +165,7 @@ def edit(content_id):
         all_content=all_content,
         all_assets=all_assets,
         FieldType=FieldType,
+        content_fields=content_fields
     )
 
 

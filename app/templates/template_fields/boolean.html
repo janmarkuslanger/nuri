@@ -1,0 +1,13 @@
+<div class="flex items-center">
+    {% set value = content.data.get(field.alias) if content else None %}
+    <input 
+        type="checkbox" 
+        id="{{ field.alias }}" 
+        name="{{ field.alias }}" 
+        class="checkbox"
+        {% if value %} checked {% endif %} 
+    >
+    <label for="{{ field.alias }}" class="ml-2 block text-sm font-medium text-gray-700">
+        {{ field.name }}
+    </label>
+</div>
