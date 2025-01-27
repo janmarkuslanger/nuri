@@ -8,3 +8,4 @@ class FieldType(enum.Enum):
     DATE = "Date"
     ASSET = "Asset"
     COLLECTION = "Collection"
+    TEXTAREA = "Textarea"

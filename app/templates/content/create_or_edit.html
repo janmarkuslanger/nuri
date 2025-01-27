@@ -10,7 +10,7 @@
 
 {{ common.render_head(title) }}
 
-<form method="POST" class="space-y-8">
+<form method="POST" class="space-y-8 max-w-[700px]">
   {% for field in content_fields %}
     {{ field|safe }}
   {% endfor %}
@@ -18,8 +18,8 @@
   <div class="flex gap-4">
     <a href="{{ url_for('content.index', id=collection.id) }}" class="btn btn-neutral">Back</a>
     <button type="submit" class="btn">Save</button>
-  
   </div>
+
 </form>
 
 
@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+{% endif %}
 
 
 function createSortElement() {
@@ -42,9 +43,8 @@ function createSortElement() {
   sortIcon.className = 'cursor-grab material-icons';
   return sortIcon;
 }
-{% endif %}
 
-{% if all_content %}
+
 function addInput(containerId) {
   const container = document.getElementById(containerId);
 
@@ -63,7 +63,7 @@ function addInput(containerId) {
   removeButton.className = "btn";
   removeButton.textContent = "Remove";
   removeButton.onclick = function () {
-    removeInput(removeButton);
+    removeField(removeButton);
   };
 
   div.appendChild(sortIcon);
@@ -72,6 +72,33 @@ function addInput(containerId) {
   container.appendChild(div);
 }
 
+function addTextarea(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const field = document.createElement("textarea");
+  field.name = containerId.split("_inputs")[0];
+  field.className = "textarea textarea-bordered w-full";
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(field);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+
+{% if all_content %}
 function addSelect(containerId) {
   const container = document.getElementById(containerId);
 
@@ -105,7 +132,7 @@ function addSelect(containerId) {
   removeButton.className = "btn";
   removeButton.textContent = "Remove";
   removeButton.onclick = function () {
-    removeInput(removeButton);
+    removeField(removeButton);
   };
 
   div.appendChild(sortIcon);
@@ -149,7 +176,7 @@ function addAssetSelect(containerId) {
   removeButton.className = "btn";
   removeButton.textContent = "Remove";
   removeButton.onclick = function () {
-    removeInput(removeButton);
+    removeField(removeButton);
   };
 
   div.appendChild(sortIcon);
@@ -159,12 +186,11 @@ function addAssetSelect(containerId) {
 }
 {% endif %}
 
-{% if all_content or all_assets %}
-function removeInput(button) {
+function removeField(button) {
   const parent = button.parentElement;
   parent.remove();
 }
-{% endif %}
+
 
 </script>
 
