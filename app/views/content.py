@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.models import Collection, Content, FieldType, Field, Asset
 from app.extensions import db
 from app.views.auth import roles_required
 from app.models.role import Role
+from app.services.message import created_success, deleted_success, updated_success, error
 
 view = Blueprint("content", __name__, url_prefix="/content")
 
@@ -54,11 +55,11 @@ def create(collection_id):
             data[field.alias] = value
 
         if errors:
-            flash(" ".join(errors), "error")
+            error(" ".join(errors))
         else:
             new_content = Content(collection_id=collection_id, data=data)
             new_content.save()
-            flash("Content created!", "success")
+            created_success("Content")
             return redirect(url_for("content.index", id=collection_id))
 
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
@@ -101,7 +102,7 @@ def create(collection_id):
 
 
 @view.route("/edit/<int:content_id>", methods=["GET", "POST"])
-#@roles_required(Role.EDITOR, Role.ADMIN)
+@roles_required(Role.EDITOR, Role.ADMIN)
 def edit(content_id):
     content = Content.query.get_or_404(content_id)
     collection = content.collection
@@ -126,7 +127,7 @@ def edit(content_id):
 
         content.data = data
         db.session.commit()
-        flash("Content updated!", "success")
+        updated_success("Content")
         return redirect(url_for("content.index", id=collection.id))
 
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
@@ -175,5 +176,5 @@ def delete(content_id):
     content = Content.query.get_or_404(content_id)
     db.session.delete(content)
     db.session.commit()
-    flash("Content erfolgreich gelöscht!", "success")
+    deleted_success("Content")
     return redirect(url_for("content.index", collection_id=content.collection_id))

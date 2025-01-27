@@ -47,7 +47,7 @@
 
                     <div class="absolute right-[20px] top-[20px]">
                         {% for category, message in messages %}
-                        <div role="alert" class="alert">
+                        <div role="alert" class="alert {% if category == "success" %}bg-success{% endif %} {% if category == "error" %}bg-error{% endif %}">
                                 {{ message }}
                             </div>
                         {% endfor %}

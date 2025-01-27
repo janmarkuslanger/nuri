@@ -6,11 +6,11 @@ from flask import (
     request,
     redirect,
     current_app,
-    url_for,
-    send_from_directory,
+    url_for
 )
 from app.models import Asset, Role
 from app.views.auth import roles_required
+from app.services.message import created_success, deleted_success, updated_success
 
 view = Blueprint("asset", __name__)
 
@@ -39,7 +39,7 @@ def create():
 
         asset = Asset(name=name if name else filename, path=filepath, is_public=True)
         asset.save()
-
+        created_success("Asset")
         return redirect(url_for("asset.index"))
 
     return render_template("/asset/create_or_edit.html")
@@ -68,7 +68,9 @@ def edit(id):
             file.save(filepath)
             asset.path = filepath
 
+        updated_success("Asset")
         asset.save()
+        
         return redirect(url_for("asset.index"))
 
     return render_template("/asset/create_or_edit.html", asset=asset)
@@ -84,7 +86,7 @@ def delete(id):
             os.remove(asset.path)
 
         asset.delete()
-
+        deleted_success("Asset")
         return redirect(url_for("asset.index"))
 
     return render_template("/asset/delete.html", asset=asset)
