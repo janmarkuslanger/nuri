@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.models import Access, Role
 from app.views.auth import roles_required
+from app.services.message import created_success, deleted_success
 
 
 view = Blueprint("access", __name__)
@@ -21,7 +22,7 @@ def create():
         new_item = Access(name=name)
         new_item.generate_api_key()
         new_item.save()
-
+        created_success("Access")
         return redirect(url_for("access.index"))
 
     return render_template("access/create.html")
@@ -34,6 +35,7 @@ def delete(id):
 
     if request.method == "POST":
         item.delete()
+        deleted_success("Access")
         return redirect(url_for("access.index"))
 
     return render_template("access/delete.html", item=item)

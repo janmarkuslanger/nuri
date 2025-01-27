@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, abort, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
 from app.models.user import User
 from app.models.role import Role
 from app.extensions import db
 from app.views.auth import roles_required
+from app.services.message import created_success, deleted_success, updated_success, error
 
 view = Blueprint("user", __name__, url_prefix="/user")
 
@@ -25,7 +26,7 @@ def create():
         role = request.form.get("role")
 
         if User.query.filter_by(email=email).first():
-            flash("A user with this email already exists.", "danger")
+            error("A user with this email already exists.")
             return redirect(url_for("user.create"))
 
         user = User(
@@ -34,7 +35,7 @@ def create():
         user.set_password(request.form.get("password"))
         db.session.add(user)
         db.session.commit()
-        flash("User created successfully.", "success")
+        created_success("User")
         return redirect(url_for("user.index"))
 
     return render_template("/user/create_or_edit.html", Role=Role)
@@ -53,7 +54,7 @@ def edit(id):
         if request.form.get("password"):
             user.set_password(request.form.get("password"))
         db.session.commit()
-        flash("User updated successfully.", "success")
+        updated_success("User")
         return redirect(url_for("user.index"))
 
     return render_template("/user/create_or_edit.html", user=user, Role=Role)
@@ -71,7 +72,7 @@ def settings():
         if request.form.get("password"):
             user.set_password(request.form.get("password"))
         db.session.commit()
-        flash("User updated successfully.", "success")
+        updated_success("User")
         return redirect(url_for("user.index"))
 
     return render_template("/user/create_or_edit.html", user=user, Role=Role)
@@ -83,13 +84,13 @@ def delete(id):
     user = User.query.get_or_404(id)
 
     if User.query.count() < 2:
-        flash("Create another user before deleting the last one.", "warning")
+        error("Create another user before deleting the last one.")
         return redirect(url_for("user.index"))
 
     if request.method == "POST":
         db.session.delete(user)
         db.session.commit()
-        flash("User deleted successfully.", "success")
+        deleted_success("User")
         return redirect(url_for("user.index"))
 
     return render_template("/user/delete.html", user=user)

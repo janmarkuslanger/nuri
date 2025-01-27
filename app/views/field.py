@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.models import Field, Collection, FieldType, Role
 from app.extensions import db
 from app.views.auth import roles_required
+from app.services.message import created_success, deleted_success, updated_success, error
 
 
 view = Blueprint("field", __name__)
@@ -31,7 +32,7 @@ def create():
         ).first()
 
         if excisting_alias:
-            flash("Alias already exists", "error")
+            error("Alias already exists")
             return redirect(url_for("field.index"))
 
         if name and alias:
@@ -45,6 +46,7 @@ def create():
                 is_required=is_required,
             )
             new_collection.save()
+            created_success("Field")
             return redirect(url_for("field.index"))
 
     collections = Collection.query.all()
@@ -71,7 +73,7 @@ def edit(id):
             Field.alias == alias, Field.id != id
         ).first()
         if existing_alias:
-            flash("Alias already exists", "error")
+            error("Alias already exists")
             return redirect(url_for("field.edit", id=id))
 
         if name and alias and field_type and collection_id:
@@ -83,7 +85,8 @@ def edit(id):
             field.is_required = is_required
             field.display_field = display_field
             db.session.commit()
-            flash("Field updated successfully!", "success")
+            
+            updated_success("Field")
             return redirect(url_for("field.index"))
 
     collections = Collection.query.all()
@@ -99,6 +102,7 @@ def delete(id):
 
     if request.method == "POST":
         field.delete()
+        deleted_success("Field")
         return redirect(url_for("field.index"))
 
     return render_template("field/delete.html", field=field)

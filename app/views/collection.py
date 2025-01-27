@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.models import Collection, Role
 from app.extensions import db
 from app.views.auth import roles_required
+from app.services.message import created_success, deleted_success, updated_success, error
 
 view = Blueprint("collection", __name__)
 
@@ -23,12 +24,13 @@ def create():
 
         excistingAlias = Collection.query.filter_by(alias=alias).first()
         if excistingAlias:
-            flash("Alias already exists", "error")
+            error("Alias already exists")
             return redirect(url_for("collection.index"))
 
         if name and alias:
             new_collection = Collection(name=name, alias=alias, description=description)
             new_collection.save()
+            created_success("Collection")
             return redirect(url_for("collection.index"))
 
     return render_template("collection/create_or_edit.html")
@@ -48,7 +50,7 @@ def edit(id):
             Collection.alias == alias, Collection.id != id
         ).first()
         if existing_alias:
-            flash("Alias already exists", "error")
+            error("Alias already exists")
             return redirect(url_for("collection.edit", id=id))
 
         if name and alias:
@@ -56,7 +58,7 @@ def edit(id):
             collection.alias = alias
             collection.description = description
             db.session.commit()
-            flash("Collection updated successfully!", "success")
+            updated_success("Collection")
             return redirect(url_for("collection.index"))
 
     return render_template("collection/create_or_edit.html", item=collection)
@@ -69,6 +71,7 @@ def delete(id):
 
     if request.method == "POST":
         collection.delete()
+        deleted_success("Collection")
         return redirect(url_for("collection.index"))
 
     return render_template("collection/delete.html", collection=collection)
