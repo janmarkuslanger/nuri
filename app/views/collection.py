@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from app.models import Collection, Role
 from app.extensions import db
 from app.views.auth import roles_required
-from app.services.message import created_success, deleted_success, updated_success, error
+from app.utils.message import created_success, deleted_success, updated_success, error
 
 view = Blueprint("collection", __name__)
 

@@ -10,7 +10,7 @@ from flask import (
 )
 from app.models import Asset, Role
 from app.views.auth import roles_required
-from app.services.message import created_success, deleted_success, updated_success
+from app.utils.message import created_success, deleted_success, updated_success
 
 view = Blueprint("asset", __name__)
 
