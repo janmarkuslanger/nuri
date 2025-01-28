@@ -8,11 +8,11 @@
             <div class="sortable-item mb-2 flex items-center gap-2">
             <span class="cursor-grab material-icons">drag_handle</span>
             <div>
-            <input type="hidden" name="{{ field.alias }}" />
-            <div
-                
-                class="textarea textarea-bordered w-full richtext max-w-[700px]"
-            >{{ item|safe or '' }}</div>
+                <input type="hidden" name="{{ field.alias }}" />
+                <div
+                    
+                    class="textarea textarea-bordered w-full richtext max-w-[700px]"
+                >{{ item|safe or '' }}</div>
             </div>
             {% if loop.index > 1 %}
                 <button class="btn" onclick=removeField(this)>Remove</button>

@@ -96,11 +96,17 @@ function addRichtext(containerId) {
 
   const sortIcon = createSortElement();
 
-  const hidden = document.createElement("input")
+  const innerContainer = document.createElement("div");
+
+  const hidden = document.createElement("input");
+  hidden.type = "hidden";
   hidden.name = containerId.split("_inputs")[0];
 
   const field = document.createElement("div");
   field.className = "textarea textarea-bordered w-full richtext";
+
+  innerContainer.appendChild(hidden);
+  innerContainer.appendChild(field);
 
   const removeButton = document.createElement("button");
   removeButton.type = "button";
@@ -111,8 +117,7 @@ function addRichtext(containerId) {
   };
 
   div.appendChild(sortIcon);
-  div.appendChild(hidden)
-  div.appendChild(field);
+  div.appendChild(innerContainer);
   div.appendChild(removeButton);
   container.appendChild(div);
   initQuill(field)

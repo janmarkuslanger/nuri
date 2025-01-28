@@ -124,8 +124,6 @@ def edit(content_id):
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
 
             data[field.alias] = value
-            
-            print(value)
 
         content.data = data
         db.session.commit()
