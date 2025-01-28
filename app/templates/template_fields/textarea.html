@@ -10,7 +10,8 @@
             <textarea
                 name="{{ field.alias }}"
                 class="textarea textarea-bordered w-full"
-            >{{ item or '' }}</textarea>
+                {% if field.is_required %}required{% endif %}
+            >{{ item if item else '' }}</textarea>
             {% if loop.index > 1 %}
                 <button class="btn" onclick=removeField(this)>Remove</button>
             {% endif %}
@@ -23,6 +24,7 @@
         id="{{ field.alias }}"
         name="{{ field.alias }}"
         class="textarea textarea-bordered w-full"
-        >{{ content.data.get(field.alias) if content else '' }}</textarea>
+        {% if field.is_required %}required{% endif %}
+        >{{ content.data.get(field.alias) if content.data.get(field.alias) else '' }}</textarea>
     {% endif %}
 </div>    

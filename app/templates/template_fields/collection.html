@@ -6,7 +6,7 @@
         {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
           <div class="sortable-item mb-2 flex items-center gap-2" >
             <span class="cursor-grab material-icons">drag_handle</span>
-            <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}">
+            <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}" {% if field.is_required %}required{% endif %}>
               <option value="" {% if not item %}selected{% endif %} disabled>Select {{field.name}}</option>
               {% for content_item, collection_name, display_field_alias in all_content %}
                 <option {% if item|string == content_item.id|string %}selected{% endif %} value="{{ content_item.id }}">{{ collection_name }}: {{ content_item.data.get(display_field_alias) }}</option>
@@ -22,7 +22,7 @@
     {% else %}
       {% set field_value = content.data.get(field.alias) if content else None %}
       <div id="{{ field.alias }}" class="mb-2 flex items-center gap-2">
-        <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}">
+        <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}" {% if field.is_required %}required{% endif %}>
           <option value="" disabled {% if not field_value %}selected{% endif %}>Select {{field.name}}</option>
           {% for content_item, collection_name, display_field_alias in all_content %}
             <option {% if field_value|string == content_item.id|string %}selected{% endif %} value="{{ content_item.id }}">{{ collection_name }}: {{ content_item.data.get(display_field_alias) }}</option>

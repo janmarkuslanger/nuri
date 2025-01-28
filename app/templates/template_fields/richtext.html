@@ -8,11 +8,11 @@
             <div class="sortable-item mb-2 flex items-center gap-2">
             <span class="cursor-grab material-icons">drag_handle</span>
             <div>
-                <input type="hidden" name="{{ field.alias }}" />
+                <input type="hidden" name="{{ field.alias }}" {% if field.is_required %}required{% endif %} />
                 <div
                     
                     class="textarea textarea-bordered w-full richtext max-w-[700px]"
-                >{{ item|safe or '' }}</div>
+                >{{ item|safe if item else '' }}</div>
             </div>
             {% if loop.index > 1 %}
                 <button class="btn" onclick=removeField(this)>Remove</button>
@@ -22,10 +22,10 @@
         </div>
         <button type="button" onclick="addRichtext('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
     {% else %}
-        <input type="hidden" name="{{ field.alias }}" />
+        <input type="hidden" name="{{ field.alias }}" {% if field.is_required %}required{% endif %} />
         <div
         id="{{ field.alias }}"
         class="textarea textarea-bordered w-full richtext max-w-[700px]"
-        >{{ content.data.get(field.alias)|safe if content else '' }}</div>
+        >{{ content.data.get(field.alias)|safe if content.data.get(field.alias) else '' }}</div>
     {% endif %}
 </div>    
