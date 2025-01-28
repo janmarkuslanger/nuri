@@ -13,6 +13,7 @@
                   name="{{ field.alias }}"
                   value="{{ item or '' }}"
                   class="input input-bordered w-full max-w-xs"
+                  {% if field.is_required %}required{% endif %}
                 >
                 {% if loop.index > 1 %}
                   <button class="btn" onclick=removeField(this)>Remove</button>
@@ -26,8 +27,9 @@
             type="{{ inputType }}"
             id="{{ field.alias }}"
             name="{{ field.alias }}"
-            value="{{ content.data.get(field.alias) if content else '' }}"
+            value="{{ content.data.get(field.alias) if content.data.get(field.alias) else '' }}"
             class="input input-bordered w-full max-w-xs"
+            {% if field.is_required %}required{% endif %}
           >
         {% endif %}
       </div>    

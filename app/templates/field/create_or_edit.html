@@ -21,6 +21,7 @@
         'value',
         item.field_type.name if item else None,
         'name',
+        True,
     ) }}
     {{ macros.render_select(
         'collection_id',
@@ -29,7 +30,8 @@
         'id',
         'name',
         item.collection_id if item else None,
-        'id'
+        'id',
+        True
     ) }}
     {{
         macros.render_checkbox("is_list", "Is list?", item.is_list if item else None)
