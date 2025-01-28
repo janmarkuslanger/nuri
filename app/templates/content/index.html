@@ -39,7 +39,7 @@
         {% endfor %}
         <td>
             <a href="{{ url_for('content.edit', content_id=content.id) }}">edit</a>
-            <a href="{{ url_for('content.delete', content_id=content.id) }}">delete</a>
+            <a href="{{ url_for('content.delete', id=content.id) }}">delete</a>
         </td>
     </tr>
     {% endfor %}

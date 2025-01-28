@@ -170,11 +170,14 @@ def edit(content_id):
     )
 
 
-@view.route("/delete/<int:content_id>", methods=["POST"])
+@view.route("/delete/<int:id>", methods=["GET", "POST"])
 @roles_required(Role.EDITOR, Role.ADMIN)
-def delete(content_id):
-    content = Content.query.get_or_404(content_id)
-    db.session.delete(content)
-    db.session.commit()
-    deleted_success("Content")
-    return redirect(url_for("content.index", collection_id=content.collection_id))
+def delete(id):
+    content = Content.query.get_or_404(id)
+
+    if request.method == "POST":
+        content.delete()
+        deleted_success("Content")
+        return redirect(url_for("content.list_collections"))
+
+    return render_template("content/delete.html", content=content)
