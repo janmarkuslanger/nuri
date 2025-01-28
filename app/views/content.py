@@ -86,7 +86,7 @@ def create(collection_id):
     
     content_fields = []
     for field in collection.fields:
-        template_name = field.field_type.value.lower() if field.field_type.value.lower() in ["asset", "boolean", "collection", "textarea"] else "*"
+        template_name = field.field_type.value.lower() if field.field_type.value.lower() in ["asset", "boolean", "collection", "textarea", "richtext"] else "*"
         template_path = "template_fields/" + template_name + ".html"
         rendered = render_template(template_path, field=field, all_content=all_content, all_assets=all_assets, FieldType=FieldType)
         content_fields.append(rendered)
@@ -124,6 +124,8 @@ def edit(content_id):
                 value = [v == "on" for v in value] if field.is_list else (value == "on")
 
             data[field.alias] = value
+            
+            print(value)
 
         content.data = data
         db.session.commit()
@@ -154,7 +156,7 @@ def edit(content_id):
 
     content_fields = []
     for field in collection.fields:
-        template_name = field.field_type.value.lower() if field.field_type.value.lower() in ["asset", "boolean", "collection", "textarea"] else "*"
+        template_name = field.field_type.value.lower() if field.field_type.value.lower() in ["asset", "boolean", "collection", "textarea", "richtext"] else "*"
         template_path = "template_fields/" + template_name + ".html"
         rendered = render_template(template_path, field=field, content=content, all_content=all_content, all_assets=all_assets, FieldType=FieldType)
         content_fields.append(rendered)

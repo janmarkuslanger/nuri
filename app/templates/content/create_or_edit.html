@@ -22,9 +22,9 @@
 
 </form>
 
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
 <script>
-{% if all_content or all_assets %}
 document.addEventListener("DOMContentLoaded", function () {
   const sortableLists = document.querySelectorAll(".sortable-list");
   sortableLists.forEach(list => {
@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-{% endif %}
-
 
 function createSortElement() {
   const sortIcon = document.createElement('span');
@@ -43,6 +41,24 @@ function createSortElement() {
   sortIcon.className = 'cursor-grab material-icons';
   return sortIcon;
 }
+
+function initQuill(element) {
+  const inputHidden = element.previousElementSibling;
+  const quill = new Quill(element, {
+    theme: 'snow'
+  });
+
+
+  inputHidden.value = quill.getText().trim() !== "" ? quill.getSemanticHTML() : ''
+
+  quill.on('text-change', () => {
+    inputHidden.value = quill.getText().trim() !== "" ? quill.getSemanticHTML() : ''
+  });
+}
+
+document.querySelectorAll('.richtext').forEach((element) => {
+  initQuill(element);
+});
 
 
 function addInput(containerId) {
@@ -70,6 +86,36 @@ function addInput(containerId) {
   div.appendChild(input);
   div.appendChild(removeButton);
   container.appendChild(div);
+}
+
+function addRichtext(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const hidden = document.createElement("input")
+  hidden.name = containerId.split("_inputs")[0];
+
+  const field = document.createElement("div");
+  field.className = "textarea textarea-bordered w-full richtext";
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(hidden)
+  div.appendChild(field);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+  initQuill(field)
 }
 
 function addTextarea(containerId) {
