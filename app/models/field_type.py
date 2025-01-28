@@ -9,3 +9,4 @@ class FieldType(enum.Enum):
     ASSET = "Asset"
     COLLECTION = "Collection"
     TEXTAREA = "Textarea"
+    RICHTEXT = "RichText"
