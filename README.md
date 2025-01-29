@@ -55,4 +55,4 @@ app.config.from_pyfile("config.py")
 
 ## 📦 Running in Production
 
-Nuri uses flask so take a look at (this)[https://flask.palletsprojects.com/en/stable/tutorial/deploy/]. 
+Nuri uses flask so take a look at [this](https://flask.palletsprojects.com/en/stable/tutorial/deploy/). 
