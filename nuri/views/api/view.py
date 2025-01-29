@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
-from app.models import Content, Collection, Field, Asset
-from app.views.auth.utils import api_key_required
-from app.services.paginate import generate_paginate
+from nuri.models import Content, Collection, Field, Asset
+from nuri.views.auth.utils import api_key_required
+from nuri.services.paginate import generate_paginate
 from .utils import resolve_content
 
 

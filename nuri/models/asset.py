@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from app.extensions import db
+from nuri.extensions import db
 from .base import BaseModel
 
 

@@ -8,9 +8,9 @@ from flask import (
     current_app,
     url_for
 )
-from app.models import Asset, Role
-from app.views.auth import roles_required
-from app.utils.message import created_success, deleted_success, updated_success
+from nuri.models import Asset, Role
+from nuri.views.auth import roles_required
+from nuri.utils.message import created_success, deleted_success, updated_success
 
 view = Blueprint("asset", __name__)
 

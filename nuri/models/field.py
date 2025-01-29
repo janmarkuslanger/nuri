@@ -1,4 +1,4 @@
-from app.extensions import db
+from nuri.extensions import db
 from .base import BaseModel
 from .field_type import FieldType
 

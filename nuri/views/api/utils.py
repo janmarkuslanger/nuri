@@ -1,5 +1,5 @@
 from sqlalchemy import or_
-from app.models import Field, FieldType, Content, Asset
+from nuri.models import Field, FieldType, Content, Asset
 
 
 def resolve_collection(item):

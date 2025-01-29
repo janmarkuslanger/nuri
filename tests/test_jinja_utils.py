@@ -1,4 +1,4 @@
-from app.jinja_utils import getattr_filter
+from nuri.jinja_utils import getattr_filter
 
 
 class NestedObject:

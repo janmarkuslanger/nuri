@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from app.models import Collection, Content, FieldType, Field, Asset
-from app.extensions import db
-from app.views.auth import roles_required
-from app.models.role import Role
-from app.utils.message import created_success, deleted_success, updated_success, error
+from nuri.models import Collection, Content, FieldType, Field, Asset
+from nuri.extensions import db
+from nuri.views.auth import roles_required
+from nuri.models.role import Role
+from nuri.utils.message import created_success, deleted_success, updated_success, error
 
 view = Blueprint("content", __name__, url_prefix="/content")
 

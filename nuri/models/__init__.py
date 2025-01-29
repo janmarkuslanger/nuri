@@ -1,4 +1,4 @@
-from app.extensions import login_manager
+from nuri.extensions import login_manager
 from .base import BaseModel
 from .collection import Collection
 from .field import Field

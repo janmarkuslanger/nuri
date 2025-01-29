@@ -1,7 +1,7 @@
 import os
 from flask import Flask, send_from_directory
-from app.extensions import init_app
-from app.jinja_utils import getattr_filter
+from nuri.extensions import init_app
+from nuri.jinja_utils import getattr_filter
 
 
 def create_app():
@@ -16,7 +16,7 @@ def create_app():
 
     init_app(app)
 
-    from app.views import (
+    from nuri.views import (
         collection,
         field,
         content,

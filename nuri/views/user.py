@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_required, current_user
-from app.models.user import User
-from app.models.role import Role
-from app.extensions import db
-from app.views.auth import roles_required
-from app.utils.message import created_success, deleted_success, updated_success, error
+from nuri.models.user import User
+from nuri.models.role import Role
+from nuri.extensions import db
+from nuri.views.auth import roles_required
+from nuri.utils.message import created_success, deleted_success, updated_success, error
 
 view = Blueprint("user", __name__, url_prefix="/user")
 

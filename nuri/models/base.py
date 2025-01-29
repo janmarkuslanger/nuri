@@ -1,4 +1,4 @@
-from app.extensions import db
+from nuri.extensions import db
 
 
 class BaseModel(db.Model):
