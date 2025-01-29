@@ -1,6 +1,7 @@
 import os
 from flask import Flask, send_from_directory
 from nuri.extensions import init_app
+from nuri.extensions import db
 from nuri.jinja_utils import getattr_filter
 
 
@@ -45,5 +46,23 @@ def create_app():
         return send_from_directory(UPLOAD_FOLDER, filename)
 
     app.jinja_env.filters["getattr"] = getattr_filter
+    
+    with app.app_context():
+        db.create_all()
+        _initialize_admin_user()
 
     return app
+
+def _initialize_admin_user():
+    from nuri.models import User, Role
+
+    if not User.query.filter_by(role=Role.ADMIN).first():
+        admin_user = User(
+            email="admin@example.com",
+            first_name="Admin",
+            last_name="User",
+            role=Role.ADMIN,
+        )
+        admin_user.set_password("admin123")
+        db.session.add(admin_user)
+        db.session.commit()
