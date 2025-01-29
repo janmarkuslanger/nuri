@@ -26,6 +26,6 @@
         <div
         id="{{ field.alias }}"
         class="textarea textarea-bordered w-full richtext max-w-[700px]"
-        >{{ content.data.get(field.alias)|safe if content.data.get(field.alias) else '' }}</div>
+        >{{ content.data.get(field.alias)|safe if content and content.data.get(field.alias) else '' }}</div>
     {% endif %}
 </div>    
