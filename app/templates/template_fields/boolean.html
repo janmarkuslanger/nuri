@@ -1,5 +1,5 @@
 <div class="flex items-center">
-    {% set value = content.data.get(field.alias) if content else None %}
+    {% set value = content.data.get(field.alias) if content and content.data.get(field.alias) else None %}
     <input 
         type="checkbox" 
         id="{{ field.alias }}" 

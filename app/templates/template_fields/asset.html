@@ -20,7 +20,7 @@
       </div>
       <button type="button" onclick="addAssetSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
     {% else %}
-    {% set field_value = content.data.get(field.alias) if content else None %}
+    {% set field_value = content.data.get(field.alias) if content and content.data.get(field.alias) else None %}
       <div class="mb-2 flex items-center gap-2" >
         <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}" {% if field.is_required %}required{% endif %}>
           <option value="" {% if not field_value %}selected{% endif %} disabled>Select {{field.name}}</option>

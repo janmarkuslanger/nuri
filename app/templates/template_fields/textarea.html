@@ -25,6 +25,6 @@
         name="{{ field.alias }}"
         class="textarea textarea-bordered w-full"
         {% if field.is_required %}required{% endif %}
-        >{{ content.data.get(field.alias) if content.data.get(field.alias) else '' }}</textarea>
+        >{{ content.data.get(field.alias) if content and content.data.get(field.alias) else '' }}</textarea>
     {% endif %}
 </div>    

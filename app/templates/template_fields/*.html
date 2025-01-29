@@ -27,7 +27,7 @@
             type="{{ inputType }}"
             id="{{ field.alias }}"
             name="{{ field.alias }}"
-            value="{{ content.data.get(field.alias) if content.data.get(field.alias) else '' }}"
+            value="{{ content.data.get(field.alias) if content and content.data.get(field.alias) else '' }}"
             class="input input-bordered w-full max-w-xs"
             {% if field.is_required %}required{% endif %}
           >
