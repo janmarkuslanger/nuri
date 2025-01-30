@@ -1,5 +1,4 @@
-from app.services.paginate import generate_paginate, paginate
-from flask import request
+from nuri.services.paginate import paginate
 
 
 def test_paginate_with_default_page(mock_query):

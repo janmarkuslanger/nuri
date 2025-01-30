@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from app.models import Access, Role
-from app.views.auth import roles_required
-from app.utils.message import created_success, deleted_success
+from nuri.models import Access, Role
+from nuri.views.auth import roles_required
+from nuri.utils.message import created_success, deleted_success
 
 
 view = Blueprint("access", __name__)

@@ -1,0 +1,5 @@
+include nuri/templates/*.html
+recursive-include nuri/templates *
+include nuri/static/*
+recursive-include nuri/static *
+prune nuri/static/node_modules

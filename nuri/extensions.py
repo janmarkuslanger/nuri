@@ -13,6 +13,6 @@ def init_app(app):
 
 @login_manager.user_loader
 def load_user(user_id):
-    from app.models import User
+    from nuri.models import User
 
     User.query.get(int(user_id))

@@ -1,22 +1,29 @@
 import os
 from flask import Flask, send_from_directory
-from app.extensions import init_app
-from app.jinja_utils import getattr_filter
+from nuri.extensions import init_app
+from nuri.extensions import db
+from nuri.jinja_utils import getattr_filter
 
 
-def create_app():
+def create_app(config_file = None):
     app = Flask(__name__)
+    
+    UPLOAD_FOLDER = 'uploads'
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///nuri.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+    print(app.config["UPLOAD_FOLDER"])
     app.config["SECRET_KEY"] = os.urandom(24)
-    app.config["UPLOAD_FOLDER"] = "uploads"
-
+    
+    if config_file:
+        app.config.from_pyfile(config_file)
+    
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
     init_app(app)
 
-    from app.views import (
+    from nuri.views import (
         collection,
         field,
         content,
@@ -41,9 +48,26 @@ def create_app():
     @app.route("/uploads/<path:filename>")
     def file(filename):
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
-        return send_from_directory(UPLOAD_FOLDER, filename)
+        return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
     app.jinja_env.filters["getattr"] = getattr_filter
+    
+    with app.app_context():
+        db.create_all()
+        _initialize_admin_user()
 
     return app
+
+def _initialize_admin_user():
+    from nuri.models import User, Role
+
+    if not User.query.filter_by(role=Role.ADMIN).first():
+        admin_user = User(
+            email="admin@example.com",
+            first_name="Admin",
+            last_name="User",
+            role=Role.ADMIN,
+        )
+        admin_user.set_password("admin123")
+        db.session.add(admin_user)
+        db.session.commit()

@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from app.models import Field, Collection, FieldType, Role
-from app.extensions import db
-from app.views.auth import roles_required
-from app.utils.message import created_success, deleted_success, updated_success, error
+from nuri.models import Field, Collection, FieldType, Role
+from nuri.extensions import db
+from nuri.views.auth import roles_required
+from nuri.utils.message import created_success, deleted_success, updated_success, error
 
 
 view = Blueprint("field", __name__)
