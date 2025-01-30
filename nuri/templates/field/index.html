@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Fields" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        fields,
+        ["Name", "Alias", "Collection","Type", "Multiple"],
+        ["name", "alias", "collection.name", "field_type.value", "is_list"],
+        [
+            { "label": "edit", "url": "field.edit", "value": "id" },
+            { "label": "delete", "url": "field.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('field.create', 'field') }}
+{% endblock %}

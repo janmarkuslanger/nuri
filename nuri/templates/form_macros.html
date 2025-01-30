@@ -1,0 +1,88 @@
+{% macro render_text_input(name, label, value='', required=False) %}
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
+    <input
+        type="text"
+        id="{{ name }}"
+        name="{{ name }}"
+        class="input input-bordered w-full max-w-xs"
+        value="{{ value }}"
+        {% if required %}required{% endif %}
+    />
+</div>
+{% endmacro %}
+
+{% macro render_password_input(name, label, value='', required=False) %}
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
+    <input
+        type="password"
+        id="{{ name }}"
+        name="{{ name }}"
+        class="input input-bordered w-full max-w-xs"
+        value="{{ value }}"
+        {% if required %}required{% endif %}
+    />
+</div>
+{% endmacro %}
+
+{% macro render_textarea(name, label, value='', required=False) %}
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
+    <textarea
+        id="{{ name }}"
+        name="{{ name }}"
+        class="textarea textarea-bordered textarea-xs w-full max-w-xs"
+        {% if required %}required{% endif %}
+    >{{ value }}</textarea>
+</div>
+{% endmacro %}
+
+{% macro render_select(name, label, options, value_attribute, display_attribute, value=None, comperator_attribute = None, required=False) %}
+
+<div>
+    <label for="{{ name }}" class="block text-sm font-medium mb-1">{{ label }}</label>
+    <select
+        id="{{ name }}"
+        name="{{ name }}"
+        class="select select-bordered w-full max-w-xs"
+        {% if required %}required{% endif %}
+    >
+        <option value="" disabled {% if not value %}selected{% endif %}>Select {{label}}</option>
+        {% for option in options %}
+            <option value="{{ option|getattr(value_attribute) }}" {% if value == option|getattr(comperator_attribute) %}selected{% endif %}>{{  option|getattr(display_attribute) }}</option>
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}
+
+{% macro render_checkbox(name, label, is_checked = False) %}
+<div class="flex items-center">
+    <input 
+        type="checkbox" 
+        id="{{ name }}" 
+        name="{{ name }}" 
+        class="checkbox"
+        {% if is_checked %} checked {% endif %} 
+    >
+    <label for="{{ name }}" class="ml-2 block text-sm font-medium text-gray-700">
+        {{ label }}
+    </label>
+</div>
+{% endmacro %}
+
+{% macro render_fileupload(name, label, required=False) %}
+<div>
+    <label for="{{ name }}" class="ml-2 block text-sm font-medium text-gray-700 mb-1">
+        {{ label }}
+    </label>
+    <input 
+        type="file" 
+        id="{{ name }}" 
+        name="{{ name }}" 
+        class="input input-bordered w-full max-w-xs"
+        {% if required %}required{% endif %}
+    >
+    
+</div>
+{% endmacro %}

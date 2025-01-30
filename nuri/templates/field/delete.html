@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% import "macros/common.html" as common %}
+{% import "macros/delete.html" as delete %}
+
+{% set title = "Delete field: " + field.name %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{{ common.render_head(title) }}
+
+{{ delete.render_view('field', field.name) }}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Create new access"%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+<form method="POST" class="space-y-4">
+    {{ macros.render_text_input('name', 'Name', "", True) }}
+    
+    <button
+        type="submit"
+        class="btn"
+    >
+        {{ title }}
+    </button>
+</form>
+{% endblock %}

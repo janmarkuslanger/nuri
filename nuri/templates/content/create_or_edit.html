@@ -1,0 +1,249 @@
+{% extends "layout.html" %}
+{% import "macros/common.html" as common %}
+
+{% set title = ("Update" if content else "Create") + " content: " + collection.name %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+{{ common.render_head(title) }}
+
+<form method="POST" class="space-y-8 max-w-[700px]">
+  {% for field in content_fields %}
+    {{ field|safe }}
+  {% endfor %}
+  
+  <div class="flex gap-4">
+    <a href="{{ url_for('content.index', id=collection.id) }}" class="btn btn-neutral">Back</a>
+    <button type="submit" class="btn">Save</button>
+  </div>
+
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sortableLists = document.querySelectorAll(".sortable-list");
+  sortableLists.forEach(list => {
+    new Sortable(list, {
+      animation: 150,
+      handle: ".sortable-item",
+    });
+  });
+});
+
+function createSortElement() {
+  const sortIcon = document.createElement('span');
+  sortIcon.appendChild(document.createTextNode('drag_handle'))
+  sortIcon.className = 'cursor-grab material-icons';
+  return sortIcon;
+}
+
+function initQuill(element) {
+  const inputHidden = element.previousElementSibling;
+  const quill = new Quill(element, {
+    theme: 'snow'
+  });
+
+
+  inputHidden.value = quill.getText().trim() !== "" ? quill.getSemanticHTML() : ''
+
+  quill.on('text-change', () => {
+    inputHidden.value = quill.getText().trim() !== "" ? quill.getSemanticHTML() : ''
+  });
+}
+
+document.querySelectorAll('.richtext').forEach((element) => {
+  initQuill(element);
+});
+
+
+function addInput(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.name = containerId.split("_inputs")[0];
+  input.className = "input input-bordered w-full max-w-xs";
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(input);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+
+function addRichtext(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const innerContainer = document.createElement("div");
+
+  const hidden = document.createElement("input");
+  hidden.type = "hidden";
+  hidden.name = containerId.split("_inputs")[0];
+
+  const field = document.createElement("div");
+  field.className = "textarea textarea-bordered w-full richtext";
+
+  innerContainer.appendChild(hidden);
+  innerContainer.appendChild(field);
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(innerContainer);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+  initQuill(field)
+}
+
+function addTextarea(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const field = document.createElement("textarea");
+  field.name = containerId.split("_inputs")[0];
+  field.className = "textarea textarea-bordered w-full";
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(field);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+
+{% if all_content %}
+function addSelect(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const select = document.createElement("select");
+  select.name = containerId.split("_inputs")[0];
+  select.className = "select select-bordered w-full max-w-xs";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  defaultOption.textContent = "Select an option";
+  select.appendChild(defaultOption);
+
+  let option;
+
+  {% for content, collection_name, display_field_alias in all_content %}
+    option = document.createElement("option");
+    option.value = "{{ content.id }}";
+    option.textContent = "{{ collection_name }}: {{ content.data.get(display_field_alias) }}";
+    select.appendChild(option);
+  {% endfor %}
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(select);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+{% endif %}
+
+{% if all_assets %}
+function addAssetSelect(containerId) {
+  const container = document.getElementById(containerId);
+
+  const div = document.createElement("div");
+  div.className = "sortable-item mb-2 flex items-center gap-2";
+
+  const sortIcon = createSortElement();
+
+  const select = document.createElement("select");
+  select.name = containerId.split("_inputs")[0];
+  select.className = "select select-bordered w-full max-w-xs";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  defaultOption.textContent = "Select an asset";
+  select.appendChild(defaultOption);
+
+  let option;
+
+  {% for asset in all_assets %}
+    option = document.createElement("option");
+    option.value = "{{ asset.id }}";
+    option.textContent = "{{ asset.name }}";
+    select.appendChild(option);
+  {% endfor %}
+
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "btn";
+  removeButton.textContent = "Remove";
+  removeButton.onclick = function () {
+    removeField(removeButton);
+  };
+
+  div.appendChild(sortIcon);
+  div.appendChild(select);
+  div.appendChild(removeButton);
+  container.appendChild(div);
+}
+{% endif %}
+
+function removeField(button) {
+  const parent = button.parentElement;
+  parent.remove();
+}
+
+
+</script>
+
+
+{% endblock %}

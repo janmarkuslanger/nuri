@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "User" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        users,
+        ["E-Mail", "Firstname", "Lastname","Role"],
+        ["email", "first_name", "last_name", "role.value"],
+        [
+            { "label": "edit", "url": "user.edit", "value": "id" },
+            { "label": "delete", "url": "user.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('user.create', 'user') }}
+{% endblock %}

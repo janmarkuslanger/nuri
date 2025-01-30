@@ -1,0 +1,64 @@
+{% import "macros/navigation.html" as navigation %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flask App{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/main.css') }}">
+    <script type="module" src="{{ url_for('static', filename='dist/main.js') }}"></script>
+</head>
+<body class="h-screen">
+    <div class="flex h-full transition-all duration-300">
+        {% if current_user.is_authenticated %}
+        
+        <div 
+            class="group h-full fixed flex-shrink-0 transition-all duration-300 ease-in-out bg-primary z-50"
+            style="width: 64px;"
+            onmouseover="this.style.width = '256px';"
+            onmouseout="this.style.width = '64px';"
+        >
+            <div class="flex flex-col h-full justify-between">
+                <nav class="mt-4 space-y-2">
+                    {{ navigation.render_nav_item("home.index", "home", "Home") }}
+                    {% if current_user.has_role("Admin") %}
+                        {{ navigation.render_nav_item("user.index", "person", "User") }}
+                        {{ navigation.render_nav_item("collection.index", "folder", "Collections") }}
+                        {{ navigation.render_nav_item("field.index", "category", "Fields") }}
+                    {% endif %}
+                    {{ navigation.render_nav_item("asset.index", "publish", "Assets") }}
+                    {{ navigation.render_nav_item("content.list_collections", "article", "Content") }}
+                </nav>
+                <nav class="mb-4 space-y-2">
+                    {% if current_user.has_role("Admin") %}
+                        {{ navigation.render_nav_item("access.index", "code", "Access") }}
+                    {% endif %}
+                    {{ navigation.render_nav_item("user.settings", "settings", "Settings") }}
+                    {{ navigation.render_nav_item("auth.logout", "logout", "Logout") }}
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+        <div class="flex-1 p-4">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+
+                    <div class="absolute right-[20px] top-[20px]">
+                        {% for category, message in messages %}
+                        <div role="alert" class="alert {% if category == "success" %}bg-success{% endif %} {% if category == "error" %}bg-error{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <div class="container mx-auto py-8 pl-[64px]">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

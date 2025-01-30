@@ -1,0 +1,20 @@
+{% macro render_view(name, value) %}
+<form method="POST" class="space-y-4">
+    <div>
+        <label for="name" class="block text-sm font-medium">Do you really want to delete {{ name }}: {{ value }}?</label>
+        <input
+            type="hidden"
+            id="id"
+            name="id"
+            class="hidden"
+            required
+        />
+    </div>
+    <button
+        type="submit"
+        class="btn btn-primary"
+    >
+        Delete
+    </button>
+</form>
+{% endmacro %}

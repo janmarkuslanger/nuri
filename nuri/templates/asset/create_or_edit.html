@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% import "form_macros.html" as macros %}
+
+{% set title = "Create new asset" if not asset else "Update asset " + asset.name %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">{{ title }}</h1>
+<div class="divider"></div>
+<form method="POST" class="space-y-4" enctype="multipart/form-data">
+    {{ macros.render_text_input('name', 'Name', asset.name if asset else '', True) }}
+    {{ macros.render_fileupload('file', 'Asset', True if not asset else False) }}
+
+    <button
+        type="submit"
+        class="btn"
+    >
+        {{ title }}
+    </button>
+</form>
+{% endblock %}

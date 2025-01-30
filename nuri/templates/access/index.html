@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% import "macros/common.html" as common %}
+
+{% set title = "Access" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{{ common.render_head(title) }}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Key</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>
+                <div class="flex gap-2 items-center">
+                    <div>
+                        <span id="api-key-{{item.id}}" class="hidden">{{item.api_key }}</span>
+                        <span id="hidden-key-1">****************</span>
+                    </div>
+                    <button 
+                    onclick="toggleApiKey({{item.id}})" 
+                    class="">
+                    <span class="material-icons">visibility</span>
+                    </button>
+                </div>
+            </td>
+            <td>
+                <a href="{{ url_for('access.delete', id=item.id) }}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="mt-6">
+    <a 
+        href="{{ url_for('access.create') }}" 
+        class="btn"
+    >
+        Create new access
+    </a>
+</div>
+
+<script>
+    function toggleApiKey(id) {
+        const hiddenKey = document.getElementById(`hidden-key-${id}`);
+        const fullKey = document.getElementById(`api-key-${id}`);
+        
+        if (hiddenKey.style.display === "none") {
+          hiddenKey.style.display = "inline";
+          fullKey.style.display = "none";
+        } else {
+          hiddenKey.style.display = "none";
+          fullKey.style.display = "inline";
+        }
+      }
+    </script>
+
+{% endblock %}
+
+

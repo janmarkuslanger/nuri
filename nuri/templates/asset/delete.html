@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% import "macros/common.html" as common %}
+{% import "macros/delete.html" as delete %}
+
+{% set title = "Delete asset: " + asset.name + " (" ~ asset.id + ")" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+{{ delete.render_view('asset', asset.name) }}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% import "macros/common.html" as common %}
+
+{% set title = "Content from collection: " + collection.name %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+<table class="table">
+<thead>
+    <tr>
+        <th>ID</th>
+        {% for field in collection.fields %}
+            {% if field.display_field %}
+                <th>{{ field.name }}</th>
+            {% endif %}
+        {% endfor %}
+        <th>Actions</th>
+    </tr>
+</thead>
+<tbody>
+    {% for content in contents %}
+    <tr>
+        <td>{{ content.id }}</td>
+        {% for field in collection.fields %}
+            {% if field.display_field %}
+                <td>
+                    {% if field.is_list and content.data.get(field.alias) %}
+                        {{ content.data.get(field.alias) | join(", ") }}
+                    {% else %}
+                        {{ content.data.get(field.alias) }}
+                    {% endif %}
+                </td>
+            {% endif %}
+        {% endfor %}
+        <td>
+            <a href="{{ url_for('content.edit', content_id=content.id) }}">edit</a>
+            <a href="{{ url_for('content.delete', id=content.id) }}">delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<div class="mt-6">
+    <a href="{{ url_for('content.create', collection_id=collection.id) }}" class="btn">Create new {{ collection.name.lower() }} content</a>
+</div>
+{% endblock %}

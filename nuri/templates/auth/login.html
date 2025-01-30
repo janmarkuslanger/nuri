@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Login" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{{ common.render_head(title) }}
+<form method="POST" class="space-y-4">
+    {{ macros.render_text_input('email', 'E-Mail', '', True) }}
+    {{ macros.render_password_input('password', 'Password', '', True) }}
+  
+    <button
+        type="submit"
+        class="btn"
+    >
+        Login
+    </button>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+
+<div>
+    <label for="{{ field.alias }}" class="block font-medium mb-2">{{ field.name }}</label>
+    {% if field.is_list %}
+        <div id="{{ field.alias }}_inputs" class="sortable-list">
+
+        {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
+            <div class="sortable-item mb-2 flex items-center gap-2">
+            <span class="cursor-grab material-icons">drag_handle</span>
+            <textarea
+                name="{{ field.alias }}"
+                class="textarea textarea-bordered w-full"
+                {% if field.is_required %}required{% endif %}
+            >{{ item if item else '' }}</textarea>
+            {% if loop.index > 1 %}
+                <button class="btn" onclick=removeField(this)>Remove</button>
+            {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+        <button type="button" onclick="addTextarea('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
+    {% else %}
+        <textarea
+        id="{{ field.alias }}"
+        name="{{ field.alias }}"
+        class="textarea textarea-bordered w-full"
+        {% if field.is_required %}required{% endif %}
+        >{{ content.data.get(field.alias) if content and content.data.get(field.alias) else '' }}</textarea>
+    {% endif %}
+</div>    

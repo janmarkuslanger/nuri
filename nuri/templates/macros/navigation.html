@@ -1,0 +1,6 @@
+{% macro render_nav_item(url, icon, label) %}
+<a href="{{ url_for(url) }}" class="flex items-center px-4 py-2">
+    <span class="material-icons">{{icon}}</span>
+    <span class="ml-4 hidden group-hover:block">{{label}}</span>
+</a>
+{% endmacro %}

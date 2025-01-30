@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% import "macros/common.html" as common %}
+{% import "macros/delete.html" as delete %}
+
+{% set title = "Delete access: " + item.name + " (" ~ item.id + ")" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{{ common.render_head(title) }}
+
+{{ delete.render_view('access', item.name) }}
+{% endblock %}

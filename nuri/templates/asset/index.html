@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Assets" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        assets,
+        ["Name", "Path"],
+        ["name", "path"],
+        [
+            { "label": "edit", "url": "asset.edit", "value": "id" },
+            { "label": "delete", "url": "asset.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('asset.create', 'asset') }}
+{% endblock %}

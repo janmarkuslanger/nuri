@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% import "macros/table.html" as table %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Collections" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{{ common.render_head(title) }}
+
+{{
+    table.render_table(
+        collections,
+        ["Name", "Alias", "Description"],
+        ["name", "alias", "description"],
+        [
+            { "label": "edit", "url": "collection.edit", "value": "id" },
+            { "label": "delete", "url": "collection.delete", "value": "id" }
+        ]
+    )
+}}
+
+{{ table.render_create_button('collection.create', 'collection') }}
+{% endblock %}

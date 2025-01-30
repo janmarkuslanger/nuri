@@ -1,0 +1,34 @@
+<div>
+    <label for="{{ field.alias }}" class="block font-medium mb-2">{{ field.name }}</label>
+
+    {% if field.is_list %}
+      <div id="{{ field.alias }}_inputs" class="sortable-list">
+        {% for item in (content.data.get(field.alias) if content and field.is_list and content.data.get(field.alias) else [None]) %}
+          <div class="sortable-item mb-2 flex items-center gap-2" >
+            <span class="cursor-grab material-icons">drag_handle</span>
+            <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}" {% if field.is_required %}required{% endif %}>
+              <option value="" {% if not item %}selected{% endif %} disabled>Select {{field.name}}</option>
+              {% for asset in all_assets %}
+                <option {% if item|string == asset.id|string %}selected{% endif %} value="{{ asset.id }}">{{ asset.name }}</option>
+              {% endfor %}
+            </select>
+            {% if loop.index > 1 %}
+              <button class="btn" onclick=removeField(this)>Remove</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <button type="button" onclick="addAssetSelect('{{ field.alias }}_inputs')" class="btn btn-neutral mt-2">Add more</button>
+    {% else %}
+    {% set field_value = content.data.get(field.alias) if content and content.data.get(field.alias) else None %}
+      <div class="mb-2 flex items-center gap-2" >
+        <select class="select select-bordered w-full max-w-xs" name="{{ field.alias }}" {% if field.is_required %}required{% endif %}>
+          <option value="" {% if not field_value %}selected{% endif %} disabled>Select {{field.name}}</option>
+          {% for asset in all_assets %}
+            <option {% if field_value|string == asset.id|string %}selected{% endif %} value="{{ asset.id }}">{{ asset.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endif %}
+
+  </div>
