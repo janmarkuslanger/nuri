@@ -39,18 +39,23 @@ Make sure you create your own admin user and delete the demouser!
 
 ## 🛠 Configuration (Optional)
 
-You can customize the configuration by creating a `config.py` file:
+You should customize the configuration by creating a `config.py` file:
 
 ```python
 # config.py
+import os
+
 SQLALCHEMY_DATABASE_URI = "sqlite:///my_nuri.db"
-SECRET_KEY = "my_secret_key"
+SECRET_KEY = os.urandom(24)
 ```
 
 Then load it in `run.py`:
 
 ```python
-app.config.from_pyfile("config.py")
+project_root = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(project_root, "config.py")
+
+app = create_app(config_path)
 ```
 
 ## 📦 Running in Production
