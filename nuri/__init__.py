@@ -7,10 +7,13 @@ from nuri.jinja_utils import getattr_filter
 
 def create_app(config_file = None):
     app = Flask(__name__)
+    
+    UPLOAD_FOLDER = 'uploads'
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///nuri.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["UPLOAD_FOLDER"] = "uploads"
+    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+    print(app.config["UPLOAD_FOLDER"])
     app.config["SECRET_KEY"] = os.urandom(24)
     
     if config_file:
