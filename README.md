@@ -63,7 +63,7 @@ Nuri uses flask so take a look at [this](https://flask.palletsprojects.com/en/st
 ### Authentication
 All endpoints require an API key for authentication. The API key must be included in the headers:
 ```python
-api_key = request.headers.get("x-api-key")
+x-api-key
 ```
 
 ### Pagination
