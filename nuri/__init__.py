@@ -8,16 +8,11 @@ from nuri.jinja_utils import getattr_filter
 def create_app(config_file = None):
     app = Flask(__name__)
     
-    UPLOAD_FOLDER = 'uploads'
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///nuri.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-    print(app.config["UPLOAD_FOLDER"])
-    app.config["SECRET_KEY"] = os.urandom(24)
     
     if config_file:
         app.config.from_pyfile(config_file)
+    else: 
+        app.config.from_pyfile("./config.py")
     
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
@@ -45,10 +40,17 @@ def create_app(config_file = None):
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(home, url_prefix="/")
 
+
     @app.route("/uploads/<path:filename>")
     def file(filename):
-        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+        upload_folder = os.path.abspath(app.config["UPLOAD_FOLDER"])
+        file_path = os.path.join(upload_folder, filename)
+
+        if not os.path.exists(file_path):
+            return "File not found", 404
+
+        return send_from_directory(upload_folder, filename)
+
 
     app.jinja_env.filters["getattr"] = getattr_filter
     
