@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="nuri-cms",
-    version="0.1.7",
+    version="0.1.8",
     description="A lightweight API-first CMS.",
     author="Jan Markus Langer",
     author_email="janmarkuslanger10121994@gmail.com",
