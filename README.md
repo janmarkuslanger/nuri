@@ -45,7 +45,9 @@ You should customize the configuration by creating a `config.py` file:
 # config.py
 import os
 
-UPLOAD_FOLDER = os.path.join(os.path.abspath(os.getcwd()), "uploads")
+import os
+
+UPLOAD_FOLDER = "uploads"
 SQLALCHEMY_DATABASE_URI = "sqlite:///nuri.db"
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SECRET_KEY = os.urandom(24)
