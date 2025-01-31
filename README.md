@@ -8,8 +8,6 @@ It is designed to be minimalistic and easy to set up.
 
 ---
 
-[CHANGELOG](/CHANGELOG.md)
-
 
 ## 🚀 Installation
 
