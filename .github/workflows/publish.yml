@@ -2,11 +2,67 @@ name: Publish to PyPI
 
 on:
   release:
-    types: [created] 
+    types: [created]
 
 jobs:
-  deploy:
+  versioning:
+    name: Update Version & Changelog
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade commitizen
+
+      - name: Update pyproject.toml and Generate Changelog
+        run: |
+          RELEASE_VERSION=${{ github.event.release.tag_name }}
+          echo "Updating version to $RELEASE_VERSION"
+
+          sed -i "s/^version = \".*\"/version = \"$RELEASE_VERSION\"/" pyproject.toml
+
+          cz changelog --incremental
+
+          echo "Checking changes before committing:"
+          git status
+
+      - name: Commit and Push Changes
+        run: |
+          RELEASE_VERSION=${{ github.event.release.tag_name }}
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+
+          echo "Adding files"
+          git add pyproject.toml CHANGELOG.md
+
+          echo "Checking staged files:"
+          git status
+
+          # Check if there are any changes before committing
+          if [[ -z $(git status --porcelain) ]]; then
+            echo "No changes detected, skipping commit."
+            exit 0
+          fi
+
+          git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
+          git push origin main
+
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: versioning
+    if: github.event.release.tag_name != ''
 
     steps:
       - name: Checkout repository
@@ -19,27 +75,43 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade build twine commitizen
-
-      - name: Bump version and generate changelog
-        run: |
-          cz bump --yes
-
-      - name: Commit and push updated version
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add pyproject.toml CHANGELOG.md
-          git commit -m "chore(release): bump version and update changelog"
-          git push origin main  # Ändere den Branch, falls nötig
+          pip install --upgrade build
 
       - name: Build package
-        run: |
-          python -m build
+        run: python -m build
+
+      - name: Upload Package Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: package-dist
+          path: dist/*
+
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event.release.tag_name != ''
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download Package Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: package-dist
+          path: dist
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install twine
+        run: pip install --upgrade twine
 
       - name: Publish to PyPI
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: |
-          twine upload dist/*
+        run: twine upload dist/*
