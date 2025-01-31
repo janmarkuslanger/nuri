@@ -1,4 +1,4 @@
-name: Publish to PyPI / Changelog
+name: Publish to PyPI
 
 on:
   release:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  
+          fetch-depth: 0 
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -28,10 +28,13 @@ jobs:
           RELEASE_VERSION=${{ github.event.release.tag_name }}
           echo "Releasing version $RELEASE_VERSION"
 
+          # Wechsle auf main (verhindert "detached HEAD" Problem)
+          git checkout main
+
           # Setzt die neue Version in pyproject.toml
           sed -i "s/^version = .*/version = \"$RELEASE_VERSION\"/" pyproject.toml
 
-          # Generiert den Changelog
+          # Generiere den Changelog
           cz changelog
           
           # Commit & Push der neuen Version und CHANGELOG.md
@@ -40,7 +43,7 @@ jobs:
           git add pyproject.toml CHANGELOG.md
           git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
           git push origin main
-
+          
       - name: Build package
         run: python -m build
 
