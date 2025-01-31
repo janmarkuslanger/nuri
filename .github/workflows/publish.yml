@@ -53,7 +53,13 @@ jobs:
           git checkout -b $TEMP_BRANCH
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
+
+          echo "Adding files"
           git add pyproject.toml CHANGELOG.md
+
+          echo "Checking staged files:"
+          git status
+
           git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
           git push origin $TEMP_BRANCH
 
