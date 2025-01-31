@@ -48,7 +48,7 @@ jobs:
           git add pyproject.toml CHANGELOG.md
           git commit -m "chore(release): update version to $RELEASE_VERSION and CHANGELOG"
 
-          git remote set-url origin "https://${{ secrets.PAT_KEY }}@github.com/<YOUR_ORG_OR_USERNAME>/<YOUR_REPO>.git"
+          git remote set-url origin "https://${{ secrets.PAT_KEY }}@github.com/janmarkuslanger/nuri.git"
 
           git push origin main
 
