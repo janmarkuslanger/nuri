@@ -13,6 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
+          # WICHTIG, damit Commitizen korrekt die Historie hat
           fetch-depth: 0
 
       - name: Set up Python
@@ -20,58 +21,48 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade commitizen
+      - name: Install commitizen
+        run: pip install --upgrade commitizen
 
-      - name: Update pyproject.toml and Generate Changelog
+      - name: Update pyproject.toml and generate changelog
+        id: version_and_changelog
         run: |
           RELEASE_VERSION=${{ github.event.release.tag_name }}
-          TEMP_BRANCH="release-temp-$RELEASE_VERSION"
-          echo "Updating version to $RELEASE_VERSION"
-
-          # Update pyproject.toml
+          echo "Updating pyproject.toml to version $RELEASE_VERSION"
+          
+          # Version in pyproject.toml aktualisieren
           sed -i "s/^version = \".*\"/version = \"$RELEASE_VERSION\"/" pyproject.toml
-
-          # Generate the changelog
+          
+          # CHANGELOG generieren (incremental)
           cz changelog --incremental
 
-          echo "Checking changes before committing:"
+          echo "Git status after changelog update:"
           git status
-
-          # Check if there are any changes before committing
+          
+          # Prüfen, ob sich Dateien geändert haben
           if [[ -z $(git status --porcelain) ]]; then
-            echo "No changes detected, skipping commit."
-            exit 1
+            echo "No changes found."
+            echo "::set-output name=has_changes::false"
+          else
+            echo "Changes found."
+            echo "::set-output name=has_changes::true"
           fi
 
-      - name: Push changes to a temporary branch
+      - name: Commit & push changes directly to main
+        if: steps.version_and_changelog.outputs.has_changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           RELEASE_VERSION=${{ github.event.release.tag_name }}
-          TEMP_BRANCH="release-temp-$RELEASE_VERSION"
-
-          git checkout -b $TEMP_BRANCH
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
 
-          echo "Adding files"
           git add pyproject.toml CHANGELOG.md
+          git commit -m "chore(release): update version to $RELEASE_VERSION and CHANGELOG"
 
-          echo "Checking staged files:"
-          git status
-
-          git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
-          git push origin $TEMP_BRANCH
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release-temp-${{ github.event.release.tag_name }}
-          base: main
-          title: "Release ${{ github.event.release.tag_name }}"
-          body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.release.tag_name }}."
-          draft: false
+          # Hier wird direkt auf main gepusht
+          # Achtung: Nur möglich, wenn Branch Protection das erlaubt!
+          git push origin main
 
   build:
     name: Build Package
@@ -88,9 +79,8 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
-        run: |
-          pip install --upgrade build
+      - name: Install build
+        run: pip install --upgrade build
 
       - name: Build package
         run: python -m build
