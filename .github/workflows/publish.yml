@@ -3,6 +3,7 @@ name: Publish to PyPI
 on:
   release:
     types: [created] 
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,7 +19,19 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade build twine
+          pip install --upgrade build twine commitizen
+
+      - name: Bump version and generate changelog
+        run: |
+          cz bump --yes
+
+      - name: Commit and push updated version
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add pyproject.toml CHANGELOG.md
+          git commit -m "chore(release): bump version and update changelog"
+          git push origin main  # Ändere den Branch, falls nötig
 
       - name: Build package
         run: |
