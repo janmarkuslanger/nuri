@@ -1,4 +1,4 @@
-name: Release, PR, and Publish
+name: release-pr-publish
 
 on:
   release:
@@ -6,53 +6,43 @@ on:
 
 jobs:
   versioning:
-    name: Update Version and Create PR
     runs-on: ubuntu-latest
-
+    outputs:
+      has_changes: ${{ steps.version_and_changelog.outputs.has_changes }}
     steps:
-      - name: Check out repository
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
       - name: Install commitizen
         run: pip install --upgrade commitizen
-
-      - name: Update pyproject.toml and generate changelog
+      - name: Update version and changelog
         id: version_and_changelog
         run: |
           RELEASE_VERSION=${{ github.event.release.tag_name }}
           sed -i "s/^version = \".*\"/version = \"$RELEASE_VERSION\"/" pyproject.toml
           cz changelog --incremental
-
           if [[ -z $(git status --porcelain) ]]; then
-            echo "::set-output name=has_changes::false"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=has_changes::true"
-          fi
-
-      - name: Commit and push changes
-        if: steps.version_and_changelog.outputs.has_changes == 'true'
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+      - name: Commit and push
+        if: ${{ steps.version_and_changelog.outputs.has_changes == 'true' }}
         run: |
           RELEASE_VERSION=${{ github.event.release.tag_name }}
-          TEMP_BRANCH="release-temp-$RELEASE_VERSION"
-
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
-
-          git checkout -b $TEMP_BRANCH
+          git checkout -b "release-temp-$RELEASE_VERSION"
           git add pyproject.toml CHANGELOG.md
           git commit -m "chore(release): update version to $RELEASE_VERSION and CHANGELOG"
-          git push origin $TEMP_BRANCH
-
+          git push origin "release-temp-$RELEASE_VERSION"
       - name: Create Pull Request
-        if: steps.version_and_changelog.outputs.has_changes == 'true'
-        id: cpr
+        if: ${{ steps.version_and_changelog.outputs.has_changes == 'true' }}
+        id: create_pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -60,69 +50,56 @@ jobs:
           base: main
           title: "Release ${{ github.event.release.tag_name }}"
           body: "Updates pyproject.toml and CHANGELOG.md to version ${{ github.event.release.tag_name }}."
-          draft: false
-
       - name: Merge Pull Request
-        if: steps.version_and_changelog.outputs.has_changes == 'true'
+        if: ${{ steps.version_and_changelog.outputs.has_changes == 'true' }}
         uses: peter-evans/merge-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request: ${{ steps.cpr.outputs.pull-request-number }}
+          pull-request: ${{ steps.create_pr.outputs.pull-request-number }}
           merge-method: merge
 
   build:
-    name: Build Package
     runs-on: ubuntu-latest
     needs: versioning
-    if: steps.version_and_changelog.outputs.has_changes == 'true'
+    if: needs.versioning.outputs.has_changes == 'true'
     steps:
-      - name: Check out repository
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          # After PR is merged, main should now contain the updated files
-
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
       - name: Install build
         run: pip install --upgrade build
-
       - name: Build package
         run: python -m build
-
-      - name: Upload Package Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
           name: package-dist
           path: dist/*
 
   publish:
-    name: Publish to PyPI
     runs-on: ubuntu-latest
     needs: build
-    if: steps.version_and_changelog.outputs.has_changes == 'true'
+    if: needs.versioning.outputs.has_changes == 'true'
     steps:
-      - name: Check out repository
+      - name: Checkout
         uses: actions/checkout@v3
-
-      - name: Download Package Artifact
+      - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
           name: package-dist
           path: dist
-
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
       - name: Install twine
         run: pip install --upgrade twine
-
-      - name: Publish to PyPI
+      - name: Publish
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
