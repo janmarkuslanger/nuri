@@ -29,16 +29,13 @@ jobs:
           RELEASE_VERSION=${{ github.event.release.tag_name }}
           echo "Updating pyproject.toml to version $RELEASE_VERSION"
           
-          # Version in pyproject.toml aktualisieren
           sed -i "s/^version = \".*\"/version = \"$RELEASE_VERSION\"/" pyproject.toml
           
-          # CHANGELOG generieren (incremental)
           cz changelog --incremental
 
           echo "Git status after changelog update:"
           git status
           
-          # Prüfen, ob sich Dateien geändert haben
           if [[ -z $(git status --porcelain) ]]; then
             echo "No changes found."
             echo "::set-output name=has_changes::false"
@@ -52,6 +49,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git checkout main
+
           RELEASE_VERSION=${{ github.event.release.tag_name }}
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
@@ -59,8 +58,6 @@ jobs:
           git add pyproject.toml CHANGELOG.md
           git commit -m "chore(release): update version to $RELEASE_VERSION and CHANGELOG"
 
-          # Hier wird direkt auf main gepusht
-          # Achtung: Nur möglich, wenn Branch Protection das erlaubt!
           git push origin main
 
   build:
