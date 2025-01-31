@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nuri-cms"
-version = "0.1.8"
+version = "0.1.9"
 description = "A lightweight API-first CMS."
 authors = [
     { name = "Jan Markus Langer", email = "janmarkuslanger10121994@gmail.com" }
@@ -17,9 +17,3 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/nuri-cms/nuri"
-
-[tool.commitizen]
-name = "cz_conventional_commits"
-version = "0.1.8"
-tag_format = "$version"
-update_changelog_on_bump = true
