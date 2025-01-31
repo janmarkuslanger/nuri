@@ -5,14 +5,15 @@ on:
     types: [created]
 
 jobs:
-  deploy:
+  versioning:
+    name: Update Version & Changelog
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,25 +22,42 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade build twine commitizen
+          pip install --upgrade commitizen
+
+      - name: Ensure the release branch does not exist
+        run: |
+          RELEASE_VERSION=${{ github.event.release.tag_name }}
+          BRANCH_NAME="release-$RELEASE_VERSION"
+
+          if git ls-remote --exit-code --heads origin $BRANCH_NAME; then
+            echo "Branch $BRANCH_NAME already exists. Deleting it."
+            git push origin --delete $BRANCH_NAME
+          fi
 
       - name: Update pyproject.toml and Generate Changelog
         run: |
           RELEASE_VERSION=${{ github.event.release.tag_name }}
-          echo "Releasing version $RELEASE_VERSION"
-
           BRANCH_NAME="release-$RELEASE_VERSION"
+          echo "Updating version to $RELEASE_VERSION"
+
           git checkout -b $BRANCH_NAME
 
-          sed -i "s/^version = .*/version = \"$RELEASE_VERSION\"/" pyproject.toml
-          
+          # Ensure pyproject.toml is updated
+          awk -v ver="$RELEASE_VERSION" '/^version = /{$0="version = \"" ver "\""}1' pyproject.toml > tmp.toml && mv tmp.toml pyproject.toml
+
+          # Generate the changelog
           cz changelog
-          
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
-          git add pyproject.toml CHANGELOG.md
-          git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
-          git push origin $BRANCH_NAME 
+
+          # Check if there are any changes before committing
+          if [[ -n $(git status --porcelain) ]]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions@github.com"
+            git add pyproject.toml CHANGELOG.md
+            git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
+            git push origin $BRANCH_NAME
+          else
+            echo "No changes detected, skipping commit."
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
@@ -50,3 +68,61 @@ jobs:
           title: "Release ${{ github.event.release.tag_name }}"
           body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.release.tag_name }}."
           draft: false
+
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: versioning
+    if: github.event.release.tag_name != ''
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade build
+
+      - name: Build package
+        run: python -m build
+
+      - name: Upload Package Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: package-dist
+          path: dist/*
+
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event.release.tag_name != ''
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download Package Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: package-dist
+          path: dist
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install twine
+        run: pip install --upgrade twine
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
