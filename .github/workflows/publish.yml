@@ -13,7 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          # WICHTIG, damit Commitizen korrekt die Historie hat
           fetch-depth: 0
 
       - name: Set up Python
