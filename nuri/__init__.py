@@ -65,11 +65,11 @@ def _initialize_admin_user():
 
     if not User.query.filter_by(role=Role.ADMIN).first():
         admin_user = User(
-            email="admin@example.com",
+            email="user",
             first_name="Admin",
             last_name="User",
             role=Role.ADMIN,
         )
-        admin_user.set_password("admin123")
+        admin_user.set_password("demo")
         db.session.add(admin_user)
         db.session.commit()
