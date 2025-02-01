@@ -5,9 +5,7 @@
 Nuri CMS is a lightweight API-based content management system.
 It is designed to be minimalistic and easy to set up.
 
-
 ---
-
 
 ## 🚀 Installation
 
