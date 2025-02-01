@@ -1,8 +1,8 @@
 name: Publish to PyPI
 
 on:
-  release:
-    types: [created] 
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -18,7 +20,25 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade build twine
+          pip install --upgrade build twine commitizen
+
+      - name: Bump version with Commitizen
+        run: |
+          cz bump --yes
+
+      - name: Get new version
+        id: get_version
+        run: |
+          NEW_VERSION=$(grep '^version' pyproject.toml | sed -E 's/version\s*=\s*"([^"]+)".*/\1/')
+          echo "New version is $NEW_VERSION"
+          echo "::set-output name=version::$NEW_VERSION"
+
+      - name: Create release branch
+        run: |
+          NEW_BRANCH="release/v${{ steps.get_version.outputs.version }}"
+          echo "Creating and pushing branch $NEW_BRANCH"
+          git checkout -b "$NEW_BRANCH"
+          git push origin "$NEW_BRANCH"
 
       - name: Build package
         run: |
@@ -29,4 +49,14 @@ jobs:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          twine upload dist/*
+          echo "tet"
+          
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release/v${{ steps.get_version.outputs.version }}
+          base: main
+          title: "Release v${{ steps.get_version.outputs.version }}"
+          body: "Automated version bump and release via GitHub Actions"
