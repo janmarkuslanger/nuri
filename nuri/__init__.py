@@ -28,6 +28,7 @@ def create_app(config_file = None):
         user,
         api,
         access,
+        webhook
     )
 
     app.register_blueprint(collection, url_prefix="/admin/collections")
@@ -36,6 +37,7 @@ def create_app(config_file = None):
     app.register_blueprint(asset, url_prefix="/admin/assets")
     app.register_blueprint(user, url_prefix="/admin/user")
     app.register_blueprint(access, url_prefix="/admin/access")
+    app.register_blueprint(webhook, url_prefix="/admin/webhook")
     app.register_blueprint(api, url_prefix="/api")
     app.register_blueprint(auth, url_prefix="/auth")
     app.register_blueprint(home, url_prefix="/")
@@ -65,11 +67,11 @@ def _initialize_admin_user():
 
     if not User.query.filter_by(role=Role.ADMIN).first():
         admin_user = User(
-            email="admin@example.com",
+            email="user",
             first_name="Admin",
             last_name="User",
             role=Role.ADMIN,
         )
-        admin_user.set_password("admin123")
+        admin_user.set_password("demo")
         db.session.add(admin_user)
         db.session.commit()

@@ -8,6 +8,10 @@ from .asset import Asset
 from .user import User
 from .role import Role
 from .access import Access
+from .webhook import Webhook
+from .webhook_item import WebhookItem
+from .webhook_type import WebhookType
+from .request_method import RequestMethod
 
 
 @login_manager.user_loader

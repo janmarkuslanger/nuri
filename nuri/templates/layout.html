@@ -35,6 +35,7 @@
                 <nav class="mb-4 space-y-2">
                     {% if current_user.has_role("Admin") %}
                         {{ navigation.render_nav_item("access.index", "code", "Access") }}
+                        {{ navigation.render_nav_item("webhook.index", "cloud", "Webhooks") }}
                     {% endif %}
                     {{ navigation.render_nav_item("user.settings", "settings", "Settings") }}
                     {{ navigation.render_nav_item("auth.logout", "logout", "Logout") }}

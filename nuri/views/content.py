@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from nuri.models import Collection, Content, FieldType, Field, Asset
+from nuri.models import Collection, Content, FieldType, Field, Asset, WebhookType
 from nuri.extensions import db
 from nuri.views.auth import roles_required
 from nuri.models.role import Role
 from nuri.utils.message import created_success, deleted_success, updated_success, error
+from nuri.services.webhook import trigger
 
 view = Blueprint("content", __name__, url_prefix="/content")
 
@@ -60,6 +61,7 @@ def create(collection_id):
             new_content = Content(collection_id=collection_id, data=data)
             new_content.save()
             created_success("Content")
+            trigger(WebhookType.CONTENT_CREATED)
             return redirect(url_for("content.index", id=collection_id))
 
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
@@ -128,6 +130,7 @@ def edit(content_id):
         content.data = data
         db.session.commit()
         updated_success("Content")
+        trigger(WebhookType.CONTENT_UPDATED)
         return redirect(url_for("content.index", id=collection.id))
 
     has_collection = any(field.field_type == FieldType.COLLECTION for field in fields)
@@ -178,6 +181,7 @@ def delete(id):
     if request.method == "POST":
         content.delete()
         deleted_success("Content")
+        trigger(WebhookType.CONTENT_DELETED)
         return redirect(url_for("content.list_collections"))
 
     return render_template("content/delete.html", content=content)

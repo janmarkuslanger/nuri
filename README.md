@@ -38,7 +38,7 @@ python run.py
 
 The application will be available at `http://localhost:8000`.
 
-⚠️ There will be an admin user with username admin@example.com" and password admin123.
+⚠️ There will be an admin user with username `user` and password `demo`.
 Make sure you create your own admin user and delete the demouser!
 
 ## 🛠 Configuration (Optional)
