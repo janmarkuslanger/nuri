@@ -278,3 +278,10 @@ GET /asset?name=logo.png
 }
 ```
 
+## Development
+
+### Release: 
+- Create release
+- Github Action creates a new branch 
+- Merge release
+- PIP Release 
