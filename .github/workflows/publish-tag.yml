@@ -28,7 +28,6 @@ jobs:
       - name: Update pyproject.toml and Generate Changelog
         run: |
           #RELEASE_VERSION=${{ github.event.release.tag_name }}
-          RELEASE_VERSION=0.2.0
           echo "Releasing version $RELEASE_VERSION"
 
           BRANCH_NAME="release-$RELEASE_VERSION"
@@ -48,11 +47,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          #branch: release-${{ github.event.release.tag_name }}
-          branch: release-t
+          branch: release-${{ github.event.release.tag_name }}
           base: main
-          #title: "Release ${{ github.event.release.tag_name }}"
-          title: "Release 2323"
-          #body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.release.tag_name }}."
-          body: "This PR updates pyproject.toml and CHANGELOG.md for version"
+          title: "Release ${{ github.event.release.tag_name }}"
+          body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.release.tag_name }}."
           draft: false
