@@ -1,10 +1,3 @@
-## 0.2.0 (2025-02-01)
-
-### Feat
-
-- implement webhook service
-- implement webhook views, model
-
 ## 0.1.9 (2025-01-31)
 
 ### Feat
