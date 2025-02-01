@@ -42,12 +42,12 @@ jobs:
           git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
           git push origin $BRANCH_NAME
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release-${{ github.event.inputs.version }}
-          base: main
-          title: "Release ${{ github.event.inputs.version }}"
-          body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.inputs.version }}."
-          draft: false
+      # - name: Create Pull Request
+      #   uses: peter-evans/create-pull-request@v5
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: release-${{ github.event.inputs.version }}
+      #     base: main
+      #     title: "Release ${{ github.event.inputs.version }}"
+      #     body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.inputs.version }}."
+      #     draft: false
