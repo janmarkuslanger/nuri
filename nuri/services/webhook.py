@@ -20,6 +20,5 @@ def trigger(webhook_type):
     except:
         items = []
         
-    
     for item in items:
         fetch(item.webhook.url, item.webhook.request_method)
