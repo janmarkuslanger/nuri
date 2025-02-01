@@ -1,11 +1,8 @@
 name: Create changelog
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'New version'
-        required: true
+  release:
+    types: [created]
 
 jobs:
   deploy:
@@ -27,27 +24,20 @@ jobs:
           pip install --upgrade build commitizen
 
       - name: Update pyproject.toml and Generate Changelog
-        env:
-          VERSION: ${{ github.event.inputs.version }}
         run: |
-          RELEASE_VERSION="$VERSION"
+          RELEASE_VERSION=${{ github.event.release.tag_name }}
           echo "Releasing version $RELEASE_VERSION"
+          
           BRANCH_NAME="release-$RELEASE_VERSION"
           git checkout -b $BRANCH_NAME
+
           sed -i "s/^version = .*/version = \"$RELEASE_VERSION\"/" pyproject.toml
+          
           cz changelog
+          
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
           git add pyproject.toml CHANGELOG.md
           git commit -m "chore(release): update version to $RELEASE_VERSION and update CHANGELOG"
           git push origin $BRANCH_NAME
 
-      # - name: Create Pull Request
-      #   uses: peter-evans/create-pull-request@v5
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     branch: release-${{ github.event.inputs.version }}
-      #     base: main
-      #     title: "Release ${{ github.event.inputs.version }}"
-      #     body: "This PR updates pyproject.toml and CHANGELOG.md for version ${{ github.event.inputs.version }}."
-      #     draft: false
