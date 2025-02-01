@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version override'
+        description: 'New version'
         required: true
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
         env:
           VERSION: ${{ github.event.inputs.version }}
         run: |
-          RELEASE_VERSION="$OVERRIDE_VERSION"
+          RELEASE_VERSION="$VERSION"
           echo "Releasing version $RELEASE_VERSION"
           BRANCH_NAME="release-$RELEASE_VERSION"
           git checkout -b $BRANCH_NAME
