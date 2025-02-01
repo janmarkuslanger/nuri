@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from nuri.models import Role, WebhookType, RequestMethod, Webhook, WebhookItem
-from nuri.utils.message import created_error, created_success
+from nuri.utils.message import created_error, created_success, deleted_success, deleted_error
 from nuri.views.auth import roles_required
 
 
@@ -30,11 +30,9 @@ def create():
         
         for webhook_type in WebhookType:
             if request.form.get(webhook_type.name) == "on":
-                item = WebhookItem(
+                webhook.items.append(WebhookItem(
                     type=webhook_type
-                )
-
-            webhook.items.append(item)
+                ))
             
         try:
             webhook.save()
@@ -80,3 +78,19 @@ def edit(id):
         item=item,
         types=[ webhook_item.type for webhook_item in item.items if item and item.items ]
     )
+    
+@view.route("/delete/<int:id>", methods=["GET", "POST"])
+@roles_required(Role.ADMIN)
+def delete(id):
+    item = Webhook.query.get_or_404(id)
+
+    if request.method == "POST":
+        try:
+            item.delete()
+            deleted_success("Webhook")
+        except:
+            deleted_error("Webhook")    
+        
+        return redirect(url_for("webhook.index"))
+
+    return render_template("/webhook/delete.html", item=item)

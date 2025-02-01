@@ -8,19 +8,19 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+    {{ common.render_head(title) }}
 
-{{ common.render_head(title) }}
+    {{
+        table.render_table(
+            items,
+            ["Name"],
+            ["name"],
+            [
+                { "label": "edit", "url": "webhook.edit", "value": "id" },
+                { "label": "delete", "url": "webhook.delete", "value": "id" }
+            ]
+        )
+    }}
 
-{{
-    table.render_table(
-        items,
-        ["Name"],
-        ["name"],
-        [
-            { "label": "edit", "url": "webhook.edit", "value": "id" },
-        ]
-    )
-}}
-
-{{ table.render_create_button('collection.create', 'collection') }}
+    {{ table.render_create_button('webhook.create', 'webhook') }}
 {% endblock %}
