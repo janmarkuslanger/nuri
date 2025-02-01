@@ -9,7 +9,6 @@ from nuri.extensions import db
 class User(BaseModel, UserMixin):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True, nullable=False)
     first_name = db.Column(db.String(150), nullable=False)
     last_name = db.Column(db.String(150), nullable=False)

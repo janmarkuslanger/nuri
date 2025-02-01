@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% import "form_macros.html" as macros %}
+{% import "macros/common.html" as common %}
+
+{% set title = "Update webhook" if item else "Create webhook" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{{ common.render_head(title) }}
+<form method="POST" class="space-y-4">
+    {{ macros.render_text_input('name', 'Name', item.name if item else '') }}
+    {{ macros.render_select(
+        'request_method',
+        'Request method',
+        RequestMethod,
+        'name',
+        'value',
+        item.request_method.name if item else None,
+        'name',
+        True,
+    ) }}
+    {{ macros.render_text_input('url', 'URL', item.url if item else '') }}
+
+    <div class="divider"></div>
+
+    <h2 class="h1">Events</h2>
+
+    {% for webhook in WebhookType %}
+        {{ macros.render_checkbox(webhook.name, webhook.value, webhook in types) }}
+    {% endfor %}
+
+    <button
+        type="submit"
+        class="btn"
+    >
+        {{ "Update" if item else "Create" }}
+    </button>
+</form>
+{% endblock %}
