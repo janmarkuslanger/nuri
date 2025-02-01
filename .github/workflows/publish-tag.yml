@@ -13,6 +13,12 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
+      
+      - name: Fetch all tags
+        run: |
+          git fetch --tags
+          git tag
+
 
       - name: Set up Python
         uses: actions/setup-python@v4
