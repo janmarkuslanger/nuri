@@ -27,7 +27,7 @@ jobs:
 
       - name: Update pyproject.toml and Generate Changelog
         run: |
-          #RELEASE_VERSION=${{ github.event.release.tag_name }}
+          RELEASE_VERSION=${{ github.event.release.tag_name }}
           echo "Releasing version $RELEASE_VERSION"
 
           BRANCH_NAME="release-$RELEASE_VERSION"
