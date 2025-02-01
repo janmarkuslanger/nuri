@@ -1,4 +1,9 @@
-## Unreleased
+## 0.2.1 (2025-02-01)
+
+### Fix
+
+- workflow
+- workflow
 
 ## 0.2.0 (2025-02-01)
 
