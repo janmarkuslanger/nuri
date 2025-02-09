@@ -18,8 +18,13 @@ view = Blueprint("asset", __name__)
 @view.route("/", methods=["GET"])
 @roles_required(Role.EDITOR, Role.ADMIN)
 def index():
-    assets = Asset.query.all()
-    return render_template("/asset/index.html", assets=assets)
+    page = request.args.get('page', 1, type=int)
+    per_page = current_app.config.get("ITEMS_PER_PAGE", 10)
+    pagination = Asset.query.paginate(page=page, per_page=per_page, error_out=False)
+    assets = pagination.items
+    pagination.url_name="asset.index"
+    return render_template("/asset/index.html", assets=assets, pagination=pagination)
+
 
 
 @view.route("/create", methods=["GET", "POST"])

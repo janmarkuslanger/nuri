@@ -1,4 +1,4 @@
-{% macro render_table(items, labels, display, actions) %}
+{% macro render_table(items, labels, display, actions, pagination) %}
 {% if items %}
 <table class="table">
     <thead>
@@ -35,6 +35,28 @@
     </tbody>
 
 </table>
+
+
+{% if pagination %}
+    <div class="flex items-center justify-between mt-8">
+
+        <div>
+            Seite {{ pagination.page }} von {{ pagination.pages }}
+        </div>
+
+        <div class="join grid grid-cols-2">
+            <a class="join-item btn btn-outline {% if not pagination.has_prev %}btn-disabled{% endif %}" href="{{ url_for(pagination.url_name, page=pagination.prev_num) }}">
+                Previous page
+            </a>
+
+            <a class="join-item btn btn-outline {% if not pagination.has_next %}btn-disabled{% endif %}" href="{{ url_for(pagination.url_name, page=pagination.next_num) }}">
+                Next Page
+            </a>
+        </div>            
+
+    </div>
+{% endif %}
+
 {% else %}
     <p>There are no items available.</p>
 {% endif %}
